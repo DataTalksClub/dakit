@@ -31,6 +31,13 @@ Semantic prefixes: `bg-`, `text-`, `border-`, `accent-`, `focus-`,
 dash-level to be understood (`bg-inset`, `text-on-accent`), that's fine; if it
 needs three, the model is wrong.
 
+Two depths of the accent: `accent-default`/`accent-hover` are the accent as a
+control — fills, links, strokes. `accent-deep`/`accent-deeper` are the accent
+as a *field*: brand bands and hero gradients that carry white ink
+(`text-on-deep`) rather than sit beside it. Both are the dark end of the blue
+ramp in each theme, so white clears AA on them everywhere; build nothing
+bright from them.
+
 ## Aliases
 
 Semantic values reference primitives with `{ramp.step}`:

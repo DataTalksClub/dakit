@@ -17,7 +17,8 @@
     "faint": "#8b949e",
     "link": "{blue.400}",
     "link-hover": "{blue.300}",
-    "on-accent": "#0d1117"
+    "on-accent": "#0d1117",
+    "on-deep": "#ffffff"
   },
 
   "border": {
@@ -29,7 +30,9 @@
     "default": "{blue.400}",
     "hover": "{blue.300}",
     "soft": "rgba(88, 166, 255, 0.14)",
-    "border": "rgba(88, 166, 255, 0.4)"
+    "border": "rgba(88, 166, 255, 0.4)",
+    "deep": "{blue.700}",
+    "deeper": "{blue.900}"
   },
 
   "focus": {
