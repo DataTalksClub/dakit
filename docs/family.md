@@ -112,22 +112,21 @@ that a `--dk-*` role already covers.
 
 ## Icons
 
-One icon language family-wide: **inline SVG, 16×16 viewBox, `stroke="currentColor"`,
-stroke-width 1.5, round caps/joins, no fills** — the same drawing style as the
+One icon language family-wide, on dataops's geometry (the family reference):
+**inline SVG, 24×24 viewBox paths rendered at 20px, `stroke="currentColor"`,
+stroke-width 1.8, round caps/joins, no fills** — the same drawing style as the
 dakit select chevron. No icon fonts, no emoji, no mixed sets. Nav and rows
 always pair icon + text. Keep a per-app sprite/partial of the shared shapes
 (chevron, plus, search, check, alert-triangle, x, external-link, clock, user,
 doc, mail, refresh) copied from one source so strokes stay identical — the
-canonical set lives in `showcase.html`. Note the rendered reference: dataops
-draws its chrome and row icons at 20px from 24-viewBox paths at stroke-width
-1.8 — same language (currentColor, round caps/joins, no fills), different
-geometry than the 16-viewBox snippet. Pick one geometry per app and match the
-dataops reference captures; do not mix a 16px set and a 20px set in one app.
+canonical set lives in `showcase.html` on this geometry. (The 2026-10-02 spec
+originally taught a 16×16/stroke-1.5 geometry; apps still drawing that must
+migrate to the 24-grid set — do not mix the two sets in one app.)
 
 ```html
-<svg class="icon" width="16" height="16" viewBox="0 0 16 16" fill="none"
-     stroke="currentColor" stroke-width="1.5" stroke-linecap="round"
-     stroke-linejoin="round" aria-hidden="true"><path d="M6 3l5 5-5 5"/></svg>
+<svg class="icon" width="20" height="20" viewBox="0 0 24 24" fill="none"
+     stroke="currentColor" stroke-width="1.8" stroke-linecap="round"
+     stroke-linejoin="round" aria-hidden="true"><path d="m9 18 6-6-6-6"/></svg>
 ```
 
 ## States, copy, dark mode
