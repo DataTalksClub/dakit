@@ -1,0 +1,245 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>dakit — showcase</title>
+<script>
+  // Same boot script the README prescribes: stored choice wins, else OS preference.
+  const stored = localStorage.getItem("dakit-theme");
+  document.documentElement.dataset.theme =
+    stored === "dark" || stored === "light"
+      ? stored
+      : (matchMedia("(prefers-color-scheme: dark)").matches ? "dark" : "light");
+</script>
+<link rel="stylesheet" href="dist/dakit.css">
+<style>
+  /* Showcase chrome only — everything below demonstrates the system itself. */
+  .page { max-width: var(--dk-size-content-max); margin: 0 auto; padding: var(--dk-space-7) var(--dk-space-6) var(--dk-space-8); display: grid; gap: var(--dk-space-7); }
+  .topbar { position: sticky; top: 0; z-index: 10; display: flex; align-items: center; gap: var(--dk-space-3); padding: var(--dk-space-3) 0; background: var(--dk-bg-page); border-bottom: 1px solid var(--dk-border-default); }
+  .topbar .wordmark { margin-right: auto; font-weight: var(--dk-weight-semibold); letter-spacing: -0.01em; }
+  section { display: grid; gap: var(--dk-space-4); }
+  section > h2 { border-bottom: 1px solid var(--dk-border-default); padding-bottom: var(--dk-space-2); }
+  .row { display: flex; flex-wrap: wrap; gap: var(--dk-space-3); align-items: center; }
+  .grid-swatches { display: grid; grid-template-columns: repeat(auto-fill, minmax(168px, 1fr)); gap: var(--dk-space-2); }
+  .swatch { border: 1px solid var(--dk-border-default); border-radius: var(--dk-radius-md); overflow: hidden; font-size: var(--dk-text-xs); }
+  .swatch .chip-color { height: 44px; border-bottom: 1px solid var(--dk-border-default); }
+  .swatch .chip-meta { padding: var(--dk-space-2); display: grid; gap: 2px; }
+  .swatch .chip-name { font-family: var(--dk-font-mono); color: var(--dk-text-primary); }
+  .swatch .chip-value { font-family: var(--dk-font-mono); color: var(--dk-text-muted); }
+  .ramp { display: grid; gap: var(--dk-space-1); font-size: var(--dk-text-xs); }
+  .ramp-row { display: flex; align-items: center; gap: var(--dk-space-2); }
+  .ramp .ramp-swatch { width: 96px; height: 22px; border: 1px solid var(--dk-border-default); border-radius: var(--dk-radius-sm); }
+  .ramp code { background: none; padding: 0; color: var(--dk-text-muted); }
+  .scale-space { display: grid; gap: var(--dk-space-1); font-size: var(--dk-text-sm); }
+  .scale-space .bar { height: 14px; background: var(--dk-accent-default); border-radius: var(--dk-radius-sm); }
+  .scale-radius { display: flex; flex-wrap: wrap; gap: var(--dk-space-3); font-size: var(--dk-text-xs); text-align: center; }
+  .scale-radius .box { width: 72px; height: 48px; border: 1px solid var(--dk-border-strong); background: var(--dk-bg-muted); display: grid; place-items: end center; padding-bottom: 2px; }
+  .type-specimen > div { display: flex; align-items: baseline; gap: var(--dk-space-4); border-bottom: 1px dashed var(--dk-border-default); padding: var(--dk-space-2) 0; }
+  .type-specimen code { width: 130px; flex: none; background: none; padding: 0; color: var(--dk-text-muted); }
+  .field-demo { display: grid; gap: var(--dk-space-1); max-width: 320px; }
+  legend, .caption { color: var(--dk-text-muted); font-size: var(--dk-text-sm); margin-bottom: var(--dk-space-2); }
+</style>
+</head>
+<body>
+<div class="topbar">
+  <span class="wordmark">dakit</span>
+  <span class="dk-muted" style="font-size: var(--dk-text-sm)">showcase · <span id="theme-label"></span></span>
+  <button id="theme-toggle" class="dk-button dk-button--secondary dk-button--sm" type="button">Toggle theme</button>
+</div>
+
+<main class="page">
+
+  <section>
+    <h2>Semantic roles</h2>
+    <p class="caption">The app-facing layer. Components and screens use these — never the raw ramps.</p>
+    <div class="grid-swatches" id="semantic-swatches"></div>
+  </section>
+
+  <section>
+    <h2>Primitive ramps</h2>
+    <p class="caption">Source values. For the design system's own use — applications don't touch these.</p>
+    <div class="row" style="align-items: start">
+      <div class="ramp" id="ramp-gray"></div>
+      <div class="ramp" id="ramp-blue"></div>
+      <div class="ramp" id="ramp-green"></div>
+      <div class="ramp" id="ramp-amber"></div>
+      <div class="ramp" id="ramp-red"></div>
+    </div>
+  </section>
+
+  <section>
+    <h2>Typography</h2>
+    <div class="type-specimen">
+      <div><code>--dk-text-page</code><span style="font-size: var(--dk-text-page); font-weight: var(--dk-weight-bold); line-height: var(--dk-leading-tight); color: var(--dk-text-heading)">Page title 32px</span></div>
+      <div><code>--dk-text-xl</code><span style="font-size: var(--dk-text-xl); font-weight: var(--dk-weight-semibold); line-height: var(--dk-leading-tight); color: var(--dk-text-heading)">Section title 22px</span></div>
+      <div><code>--dk-text-lg</code><span style="font-size: var(--dk-text-lg); font-weight: var(--dk-weight-semibold); color: var(--dk-text-heading)">Card heading 16px</span></div>
+      <div><code>--dk-text-body</code><span style="font-size: var(--dk-text-body)">Body copy 14px — prose reads in Inter.</span></div>
+      <div><code>--dk-text-md</code><span style="font-size: var(--dk-text-md)">Controls &amp; tables 13px</span></div>
+      <div><code>--dk-text-sm</code><span style="font-size: var(--dk-text-sm)">Labels &amp; hints 12px</span></div>
+      <div><code>--dk-text-xs</code><span style="font-size: var(--dk-text-xs)">Chips &amp; badges 11px</span></div>
+      <div><code>--dk-font-mono</code><span class="dk-mono" style="font-size: var(--dk-text-md)">quantities, timings, IDs: 1,024 rows · 82ms · wf_9f2c</span></div>
+    </div>
+  </section>
+
+  <section>
+    <h2>Space &amp; radius</h2>
+    <div class="row" style="align-items: start; gap: var(--dk-space-7)">
+      <div class="scale-space" id="scale-space"></div>
+      <div class="scale-radius" id="scale-radius"></div>
+    </div>
+  </section>
+
+  <section>
+    <h2>Buttons</h2>
+    <div class="row">
+      <button class="dk-button dk-button--primary">Primary action</button>
+      <button class="dk-button dk-button--secondary">Secondary</button>
+      <button class="dk-button dk-button--danger">Delete…</button>
+      <button class="dk-button dk-button--primary" disabled>Disabled</button>
+    </div>
+    <div class="row">
+      <button class="dk-button dk-button--secondary dk-button--sm">Toolbar sm</button>
+      <button class="dk-button dk-button--primary">Default md</button>
+      <button class="dk-button dk-button--primary dk-button--lg">Page-level lg</button>
+    </div>
+  </section>
+
+  <section>
+    <h2>Fields</h2>
+    <div class="row" style="align-items: start">
+      <div class="field-demo">
+        <label class="dk-label" for="demo-input">Workflow name</label>
+        <input class="dk-input" id="demo-input" placeholder="e.g. nightly-sync">
+        <p class="dk-hint">Lowercase letters, digits, dashes.</p>
+      </div>
+      <div class="field-demo">
+        <label class="dk-label" for="demo-select">Region</label>
+        <select class="dk-select" id="demo-select"><option>eu-central-1</option><option>us-east-1</option></select>
+      </div>
+      <div class="field-demo">
+        <label class="dk-label" for="demo-notes">Notes</label>
+        <textarea class="dk-textarea" id="demo-notes" placeholder="Anything worth remembering…"></textarea>
+      </div>
+    </div>
+  </section>
+
+  <section>
+    <h2>Status</h2>
+    <p class="caption">Status hues report status — the triplets (text on bg with border) are contrast-checked at build time.</p>
+    <div class="row">
+      <span class="dk-badge dk-badge--success"><span class="dk-dot dk-dot--success"></span>Healthy</span>
+      <span class="dk-badge dk-badge--warning"><span class="dk-dot dk-dot--warning"></span>Due soon</span>
+      <span class="dk-badge dk-badge--danger"><span class="dk-dot dk-dot--danger"></span>Overdue</span>
+      <span class="dk-badge dk-badge--info"><span class="dk-dot dk-dot--info"></span>Running</span>
+      <span class="dk-badge"><span class="dk-dot dk-dot--neutral"></span>Paused</span>
+    </div>
+    <div class="row">
+      <span class="dk-chip">prod</span>
+      <span class="dk-chip">staging</span>
+      <span class="dk-chip">wf_9f2c</span>
+    </div>
+  </section>
+
+  <section>
+    <h2>Cards &amp; tables</h2>
+    <div class="dk-card">
+      <h3 style="margin-bottom: var(--dk-space-2)">Recent runs</h3>
+      <table class="dk-table">
+        <thead><tr><th>Workflow</th><th>Status</th><th>Duration</th><th style="text-align: right">Rows</th></tr></thead>
+        <tbody>
+          <tr><td class="dk-mono">nightly-sync</td><td><span class="dk-badge dk-badge--success"><span class="dk-dot dk-dot--success"></span>ok</span></td><td class="dk-mono">3m 12s</td><td class="dk-mono" style="text-align: right">1,024</td></tr>
+          <tr><td class="dk-mono">invoice-parser</td><td><span class="dk-badge dk-badge--warning"><span class="dk-dot dk-dot--warning"></span>retrying</span></td><td class="dk-mono">48s</td><td class="dk-mono" style="text-align: right">96</td></tr>
+          <tr><td class="dk-mono">webhook-fanout</td><td><span class="dk-badge dk-badge--danger"><span class="dk-dot dk-dot--danger"></span>failed</span></td><td class="dk-mono">2s</td><td class="dk-mono" style="text-align: right">0</td></tr>
+        </tbody>
+      </table>
+    </div>
+  </section>
+
+</main>
+
+<script src="dist/tokens.global.js"></script>
+<script>
+  const { light, primitives } = globalThis.dakitTokens;
+
+  const pick = (token, el) => getComputedStyle(el).getPropertyValue(token).trim() || "—";
+
+  // Semantic swatches: name + live computed value for the current theme.
+  const groups = {
+    "bg": ["page", "surface", "muted", "hover", "inset"],
+    "text": ["primary", "heading", "muted", "faint", "link", "on-accent"],
+    "border": ["default", "strong"],
+    "accent": ["default", "hover", "soft"],
+    "success": ["bg", "text", "border"],
+    "warning": ["bg", "text", "border"],
+    "danger": ["bg", "text", "border"],
+    "info": ["bg", "text", "border"],
+  };
+  const swatchGrid = document.getElementById("semantic-swatches");
+  function renderSwatches() {
+    swatchGrid.innerHTML = "";
+    for (const [group, roles] of Object.entries(groups)) {
+      for (const role of roles) {
+        const token = `--dk-${group}-${role}`;
+        const cell = document.createElement("div");
+        cell.className = "swatch";
+        cell.innerHTML = `<div class="chip-color"></div><div class="chip-meta"><span class="chip-name"></span><span class="chip-value"></span></div>`;
+        cell.querySelector(".chip-color").style.background = `var(${token})`;
+        cell.querySelector(".chip-name").textContent = token;
+        swatchGrid.append(cell);
+        cell.querySelector(".chip-value").textContent = pick(token, cell);
+      }
+    }
+  }
+
+  // Primitive ramps, straight from the generated token map.
+  const ramps = { "ramp-gray": "gray", "ramp-blue": "blue", "ramp-green": "green", "ramp-amber": "amber", "ramp-red": "red" };
+  for (const [elId, ramp] of Object.entries(ramps)) {
+    const host = document.getElementById(elId);
+    for (const [name, value] of Object.entries(primitives)) {
+      if (!name.startsWith(`--dk-${ramp}-`)) continue;
+      const row = document.createElement("div");
+      row.className = "ramp-row";
+      const sw = document.createElement("span");
+      sw.className = "ramp-swatch";
+      sw.style.background = value;
+      const label = document.createElement("code");
+      label.textContent = `${name.slice(5)}  ${value}`;
+      row.append(sw, label);
+      host.append(row);
+    }
+  }
+
+  // Scales
+  const spaceHost = document.getElementById("scale-space");
+  for (let i = 1; i <= 8; i++) {
+    const row = document.createElement("div");
+    row.className = "ramp-row";
+    const bar = document.createElement("span");
+    bar.className = "bar";
+    bar.style.width = `var(--dk-space-${i})`;
+    const label = document.createElement("code");
+    label.textContent = `space-${i}`;
+    row.append(bar, label);
+    spaceHost.append(row);
+  }
+  const radiusHost = document.getElementById("scale-radius");
+  for (const r of ["none", "sm", "md", "lg", "full"]) {
+    const box = document.createElement("div");
+    box.innerHTML = `<div class="box" style="border-radius: var(--dk-radius-${r})"></div><code>radius-${r}</code>`;
+    radiusHost.append(box);
+  }
+
+  // Theme toggle, mirroring the README contract.
+  const root = document.documentElement;
+  const label = document.getElementById("theme-label");
+  const sync = () => { label.textContent = root.dataset.theme; renderSwatches(); };
+  document.getElementById("theme-toggle").addEventListener("click", () => {
+    root.dataset.theme = root.dataset.theme === "dark" ? "light" : "dark";
+    localStorage.setItem("dakit-theme", root.dataset.theme);
+    sync();
+  });
+  sync();
+</script>
+</body>
+</html>
