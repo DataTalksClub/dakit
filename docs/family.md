@@ -102,6 +102,13 @@ that a `--dk-*` role already covers.
   surfaces (modal/popover/lightbox panels) use `--dk-radius-lg` (10px) and
   `--dk-shadow-overlay`; static containers and controls stay at
   `--dk-radius-md` (6px) with no shadow. Backdrops use `--dk-bg-backdrop`.
+  Full-height edge-to-edge drawers keep no radius (the shadow carries them).
+- **Focus**: the keyboard indicator is always visible and comes from
+  `--dk-focus-ring`: `outline: 3px solid var(--dk-focus-ring)` with
+  `outline-offset: 2px` on `:focus-visible` (full-bleed rows inset it with a
+  negative offset so it stays inside the row). Text controls additionally swap
+  to an `--dk-accent-default` border with a `0 0 0 3px var(--dk-focus-ring)`
+  halo on `:focus`. Never remove or dim the indicator.
 
 ## Icons
 
@@ -111,7 +118,11 @@ dakit select chevron. No icon fonts, no emoji, no mixed sets. Nav and rows
 always pair icon + text. Keep a per-app sprite/partial of the shared shapes
 (chevron, plus, search, check, alert-triangle, x, external-link, clock, user,
 doc, mail, refresh) copied from one source so strokes stay identical — the
-canonical set lives in `showcase.html`.
+canonical set lives in `showcase.html`. Note the rendered reference: dataops
+draws its chrome and row icons at 20px from 24-viewBox paths at stroke-width
+1.8 — same language (currentColor, round caps/joins, no fills), different
+geometry than the 16-viewBox snippet. Pick one geometry per app and match the
+dataops reference captures; do not mix a 16px set and a 20px set in one app.
 
 ```html
 <svg class="icon" width="16" height="16" viewBox="0 0 16 16" fill="none"
@@ -136,7 +147,7 @@ canonical set lives in `showcase.html`.
 
 A redesigned app passes when a side-by-side with dataops shows: same shell
 geometry, same page-header scale, same row-list rhythm, same button hierarchy,
-same status language, same icon strokes, and identical `--dk-*` palette in
-both themes — with no app-local hex, radii, shadows, or control sizes outside
-a sanctioned exception. Verify with side-by-side screenshots (390×844 and
+same status language, same icon strokes, same focus treatment, and identical
+`--dk-*` palette in both themes — with no app-local hex, radii, shadows, or
+control sizes outside a sanctioned exception. Verify with side-by-side screenshots (390×844 and
 1440×900, light + dark) reviewed by a judge.
