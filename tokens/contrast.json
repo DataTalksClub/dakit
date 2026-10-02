@@ -6,6 +6,7 @@
     { "fg": "text.primary", "bg": "bg.page", "min": 4.5 },
     { "fg": "text.primary", "bg": "bg.surface", "min": 4.5 },
     { "fg": "text.primary", "bg": "bg.muted", "min": 4.5 },
+    { "fg": "text.primary", "bg": "bg.raised", "min": 4.5 },
     { "fg": "text.muted", "bg": "bg.page", "min": 4.5 },
     { "fg": "text.muted", "bg": "bg.surface", "min": 4.5 },
     { "fg": "text.faint", "bg": "bg.page", "min": 4.5 },
