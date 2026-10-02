@@ -9,6 +9,13 @@ How each existing project maps onto dakit. Two adoption strategies are used:
   few places (accent hue, surface tint, radius). The tables below name every
   change so nothing shifts silently.
 
+dataops' look is the canonical reference (decided 2026-10-02): dakit's
+tokens are that look, pinned byte-for-byte by dataops' drift-guard test.
+Apps may add product roles that compose dakit roles (hero bands, QR
+plates) and may keep a density exception for their medium (dataqna's 16px
+phone body, dapier designer's dense canvas), but must not layer private
+palette or ink choices on top of the system.
+
 ## The pattern
 
 ```css
@@ -79,7 +86,10 @@ Structure maps cleanly; the visual changes are deliberate (see below).
 
 Also deliberate: IBM Plex Sans → **Inter** (mono stays IBM Plex Mono, so data
 keeps its voice), 0 radius → `radius-sm/md` (4/6px), button height 38 →
-`control-md` 34, body 13.5px → 14px.
+`control-md` 34, body 13.5px → 14px. The designer SPA
+(`designer/src`) dresses itself entirely in dakit tokens but keeps its own
+canvas density — 13.5px body, 40px primary buttons — a dense-tool
+exception like dataqna's phone body, not a palette divergence.
 
 ## dataqna → dakit (remap)
 
@@ -94,6 +104,12 @@ keeps its voice), 0 radius → `radius-sm/md` (4/6px), button height 38 →
 dataqna's build already follows the primitives → semantic → components
 architecture and checks AA numerically; adopting dakit is mostly swapping the
 primitive values and joining the shared contrast pair list.
+
+2026-10-02: fills converged to dakit's primary-button pairing
+(`--dk-text-on-accent` on `--dk-accent-default`, `--dk-accent-hover` on
+hover), pinned by equality in dataqna's theme tests — the dark deep-fill
+divergence is gone. That orphaned dakit's `accent.deep-hover` role (built
+for these fills); it has no consumers left.
 
 ## Sequencing
 
