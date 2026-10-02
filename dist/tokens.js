@@ -16,6 +16,7 @@ export const light = {
   "--dk-text-on-accent": "#ffffff",
   "--dk-text-on-deep": "#ffffff",
   "--dk-border-default": "#d0d7de",
+  "--dk-border-control-hover": "#d0d7de",
   "--dk-border-strong": "#afb8c1",
   "--dk-accent-default": "#315f8f",
   "--dk-accent-hover": "#244d78",
@@ -39,7 +40,6 @@ export const light = {
   "--dk-info-text": "#315f8f",
   "--dk-info-bg": "#edf5ff",
   "--dk-info-border": "rgba(49, 95, 143, 0.22)",
-  "--dk-shadow-card": "0 1px 2px rgba(15, 23, 42, 0.06)",
   "--dk-shadow-overlay": "0 8px 24px rgba(15, 23, 42, 0.16)"
 };
 export const dark = {
@@ -59,6 +59,7 @@ export const dark = {
   "--dk-text-on-accent": "#0d1117",
   "--dk-text-on-deep": "#ffffff",
   "--dk-border-default": "#30363d",
+  "--dk-border-control-hover": "#8b949e",
   "--dk-border-strong": "#6e7681",
   "--dk-accent-default": "#58a6ff",
   "--dk-accent-hover": "#79b8ff",
@@ -82,7 +83,6 @@ export const dark = {
   "--dk-info-text": "#79b8ff",
   "--dk-info-bg": "rgba(88, 166, 255, 0.12)",
   "--dk-info-border": "rgba(88, 166, 255, 0.4)",
-  "--dk-shadow-card": "0 1px 2px rgba(1, 4, 9, 0.4)",
   "--dk-shadow-overlay": "0 8px 24px rgba(1, 4, 9, 0.6)"
 };
 export const primitives = {

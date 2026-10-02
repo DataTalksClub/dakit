@@ -8,7 +8,11 @@ this spec and an app's current CSS disagree, the app changes.
 Tokens come from dakit (`--dk-*`); component classes from `css/components.css`
 (`.dk-*`). Recipes below show the structural CSS an app ports into its own
 stylesheet using `--dk-*` roles — copy the recipe, rename nothing inside it
-except the app-local class prefix.
+except the app-local class prefix. An app may instead vendor
+`dist/tokens.css` only and mirror the base layer's element defaults (fonts,
+select chevron, focus ring) in its own stylesheet — dataops, the canonical
+reference, does exactly that; keep such mirrors byte-equal to `css/base.css`
+and never bake raw colors into them.
 
 ## Who uses which shell
 
@@ -25,17 +29,18 @@ except the app-local class prefix.
 Sidebar recipe (port verbatim, tokens do the theming):
 
 ```css
-.app-sidebar { width: var(--dk-size-sidebar); background: var(--dk-bg-page);
+.app-sidebar { width: var(--dk-size-sidebar); background: var(--dk-bg-muted);
   border-right: 1px solid var(--dk-border-default); }
-.nav-item { display: flex; align-items: center; gap: var(--dk-space-2);
-  height: 32px; padding: 0 var(--dk-space-3); border-radius: 6px;
-  font-size: var(--dk-text-body); color: var(--dk-text-primary); }
+.nav-item { display: flex; align-items: center; gap: 10px;
+  min-height: 36px; padding: 6px 10px; border-radius: var(--dk-radius-md);
+  font-size: var(--dk-text-body); font-weight: 500; color: var(--dk-text-primary); }
 .nav-item:hover { background: var(--dk-bg-hover); }
 .nav-item[aria-current="page"] { background: var(--dk-accent-soft);
-  color: var(--dk-accent-default); }
+  color: var(--dk-accent-default); font-weight: 600; }
 /* selection signal is the filled row ONLY — no left border, rail, or stripe */
 .nav-group-label { font-size: var(--dk-text-xs); color: var(--dk-text-muted);
-  text-transform: uppercase; letter-spacing: 0.04em; padding: var(--dk-space-3); }
+  font-weight: 600; text-transform: uppercase; letter-spacing: 0.07em;
+  margin: 18px 10px 5px; }
 ```
 
 ## Page anatomy (hierarchy)
@@ -81,8 +86,9 @@ that a `--dk-*` role already covers.
 
 - **Buttons**: one primary per view, CMP blue, white text. Secondary = muted
   surface + neutral border + primary text. Content-width default; never
-  full-width on desktop. Heights 32–36px desktop, ≥44px touch on phone.
-  Primary first, destructive separated and explicitly labelled.
+  full-width on desktop. Heights come from the `--dk-size-control-*` scale —
+  `--dk-size-control-md` (34px) default on desktop, `--dk-size-touch` (44px)
+  on phone. Primary first, destructive separated and explicitly labelled.
 - **Forms**: labels above controls, helper text (`.dk-hint`) directly below,
   stacked fields; 2–3 columns only for short comparable fields. One footer
   action row above a top border: primary, then Cancel. Validation copy sits
@@ -92,7 +98,10 @@ that a `--dk-*` role already covers.
   row by default; a badge must change what the operator does.
 - **Overlays**: popover → row/global action; modal → focused confirmation
   (backdrop, Escape, focus trap, restore); sheet → persistent detail, full
-  screen on mobile. Don't mix mechanisms for the same interaction.
+  screen on mobile. Don't mix mechanisms for the same interaction. Overlay
+  surfaces (modal/popover/lightbox panels) use `--dk-radius-lg` (10px) and
+  `--dk-shadow-overlay`; static containers and controls stay at
+  `--dk-radius-md` (6px) with no shadow. Backdrops use `--dk-bg-backdrop`.
 
 ## Icons
 

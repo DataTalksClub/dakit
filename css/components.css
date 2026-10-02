@@ -27,15 +27,17 @@
 .dk-button--primary { background: var(--dk-accent-default); color: var(--dk-text-on-accent); }
 .dk-button--primary:hover { background: var(--dk-accent-hover); }
 
-.dk-button--secondary { border-color: var(--dk-border-strong); background: transparent; color: var(--dk-text-primary); }
-.dk-button--secondary:hover { border-color: var(--dk-text-muted); background: var(--dk-bg-hover); }
+/* Secondary = muted surface + neutral border + primary text (the family
+   recipe); quiet controls gain --dk-border-control-hover on hover. */
+.dk-button--secondary { border-color: var(--dk-border-default); background: var(--dk-bg-muted); color: var(--dk-text-primary); }
+.dk-button--secondary:hover { border-color: var(--dk-border-control-hover); background: var(--dk-bg-hover); }
 
 .dk-button--danger { border-color: var(--dk-danger-border); background: transparent; color: var(--dk-danger-text); }
 .dk-button--danger:hover { background: var(--dk-danger-bg); }
 
 .dk-button:disabled { opacity: 0.55; cursor: not-allowed; }
 .dk-button:disabled:hover { background: var(--dk-accent-default); }
-.dk-button--secondary:disabled:hover { background: transparent; }
+.dk-button--secondary:disabled:hover { background: var(--dk-bg-muted); }
 .dk-button--danger:disabled:hover { background: transparent; }
 
 /* --- fields ----------------------------------------------------------------- */
@@ -65,12 +67,11 @@
 
 .dk-card {
   border: 1px solid var(--dk-border-default);
-  border-radius: var(--dk-radius-lg);
+  border-radius: var(--dk-radius-md);
   background: var(--dk-bg-surface);
-  box-shadow: var(--dk-shadow-card);
   padding: var(--dk-space-4);
 }
-.dk-card--muted { background: var(--dk-bg-muted); box-shadow: none; }
+.dk-card--muted { background: var(--dk-bg-muted); }
 
 /* --- chips & status ---------------------------------------------------------- */
 

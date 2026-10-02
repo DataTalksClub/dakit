@@ -48,6 +48,7 @@ palette or ink choices on top of the system.
 | `--radius` (6px) | `--dk-radius-md` | same value |
 | `--do-text-*`, `--do-space-*` | `--dk-text-*`, `--dk-space-*` | same scales |
 | `--do-density-control` (34px) | `--dk-size-control-md` | same value |
+| `--control-hover-border` | `--dk-border-control-hover` | promoted 2026-10-02 — equal to `border-default` in light, visibly stronger in dark |
 
 ## relay / datamailer → dakit (alias)
 
