@@ -16,6 +16,7 @@
     { "fg": "accent.default", "bg": "bg.page", "min": 4.5 },
     { "fg": "accent.default", "bg": "accent.soft", "min": 3.0 },
     { "fg": "text.on-deep", "bg": "accent.deep", "min": 4.5 },
+    { "fg": "text.on-deep", "bg": "accent.deep-hover", "min": 4.5 },
     { "fg": "text.on-deep", "bg": "accent.deeper", "min": 4.5 },
 
     { "fg": "success.text", "bg": "success.bg", "min": 4.5 },

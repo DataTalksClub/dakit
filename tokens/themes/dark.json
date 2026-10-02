@@ -33,6 +33,7 @@
     "soft": "rgba(88, 166, 255, 0.14)",
     "border": "rgba(88, 166, 255, 0.4)",
     "deep": "{blue.700}",
+    "deep-hover": "{blue.600}",
     "deeper": "{blue.900}"
   },
 

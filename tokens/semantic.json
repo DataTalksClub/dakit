@@ -34,6 +34,7 @@
       "soft": "{blue.50}",
       "border": "rgba(49, 95, 143, 0.4)",
       "deep": "{blue.600}",
+      "deep-hover": "{blue.600}",
       "deeper": "{blue.700}"
     },
 
