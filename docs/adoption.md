@@ -50,7 +50,9 @@ How each existing project maps onto dakit. Two adoption strategies are used:
 `--dk-bg-page`, `--dm-color-surface(-strong)` → `--dk-bg-muted`/`--dk-bg-hover`,
 `--dm-color-primary(-hover)` → `--dk-accent-*`, `--dm-color-link(-hover)` →
 `--dk-text-link(-hover)`, `--dm-color-{success,warning,danger}` triplets →
-`--dk-{status}-*`, `--dm-color-focus` → `--dk-focus-ring`. Relay's CSS header
+`--dk-{status}-*`, `--dm-color-focus` → `--dk-focus-ring`,
+`--dm-color-danger-hover` → `--dk-danger-hover` (a role dakit gained for
+relay's solid danger buttons). Relay's CSS header
 already says "follows the DataOps design system" — dakit is that system,
 extracted; values are unchanged.
 

@@ -21,6 +21,8 @@
     { "fg": "warning.text", "bg": "bg.page", "min": 4.5 },
     { "fg": "danger.text", "bg": "danger.bg", "min": 4.5 },
     { "fg": "danger.text", "bg": "bg.page", "min": 4.5 },
+    { "fg": "text.on-accent", "bg": "danger.text", "min": 4.5 },
+    { "fg": "text.on-accent", "bg": "danger.hover", "min": 4.5 },
     { "fg": "info.text", "bg": "info.bg", "min": 4.5 },
     { "fg": "info.text", "bg": "bg.page", "min": 4.5 }
   ]

@@ -53,6 +53,7 @@
 
     "danger": {
       "text": "{red.500}",
+      "hover": "{red.700}",
       "bg": "{red.50}",
       "border": "rgba(207, 34, 46, 0.24)"
     },
