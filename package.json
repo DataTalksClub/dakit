@@ -1,0 +1,23 @@
+{
+  "name": "dakit",
+  "version": "0.1.0",
+  "description": "Shared design system for the internal tools (dapier, dataops, dataqna, relay): design tokens, base styles, components, guidelines.",
+  "type": "module",
+  "private": true,
+  "scripts": {
+    "build": "node build.mjs",
+    "watch": "node --watch-path=tokens --watch-path=css build.mjs"
+  },
+  "exports": {
+    ".": "./dist/dakit.css",
+    "./tokens.css": "./dist/tokens.css",
+    "./tokens": "./dist/tokens.js"
+  },
+  "files": [
+    "dist",
+    "css",
+    "fonts",
+    "tokens",
+    "docs"
+  ]
+}

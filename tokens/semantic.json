@@ -1,0 +1,71 @@
+{
+  "$comment": "Dakit semantic layer, light theme (the default). Roles only: components and apps may use these, never the primitive ramps. Values may alias primitives with '{ramp.step}' references. Every text/background pair used together is contrast-checked at build time (see tokens/contrast.json).",
+
+  "light": {
+    "bg": {
+      "page": "{gray.0}",
+      "surface": "{gray.0}",
+      "muted": "{gray.50}",
+      "hover": "{gray.100}",
+      "inset": "rgba(36, 41, 47, 0.06)",
+      "backdrop": "rgba(15, 23, 42, 0.5)"
+    },
+
+    "text": {
+      "primary": "{gray.900}",
+      "heading": "{gray.950}",
+      "muted": "{gray.600}",
+      "faint": "{gray.500}",
+      "link": "{blue.500}",
+      "link-hover": "{blue.600}",
+      "on-accent": "#ffffff"
+    },
+
+    "border": {
+      "default": "{gray.200}",
+      "strong": "{gray.300}"
+    },
+
+    "accent": {
+      "default": "{blue.500}",
+      "hover": "{blue.600}",
+      "soft": "{blue.50}",
+      "border": "rgba(49, 95, 143, 0.4)"
+    },
+
+    "focus": {
+      "ring": "rgba(49, 95, 143, 0.6)"
+    },
+
+    "selection": "#dde9f7",
+
+    "success": {
+      "text": "#116329",
+      "bg": "#e6f6ea",
+      "border": "#b7dfc2"
+    },
+
+    "warning": {
+      "text": "{amber.600}",
+      "bg": "{amber.100}",
+      "border": "{amber.400}"
+    },
+
+    "danger": {
+      "text": "{red.500}",
+      "bg": "{red.50}",
+      "border": "rgba(207, 34, 46, 0.24)"
+    },
+
+    "info": {
+      "text": "{blue.500}",
+      "bg": "{blue.50}",
+      "border": "rgba(49, 95, 143, 0.22)"
+    },
+
+    "shadow": {
+      "card": "0 1px 2px rgba(15, 23, 42, 0.06)",
+      "overlay": "0 8px 24px rgba(15, 23, 42, 0.16)"
+    }
+  }
+}

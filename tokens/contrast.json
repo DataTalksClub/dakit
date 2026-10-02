@@ -1,0 +1,27 @@
+{
+  "$comment": "WCAG pairs the build verifies in EVERY theme. fg/bg are semantic role paths (not CSS var names). min is the required contrast ratio: 4.5 for normal text (WCAG AA), 3.0 for large text (18.66px bold / 24px) and UI indicators. A failing pair fails the build.",
+
+  "pairs": [
+    { "fg": "text.heading", "bg": "bg.page", "min": 4.5 },
+    { "fg": "text.primary", "bg": "bg.page", "min": 4.5 },
+    { "fg": "text.primary", "bg": "bg.surface", "min": 4.5 },
+    { "fg": "text.primary", "bg": "bg.muted", "min": 4.5 },
+    { "fg": "text.muted", "bg": "bg.page", "min": 4.5 },
+    { "fg": "text.muted", "bg": "bg.surface", "min": 4.5 },
+    { "fg": "text.faint", "bg": "bg.page", "min": 4.5 },
+    { "fg": "text.link", "bg": "bg.page", "min": 4.5 },
+    { "fg": "text.link", "bg": "bg.surface", "min": 4.5 },
+    { "fg": "text.on-accent", "bg": "accent.default", "min": 4.5 },
+    { "fg": "accent.default", "bg": "bg.page", "min": 4.5 },
+    { "fg": "accent.default", "bg": "accent.soft", "min": 3.0 },
+
+    { "fg": "success.text", "bg": "success.bg", "min": 4.5 },
+    { "fg": "success.text", "bg": "bg.page", "min": 4.5 },
+    { "fg": "warning.text", "bg": "warning.bg", "min": 4.5 },
+    { "fg": "warning.text", "bg": "bg.page", "min": 4.5 },
+    { "fg": "danger.text", "bg": "danger.bg", "min": 4.5 },
+    { "fg": "danger.text", "bg": "bg.page", "min": 4.5 },
+    { "fg": "info.text", "bg": "info.bg", "min": 4.5 },
+    { "fg": "info.text", "bg": "bg.page", "min": 4.5 }
+  ]
+}
