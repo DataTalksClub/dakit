@@ -65,7 +65,7 @@ Container + row recipe:
   font-size: var(--dk-text-lg); font-weight: 600; }
 .row { display: flex; align-items: center; gap: var(--dk-space-3);
   padding: var(--dk-space-2) var(--dk-space-4); min-height: 40px;
-  border-bottom: 1px solid var(--dk-border-muted); }
+  border-bottom: 1px solid var(--dk-border-default); }
 .row:last-child { border-bottom: 0; }
 .row:hover { background: var(--dk-bg-hover); }
 ```

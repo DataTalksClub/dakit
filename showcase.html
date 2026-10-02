@@ -156,6 +156,54 @@
     </div>
   </section>
 
+  <section>
+    <h2>Form footer</h2>
+    <div class="dk-card" style="padding: 0">
+      <div style="padding: var(--dk-space-4)">
+        <label class="dk-label" for="demo-footer-field">Workflow name</label>
+        <input class="dk-input" id="demo-footer-field" placeholder="e.g. nightly-sync">
+      </div>
+      <div class="dk-form-actions">
+        <button class="dk-button dk-button--primary">Save changes</button>
+        <button class="dk-button dk-button--secondary">Cancel</button>
+      </div>
+    </div>
+  </section>
+
+  <section>
+    <h2>Icons</h2>
+    <p class="caption">The canonical shared shapes — 16×16, stroke currentColor 1.5, round caps/joins, no fills. Copy from here so strokes stay identical across apps; nav and rows always pair icon + text.</p>
+    <div class="row" id="icon-set" style="gap: var(--dk-space-4)"></div>
+    <script>
+      (() => {
+        const shapes = {
+          "chevron-right": '<path d="M6 3l5 5-5 5"/>',
+          "chevron-down": '<path d="M3 6l5 5 5-5"/>',
+          plus: '<path d="M8 3v10M3 8h10"/>',
+          search: '<circle cx="7" cy="7" r="4.5"/><path d="M10.5 10.5L14 14"/>',
+          check: '<path d="M3 8.5l3.5 3.5L13 5"/>',
+          "alert-triangle": '<path d="M8 2.5L14.5 13.5h-13L8 2.5z"/><path d="M8 7v3"/><path d="M8 12.1v.01"/>',
+          x: '<path d="M4 4l8 8M12 4l-8 8"/>',
+          "external-link": '<path d="M6 3H3.5v9.5H13V10"/><path d="M9.5 3H13v3.5"/><path d="M13 3L7.5 8.5"/>',
+          clock: '<circle cx="8" cy="8" r="5.5"/><path d="M8 5v3l2 2"/>',
+          user: '<circle cx="8" cy="5.5" r="2.5"/><path d="M3 13.5c.5-3 2.5-4 5-4s4.5 1 5 4"/>',
+          doc: '<path d="M4 2.5h5.5L13 6v7.5H4z"/><path d="M9.5 2.5V6H13"/>',
+          mail: '<path d="M2.5 4.5h11v7h-11z"/><path d="M2.5 4.5L8 9l5.5-4.5"/>',
+          refresh: '<path d="M13 8a5 5 0 1 1-1.5-3.5"/><path d="M13 2.5V5h-2.5"/>'
+        };
+        const host = document.getElementById("icon-set");
+        for (const [name, body] of Object.entries(shapes)) {
+          const wrap = document.createElement("span");
+          wrap.style.cssText = "display:inline-flex;flex-direction:column;align-items:center;gap:4px;color:var(--dk-text-primary)";
+          wrap.innerHTML =
+            `<svg width="16" height="16" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">${body}</svg>` +
+            `<span class="caption">${name}</span>`;
+          host.appendChild(wrap);
+        }
+      })();
+    </script>
+  </section>
+
 </main>
 
 <script src="dist/tokens.global.js"></script>
