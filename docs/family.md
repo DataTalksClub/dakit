@@ -52,8 +52,11 @@ Sidebar recipe (port verbatim, tokens do the theming):
 
 The sidebar owns identity, appearance, and sign-out — there is no top
 toolbar to host them. dataops is the reference
-(`docs/family-reference/account-menu-*`). Copy this placement even when the
-app has no teammate-scope or workspace links.
+(`docs/family-reference/account-menu-*`; the stills' popover content is
+canonical, but they predate the 2026-10-05 shell change and still show the
+retired top-bar trigger — the trigger now lives in the sidebar footer).
+Copy this placement even when the app has no teammate-scope or workspace
+links.
 
 - **Sidebar footer** is the shell's global strip, pinned to the bottom of
   the sidebar (sticky when the nav scrolls). It holds, top to bottom:
