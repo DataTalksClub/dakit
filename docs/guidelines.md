@@ -46,7 +46,13 @@ and why. Examples use the `.dk-*` components from `css/components.css`.
 - Muted/faint text for supporting content; `bg-muted`/`bg-hover` for subtle
   surfaces; `bg-inset` for code and embedded blocks.
 - Borders: `border-default` by default, `border-strong` when the edge needs
-  to survive a busy background (selected rows, secondary buttons).
+  to survive a busy background (selected rows, secondary buttons). A
+  status or accent border, when used, is the full 1px perimeter of a
+  surface (the status triplet, or `--dk-accent-border` on `--dk-accent-soft`).
+  Never a thicker or colored single edge — no left stripe, top bar, rail,
+  marker column, or inset box-shadow as status or selection.
+- Selection is `--dk-accent-soft` fill with accent text. Status is a
+  `dk-badge` / `dk-dot` plus text. Color never sits on one edge alone.
 
 ## Buttons
 

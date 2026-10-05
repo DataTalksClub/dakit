@@ -37,7 +37,8 @@ Sidebar recipe (port verbatim, tokens do the theming):
 .nav-item:hover { background: var(--dk-bg-hover); }
 .nav-item[aria-current="page"] { background: var(--dk-accent-soft);
   color: var(--dk-accent-default); font-weight: 600; }
-/* selection signal is the filled row ONLY — no left border, rail, or stripe */
+/* selection signal is the filled row ONLY — no left border, rail, or stripe.
+   The same ban applies to cards, sessions, queues, and callouts. */
 .nav-group-label { font-size: var(--dk-text-xs); color: var(--dk-text-muted);
   font-weight: 600; text-transform: uppercase; letter-spacing: 0.07em;
   margin: 18px 10px 5px; }
@@ -95,7 +96,11 @@ that a `--dk-*` role already covers.
   at the field and focuses the first invalid control.
 - **Status**: triplet roles only (`--dk-success-*` / `--dk-warning-*` /
   `--dk-danger-*` / `--dk-info-*`), text+bg+border together. No pill on every
-  row by default; a badge must change what the operator does.
+  row by default; a badge must change what the operator does. Never encode
+  status or selection as a colored edge: no left/top stripe, rail, 3px
+  marker column, or inset box-shadow. Cards, plan sessions, queue groups,
+  and callouts use the same 1px even border as `.dk-card`.
+- **Selection**: `--dk-accent-soft` fill with accent text. One signal.
 - **Overlays**: popover → row/global action; modal → focused confirmation
   (backdrop, Escape, focus trap, restore); sheet → persistent detail, full
   screen on mobile. Don't mix mechanisms for the same interaction. Overlay
@@ -148,5 +153,8 @@ A redesigned app passes when a side-by-side with dataops shows: same shell
 geometry, same page-header scale, same row-list rhythm, same button hierarchy,
 same status language, same icon strokes, same focus treatment, and identical
 `--dk-*` palette in both themes — with no app-local hex, radii, shadows, or
-control sizes outside a sanctioned exception. Verify with side-by-side screenshots (390×844 and
-1440×900, light + dark) reviewed by a judge.
+control sizes outside a sanctioned exception, and with no colored edge
+accents (left/top stripes, rails, marker columns). Verify with side-by-side screenshots (390×844 and
+1440×900, light + dark) reviewed by a judge. Recapture `docs/family-reference/`
+when a surface's status language changes so the stills do not teach a
+retired pattern.

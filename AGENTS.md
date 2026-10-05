@@ -42,6 +42,11 @@ should read as data, not prose.
 share. One-off styling belongs in the app. Class prefix `dk-`. Components must
 render correctly in both themes with no theme-specific rules.
 
+No colored edge accents: no left/top stripe, rail, marker column, or inset
+box-shadow used as a status or selection signal. Status is a badge or dot
+with text. Selection is `--dk-accent-soft` fill. Borders stay 1px and even
+on all sides (`--dk-border-default`, or a status triplet’s full perimeter).
+
 ## Generated files
 
 `dist/` is build output (from `tokens/` + `css/`). Edit the sources, rebuild,

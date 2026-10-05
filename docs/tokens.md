@@ -38,6 +38,10 @@ as a *field*: brand bands and hero gradients that carry white ink
 ramp in each theme, so white clears AA on them everywhere; build nothing
 bright from them.
 
+`accent-border` is a full-perimeter 1px outline on an `--dk-accent-soft`
+surface (callouts, notices). It is never a thicker single-edge stripe,
+rail, or inset shadow. Status and selection do not live on one edge.
+
 ## Aliases
 
 Semantic values reference primitives with `{ramp.step}`:

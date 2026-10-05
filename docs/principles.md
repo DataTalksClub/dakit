@@ -9,7 +9,9 @@ isn't settled by a token.
 Neutral gray surfaces do the work; color is spent in exactly one place — the
 accent — plus semantic status. A screen should pass the squint test as
 structure, not as confetti. Inherited from dataops (Primer-style neutrals) and
-dapier ("one signal green" → here: one signal blue).
+dapier ("one signal green" → here: one signal blue). Colored left stripes,
+top bars, rails, and inset edge shadows fail this test: they spend color on
+decoration instead of on the control or the status badge.
 
 ## 2. Color is status, not decoration
 
