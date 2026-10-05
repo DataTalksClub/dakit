@@ -71,10 +71,11 @@ app has no teammate-scope or workspace links.
      track toggle. This is the only theme control in the app.
   5. Version — muted, mono.
   6. Sign out — danger text, explicitly labelled.
-- **Mobile (≤820px)** keeps the 64px top bar with menu, title, and the
-  avatar alone as the account trigger; overlays anchor under the top bar.
-  The navigation drawer carries the same footer rows, so every account
-  action is reachable from the drawer too.
+- **Mobile (≤820px)** keeps the 64px top bar with menu and title, plus one
+  account entry point: either the avatar alone in the bar (overlays anchor
+  under it) or the drawer's pinned footer account row. The drawer carries
+  the same footer rows, so every account action is reachable from the
+  drawer either way.
 - The footer may also show environment or region as status copy. Account
   actions appear nowhere but the popover — no duplicate sign-out or theme
   controls in rows, toolbars, or page headers.
