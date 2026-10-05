@@ -18,8 +18,12 @@ and never bake raw colors into them.
 
 - **Operator apps with several destinations** (dataops, relay, dapier
   designer, dataqna admin): persistent **268px sidebar** (`--dk-size-sidebar`)
-  + main canvas + slim top toolbar for global actions. Icon-plus-text nav rows,
-  never icon-only. Every destination stays visible; no "More" menu.
+  + main canvas, and that is the whole shell — **no top toolbar**. The bar
+  spent 64px of every screen on two controls; those live in the sidebar
+  footer instead (see Account chrome). Icon-plus-text nav rows, never
+  icon-only. Every destination stays visible; no "More" menu. A collapsed
+  sidebar collapses to a slim rail whose only control is the expand button,
+  never to zero.
 - **Single-purpose views** (dataqna room on a phone, present on a projector,
   public/legal pages): no sidebar. They inherit the same components, type
   scale, and status language, so they still read as family.
@@ -46,17 +50,20 @@ Sidebar recipe (port verbatim, tokens do the theming):
 
 ## Account chrome (operator apps)
 
-The top toolbar owns identity, appearance, and sign-out. dataops is the
-reference (`docs/family-reference/account-menu-*`). Copy this placement
-even when the app has no teammate-scope or workspace links.
+The sidebar owns identity, appearance, and sign-out — there is no top
+toolbar to host them. dataops is the reference
+(`docs/family-reference/account-menu-*`). Copy this placement even when the
+app has no teammate-scope or workspace links.
 
-- **Trigger** sits in the top toolbar, right-aligned after page tools:
-  avatar initial, display name, chevron. Accessible name "Account".
-  Never an anonymous gear. On mobile (≤820px) the same control is the
-  avatar alone in the 64px top bar.
-- **Popover** titled "Account": overlay radius `--dk-radius-lg`,
-  `--dk-shadow-overlay`, Escape, restore focus. Sections in this order,
-  omitting any the app does not have:
+- **Sidebar footer** is the shell's global strip, pinned to the bottom of
+  the sidebar (sticky when the nav scrolls). It holds, top to bottom:
+  utilities that are not destinations (help, notifications with its count
+  badge) as icon-plus-text rows in the nav-row vocabulary, then the
+  **account trigger** as the last row: avatar initial, display name,
+  chevron. Accessible name "Account". Never an anonymous gear.
+- **Popover** anchored above the footer, left-aligned to the sidebar:
+  overlay radius `--dk-radius-lg`, `--dk-shadow-overlay`, Escape, restore
+  focus. Sections in this order, omitting any the app does not have:
   1. Identity — "Signed in as", name, email.
   2. Show work for — only apps that can scope another person's work.
   3. Workspace — destinations that are not in the sidebar.
@@ -64,9 +71,13 @@ even when the app has no teammate-scope or workspace links.
      track toggle. This is the only theme control in the app.
   5. Version — muted, mono.
   6. Sign out — danger text, explicitly labelled.
-- **Sidebar footer** may show environment or region as status copy. It
-  must not hold a moon/sun icon, a sign-out icon, or any other account
-  action. Those belong in the popover.
+- **Mobile (≤820px)** keeps the 64px top bar with menu, title, and the
+  avatar alone as the account trigger; overlays anchor under the top bar.
+  The navigation drawer carries the same footer rows, so every account
+  action is reachable from the drawer too.
+- The footer may also show environment or region as status copy. Account
+  actions appear nowhere but the popover — no duplicate sign-out or theme
+  controls in rows, toolbars, or page headers.
 
 Single-purpose views (dataqna room, present, public pages) keep a compact
 theme control in their own top bar; they have no account popover.
