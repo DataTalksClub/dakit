@@ -44,6 +44,33 @@ Sidebar recipe (port verbatim, tokens do the theming):
   margin: 18px 10px 5px; }
 ```
 
+## Account chrome (operator apps)
+
+The top toolbar owns identity, appearance, and sign-out. dataops is the
+reference (`docs/family-reference/account-menu-*`). Copy this placement
+even when the app has no teammate-scope or workspace links.
+
+- **Trigger** sits in the top toolbar, right-aligned after page tools:
+  avatar initial, display name, chevron. Accessible name "Account".
+  Never an anonymous gear. On mobile (≤820px) the same control is the
+  avatar alone in the 64px top bar.
+- **Popover** titled "Account": overlay radius `--dk-radius-lg`,
+  `--dk-shadow-overlay`, Escape, restore focus. Sections in this order,
+  omitting any the app does not have:
+  1. Identity — "Signed in as", name, email.
+  2. Show work for — only apps that can scope another person's work.
+  3. Workspace — destinations that are not in the sidebar.
+  4. Appearance — one labeled switch (`Dark mode` / `Light mode`) with a
+     track toggle. This is the only theme control in the app.
+  5. Version — muted, mono.
+  6. Sign out — danger text, explicitly labelled.
+- **Sidebar footer** may show environment or region as status copy. It
+  must not hold a moon/sun icon, a sign-out icon, or any other account
+  action. Those belong in the popover.
+
+Single-purpose views (dataqna room, present, public pages) keep a compact
+theme control in their own top bar; they have no account popover.
+
 ## Page anatomy (hierarchy)
 
 1. Page header: one `h1` at 32px semibold (22px mobile) + one-line muted
