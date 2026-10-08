@@ -45,7 +45,8 @@ padding instead of `gap-block`.
 ### Dialogs
 
 `<dialog class="dk-dialog">` with `.dk-dialog__head`, `.dk-dialog__body`,
-`.dk-dialog__foot`. The body scrolls; head and foot stay. The foot puts the
+`.dk-dialog__foot`. The default width is 560px; a wider dialog sets
+`--dk-dialog-width` rather than `width`, so the phone sheet still wins. The body scrolls; head and foot stay. The foot puts the
 primary at the end with Cancel before it; a destructive action goes first
 and is pushed to the start (`margin-right: auto`). At ≤820px a dialog is a
 full-screen sheet with the foot pinned to the bottom.
