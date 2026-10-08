@@ -41,9 +41,23 @@ const darkOverrides = flatten(dark); // subset of the light names
 
 // Aliases may point at primitives or at other semantic tokens (light values,
 // so themes stay predictable). Resolution is two-pass and cycle-checked.
+// A compound value ("{space.2} {space.3}", a padding shorthand) resolves
+// each reference against the primitives in place.
+function resolveCompound(name, value) {
+  return value.replace(/\{([^{}]+)\}/g, (_, path) => {
+    const target = prim["--dk-" + path.replaceAll(".", "-")];
+    if (target === undefined) throw new Error(`unresolved alias {${path}} (used by ${name})`);
+    return target;
+  });
+}
+
 function resolve(map, seen = new Set()) {
   const out = {};
   for (const [name, value] of Object.entries(map)) {
+    if (/\{[^{}]+\}/.test(value) && !/^\{[^{}]+\}$/.test(value)) {
+      out[name] = resolveCompound(name, value);
+      continue;
+    }
     if (!/^\{.+\}$/.test(value)) {
       out[name] = value;
       continue;

@@ -40,7 +40,12 @@ export const light = {
   "--dk-info-text": "#315f8f",
   "--dk-info-bg": "#edf5ff",
   "--dk-info-border": "rgba(49, 95, 143, 0.22)",
-  "--dk-shadow-overlay": "0 8px 24px rgba(15, 23, 42, 0.16)"
+  "--dk-shadow-overlay": "0 8px 24px rgba(15, 23, 42, 0.16)",
+  "--dk-gap-control": "12px",
+  "--dk-gap-block": "16px",
+  "--dk-gap-section": "24px",
+  "--dk-pad-cell": "8px 12px",
+  "--dk-pad-panel": "16px"
 };
 export const dark = {
   "--dk-bg-page": "#0d1117",
@@ -83,7 +88,12 @@ export const dark = {
   "--dk-info-text": "#79b8ff",
   "--dk-info-bg": "rgba(88, 166, 255, 0.12)",
   "--dk-info-border": "rgba(88, 166, 255, 0.4)",
-  "--dk-shadow-overlay": "0 8px 24px rgba(1, 4, 9, 0.6)"
+  "--dk-shadow-overlay": "0 8px 24px rgba(1, 4, 9, 0.6)",
+  "--dk-gap-control": "12px",
+  "--dk-gap-block": "16px",
+  "--dk-gap-section": "24px",
+  "--dk-pad-cell": "8px 12px",
+  "--dk-pad-panel": "16px"
 };
 export const primitives = {
   "--dk-gray-0": "#ffffff",

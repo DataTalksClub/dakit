@@ -72,6 +72,19 @@
 
     "shadow": {
       "overlay": "0 8px 24px rgba(15, 23, 42, 0.16)"
+    },
+
+    "gap": {
+      "$comment": "Layout rhythm by role, so apps stop inventing 6/10/14px gaps. control: between adjacent interactive controls (also the row gap when a group wraps). block: between a block (table, panel, empty state, form) and the controls before or after it. section: between page sections.",
+      "control": "{space.3}",
+      "block": "{space.4}",
+      "section": "{space.6}"
+    },
+
+    "pad": {
+      "$comment": "Inner padding by role. cell: table cells and divided rows. panel: inside a bordered panel or card.",
+      "cell": "{space.2} {space.3}",
+      "panel": "{space.4}"
     }
   }
 }

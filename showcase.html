@@ -171,6 +171,43 @@
   </section>
 
   <section>
+    <h2>Layout: toolbar, register footer, dialog</h2>
+    <p class="caption">One toolbar above a register (filters left, count, actions right), the register's footer band inside its border, and a dialog that becomes a full-screen sheet at 820px and below. Gaps are the --dk-gap-* roles.</p>
+    <div class="dk-toolbar">
+      <div class="dk-cluster">
+        <input class="dk-input" style="width: 220px" type="search" placeholder="Search runs" aria-label="Search runs">
+        <select class="dk-select" style="width: 160px" aria-label="Status"><option>All statuses</option></select>
+        <span class="dk-muted" style="font-size: var(--dk-text-sm)">25 runs</span>
+      </div>
+      <div class="dk-toolbar__end">
+        <button class="dk-button dk-button--secondary">Export CSV</button>
+        <button class="dk-button dk-button--primary" id="demo-dialog-open">Open dialog</button>
+      </div>
+    </div>
+    <div class="dk-card" style="padding: 0; overflow: hidden">
+      <table class="dk-table">
+        <thead><tr><th>Run</th><th>Status</th><th>Started</th></tr></thead>
+        <tbody>
+          <tr><td>nightly-sync</td><td><span class="dk-dot dk-dot--success"></span> Succeeded</td><td class="dk-mono">2026-10-08 17:56</td></tr>
+          <tr><td>invoice-parser</td><td><span class="dk-dot dk-dot--danger"></span> Failed</td><td class="dk-mono">2026-10-08 09:22</td></tr>
+        </tbody>
+      </table>
+      <div class="dk-table-footer"><span>2 of 40 runs</span><button class="dk-button dk-button--secondary dk-button--sm">Load more</button></div>
+    </div>
+    <dialog class="dk-dialog" id="demo-dialog" aria-labelledby="demo-dialog-title">
+      <form method="dialog" style="display: contents">
+        <div class="dk-dialog__head"><h2 id="demo-dialog-title">Revoke token</h2></div>
+        <div class="dk-dialog__body"><p>The token stops working at once. Agents using it must be given a new one.</p></div>
+        <div class="dk-dialog__foot">
+          <button class="dk-button dk-button--secondary" value="cancel">Cancel</button>
+          <button class="dk-button dk-button--primary" value="ok">Revoke</button>
+        </div>
+      </form>
+    </dialog>
+    <script>document.getElementById("demo-dialog-open").addEventListener("click", () => document.getElementById("demo-dialog").showModal());</script>
+  </section>
+
+  <section>
     <h2>Icons</h2>
     <p class="caption">The canonical shared shapes — 24×24 paths rendered at 20px, stroke currentColor 1.8, round caps/joins, no fills (dataops geometry). Copy from here so strokes stay identical across apps; nav and rows always pair icon + text.</p>
     <div class="row" id="icon-set" style="gap: var(--dk-space-4)"></div>
