@@ -48,8 +48,9 @@ tokens/themes/dark.json    dark-theme remaps of the same roles
 tokens/contrast.json       WCAG pairs the build verifies in both themes
 css/base.css               reset + element defaults
 css/components.css         .dk-* components (buttons, fields, cards, chips, tables)
+js/dialogs.js              click-outside dismissal for <dialog> (copied to dist/ verbatim)
 build.mjs                  tokens → dist/; validates aliases, dark coverage, contrast
-dist/                      generated: dakit.css (bundle), tokens.css, tokens.js
+dist/                      generated: dakit.css (bundle), tokens.css, tokens.js, dialogs.js
 fonts/                     self-hosted Inter + IBM Plex Mono (SIL OFL)
 showcase.html              living style guide — open after building
 docs/                      principles, token model, usage guidelines, adoption maps

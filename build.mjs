@@ -20,6 +20,7 @@ const dark = read("tokens/themes/dark.json");
 const contrastSpec = read("tokens/contrast.json");
 const baseCss = readFileSync(join(root, "css/base.css"), "utf8");
 const componentsCss = readFileSync(join(root, "css/components.css"), "utf8");
+const dialogsJs = readFileSync(join(root, "js/dialogs.js"), "utf8");
 
 // --- flatten ----------------------------------------------------------------
 
@@ -199,7 +200,10 @@ writeFileSync(
   join(root, "dist/tokens.d.ts"),
   `export declare const light: Record<string, string>;\nexport declare const dark: Record<string, string>;\nexport declare const primitives: Record<string, string>;\n`,
 );
+// Hand-written JS is shipped verbatim; the build copies it so dist/ stays
+// the single consumable.
+writeFileSync(join(root, "dist/dialogs.js"), dialogsJs);
 
 console.log(
-  `\nbuilt dist/tokens.css, dist/dakit.css, dist/tokens.js — ${Object.keys(prim).length} primitives, ${Object.keys(lightResolved).length} semantic roles, ${Object.keys(darkResolved).length} dark overrides`,
+  `\nbuilt dist/tokens.css, dist/dakit.css, dist/tokens.js, dist/dialogs.js — ${Object.keys(prim).length} primitives, ${Object.keys(lightResolved).length} semantic roles, ${Object.keys(darkResolved).length} dark overrides`,
 );

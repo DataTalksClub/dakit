@@ -13,6 +13,7 @@
       : (matchMedia("(prefers-color-scheme: dark)").matches ? "dark" : "light");
 </script>
 <link rel="stylesheet" href="dist/dakit.css">
+<script src="dist/dialogs.js"></script>
 <style>
   /* Showcase chrome only — everything below demonstrates the system itself. */
   .page { max-width: var(--dk-size-content-max); margin: 0 auto; padding: var(--dk-space-7) var(--dk-space-6) var(--dk-space-8); display: grid; gap: var(--dk-space-7); }
@@ -172,7 +173,7 @@
 
   <section>
     <h2>Layout: toolbar, register footer, dialog</h2>
-    <p class="caption">One toolbar above a register (filters left, count, actions right), the register's footer band inside its border, and a dialog that becomes a full-screen sheet at 820px and below. Gaps are the --dk-gap-* roles.</p>
+    <p class="caption">One toolbar above a register (filters left, count, actions right), the register's footer band inside its border, and a dialog that becomes a full-screen sheet at 820px and below. Gaps are the --dk-gap-* roles. Clicking the backdrop closes the dialog (dist/dialogs.js).</p>
     <div class="dk-toolbar">
       <div class="dk-cluster">
         <input class="dk-input" style="width: 220px" type="search" placeholder="Search runs" aria-label="Search runs">

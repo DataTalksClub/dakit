@@ -114,7 +114,8 @@ for these fills); it has no consumers left.
 
 ## Sequencing
 
-1. Import `dist/dakit.css`, add the theme boot script, add the compat shim.
+1. Import `dist/dakit.css`, add the theme boot script, add the compat shim,
+   and load `dist/dialogs.js` for the shared dialog dismissal.
 2. Migrate components file-by-file to `--dk-*` / `.dk-*`, screenshots in both
    themes.
 3. Delete the shim and the dead variables; drop any font files the app no

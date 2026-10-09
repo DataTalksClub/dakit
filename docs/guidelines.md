@@ -58,6 +58,12 @@ primary at the end with Cancel before it; a destructive action goes first
 and is pushed to the start (`margin-right: auto`). At ≤820px a dialog is a
 full-screen sheet with the foot pinned to the bottom.
 
+Load `dist/dialogs.js` once per page and the backdrop dismisses the dialog:
+a click on the dialog element itself (only the backdrop can produce one,
+which is why the panel keeps `padding: 0`) closes it. A press that starts
+inside the panel never dismisses, so text selection is safe; Escape keeps
+its native behavior.
+
 ### Touch
 
 At ≤820px or on a coarse pointer, `.dk-button`, `.dk-input`, `.dk-select`
