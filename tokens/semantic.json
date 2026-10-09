@@ -9,7 +9,7 @@
       "hover": "{gray.100}",
       "raised": "{gray.0}",
       "inset": "rgba(36, 41, 47, 0.06)",
-      "backdrop": "rgba(15, 23, 42, 0.5)"
+      "backdrop": "rgba(15, 23, 42, 0.4)"
     },
 
     "text": {

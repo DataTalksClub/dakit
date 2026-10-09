@@ -10,6 +10,7 @@
     { "fg": "text.muted", "bg": "bg.page", "min": 4.5 },
     { "fg": "text.muted", "bg": "bg.surface", "min": 4.5 },
     { "fg": "text.faint", "bg": "bg.page", "min": 4.5 },
+    { "fg": "text.faint", "bg": "bg.surface", "min": 4.5 },
     { "fg": "text.link", "bg": "bg.page", "min": 4.5 },
     { "fg": "text.link", "bg": "bg.surface", "min": 4.5 },
     { "fg": "text.on-accent", "bg": "accent.default", "min": 4.5 },
