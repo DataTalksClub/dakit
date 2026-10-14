@@ -6,7 +6,8 @@
 <title>dakit — showcase</title>
 <script>
   // Same boot script the README prescribes: stored choice wins, else OS preference.
-  const stored = localStorage.getItem("dakit-theme");
+  const urlTheme = new URLSearchParams(location.search).get("theme");
+  const stored = urlTheme === "dark" || urlTheme === "light" ? urlTheme : localStorage.getItem("dakit-theme");
   document.documentElement.dataset.theme =
     stored === "dark" || stored === "light"
       ? stored
@@ -127,7 +128,7 @@
 
   <section>
     <h2>Status</h2>
-    <p class="caption">Status hues report status — the triplets (text on bg with border) are contrast-checked at build time.</p>
+    <p class="caption">Status hues report status — status pairs (text on tinted bg) are contrast-checked at build time.</p>
     <div class="row">
       <span class="dk-badge dk-badge--success"><span class="dk-dot dk-dot--success"></span>Healthy</span>
       <span class="dk-badge dk-badge--warning"><span class="dk-dot dk-dot--warning"></span>Due soon</span>
@@ -256,10 +257,10 @@
     "text": ["primary", "heading", "muted", "faint", "link", "on-accent"],
     "border": ["default", "strong"],
     "accent": ["default", "hover", "soft"],
-    "success": ["bg", "text", "border"],
-    "warning": ["bg", "text", "border"],
-    "danger": ["bg", "text", "border"],
-    "info": ["bg", "text", "border"],
+    "success": ["bg", "text"],
+    "warning": ["bg", "text"],
+    "danger": ["bg", "text"],
+    "info": ["bg", "text"],
   };
   const swatchGrid = document.getElementById("semantic-swatches");
   function renderSwatches() {

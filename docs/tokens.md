@@ -22,7 +22,7 @@ Token name = JSON key path with `-` separators, `dk-` prefixed:
 | `gray.200` | `--dk-gray-200` |
 | `text.body` | `--dk-text-body` |
 | `bg.page` | `--dk-bg-page` |
-| `danger.border` | `--dk-danger-border` |
+| `border.default` | `--dk-border-default` |
 | `space.3` | `--dk-space-3` |
 
 Semantic prefixes: `bg-`, `text-`, `border-`, `accent-`, `focus-`,
@@ -39,9 +39,11 @@ as a *field*: brand bands and hero gradients that carry white ink
 ramp in each theme, so white clears AA on them everywhere; build nothing
 bright from them.
 
-`accent-border` is a full-perimeter 1px outline on an `--dk-accent-soft`
-surface (callouts, notices). It is never a thicker single-edge stripe,
-rail, or inset shadow. Status and selection do not live on one edge.
+Borders are strictly neutral: `--dk-border-default`,
+`--dk-border-control-hover`, and `--dk-border-strong`. Accent and status
+borders are forbidden family-wide (no colored outlines, no edge stripes,
+rails, or inset shadows). Status is communicated via tinted background fills
+(`--dk-*-bg`) and text/badges, and selection via `--dk-accent-soft` fill.
 
 ## Aliases
 

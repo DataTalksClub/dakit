@@ -42,10 +42,16 @@ should read as data, not prose.
 share. One-off styling belongs in the app. Class prefix `dk-`. Components must
 render correctly in both themes with no theme-specific rules.
 
-No colored edge accents: no left/top stripe, rail, marker column, or inset
-box-shadow used as a status or selection signal. Status is a badge or dot
-with text. Selection is `--dk-accent-soft` fill. Borders stay 1px and even
-on all sides (`--dk-border-default`, or a status triplet’s full perimeter).
+No accent borders or edge accents: ACCENT BORDERS ARE FORBIDDEN in dakit
+and on every site using it — colored outlined alert/callout boxes, status-
+or accent-colored borders/perimeters, colored left/side/top border accents,
+stripes, rails, inset box-shadow accents. Borders are always NEUTRAL, 1px,
+even on all sides (`--dk-border-default`, `--dk-border-control-hover`,
+`--dk-border-strong`). Single-side neutral 1px dividers are fine. Status =
+tinted background fill (`--dk-*-bg`) + text/icon/badge (badges are
+fill-only). Selection = `--dk-accent-soft` fill with neutral border and
+accent text. Single exception: the keyboard focus indicator (outline with
+`--dk-focus-ring` on `:focus-visible`).
 
 ## Generated files
 

@@ -33,7 +33,6 @@
       "default": "{blue.500}",
       "hover": "{blue.600}",
       "soft": "{blue.50}",
-      "border": "rgba(49, 95, 143, 0.4)",
       "deep": "{blue.600}",
       "deep-hover": "{blue.600}",
       "deeper": "{blue.700}"
@@ -47,27 +46,23 @@
 
     "success": {
       "text": "#116329",
-      "bg": "#e6f6ea",
-      "border": "#b7dfc2"
+      "bg": "#e6f6ea"
     },
 
     "warning": {
       "text": "{amber.600}",
-      "bg": "{amber.100}",
-      "border": "{amber.400}"
+      "bg": "{amber.100}"
     },
 
     "danger": {
       "text": "{red.500}",
       "hover": "{red.700}",
-      "bg": "{red.50}",
-      "border": "rgba(207, 34, 46, 0.24)"
+      "bg": "{red.50}"
     },
 
     "info": {
       "text": "{blue.500}",
-      "bg": "{blue.50}",
-      "border": "rgba(49, 95, 143, 0.22)"
+      "bg": "{blue.50}"
     },
 
     "shadow": {

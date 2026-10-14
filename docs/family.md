@@ -135,13 +135,13 @@ that a `--dk-*` role already covers.
   stacked fields; 2–3 columns only for short comparable fields. One footer
   action row above a top border: primary, then Cancel. Validation copy sits
   at the field and focuses the first invalid control.
-- **Status**: triplet roles only (`--dk-success-*` / `--dk-warning-*` /
-  `--dk-danger-*` / `--dk-info-*`), text+bg+border together. No pill on every
-  row by default; a badge must change what the operator does. Never encode
-  status or selection as a colored edge: no left/top stripe, rail, 3px
+- **Status**: pair roles only (`--dk-success-*` / `--dk-warning-*` /
+  `--dk-danger-*` / `--dk-info-*`), text+bg together (badges are fill-only). No pill on every
+  row by default; a badge must change what the operator does. Accent borders are
+  forbidden family-wide: no colored outline, no left/top stripe, rail, 3px
   marker column, or inset box-shadow. Cards, plan sessions, queue groups,
-  and callouts use the same 1px even border as `.dk-card`.
-- **Selection**: `--dk-accent-soft` fill with accent text. One signal.
+  and callouts use the same 1px even neutral border as `.dk-card`.
+- **Selection**: `--dk-accent-soft` fill with accent text and neutral border. One signal.
 - **Overlays**: popover → row/global action; modal → focused confirmation
   (backdrop, Escape, focus trap, restore); sheet → persistent detail, full
   screen on mobile. Don't mix mechanisms for the same interaction. Overlay
@@ -152,9 +152,8 @@ that a `--dk-*` role already covers.
 - **Focus**: the keyboard indicator is always visible and comes from
   `--dk-focus-ring`: `outline: 3px solid var(--dk-focus-ring)` with
   `outline-offset: 2px` on `:focus-visible` (full-bleed rows inset it with a
-  negative offset so it stays inside the row). Text controls additionally swap
-  to an `--dk-accent-default` border with a `0 0 0 3px var(--dk-focus-ring)`
-  halo on `:focus`. Never remove or dim the indicator.
+  negative offset so it stays inside the row). Controls keep neutral borders.
+  Never remove or dim the indicator.
 
 ## Icons
 

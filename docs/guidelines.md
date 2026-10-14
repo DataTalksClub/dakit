@@ -97,19 +97,23 @@ and `.dk-textarea` grow to `--dk-size-touch` (44). Checkboxes keep their
   (due, degrading), `danger` (overdue, failed, destructive), `info` (neutral
   attention). Outside a status, they don't appear — that rule is dapier's
   "status hues (status only)" and it holds system-wide.
-- Status comes as a triplet — `text` on `bg` with `border` — and the build
-  verifies each pair. Use the triplet together; don't mix a status text onto
-  an unrelated background.
+- Status comes as a pair — `text` on `bg` — and the build verifies each pair.
+  Badges are fill-only (no colored border). Don't mix a status text onto an
+  unrelated background.
 - Muted/faint text for supporting content; `bg-muted`/`bg-hover` for subtle
   surfaces; `bg-inset` for code and embedded blocks.
-- Borders: `border-default` by default, `border-strong` when the edge needs
-  to survive a busy background (selected rows, secondary buttons). A
-  status or accent border, when used, is the full 1px perimeter of a
-  surface (the status triplet, or `--dk-accent-border` on `--dk-accent-soft`).
-  Never a thicker or colored single edge — no left stripe, top bar, rail,
-  marker column, or inset box-shadow as status or selection.
-- Selection is `--dk-accent-soft` fill with accent text. Status is a
-  `dk-badge` / `dk-dot` plus text. Color never sits on one edge alone.
+- **Borders: ACCENT BORDERS ARE FORBIDDEN.** Borders are always NEUTRAL, 1px,
+  even on all sides (`border-default` by default, `border-strong` when the edge
+  needs to survive a busy background, `border-control-hover` on hover). No
+  colored outlined alert/callout boxes, no status- or accent-colored borders,
+  and never a thicker or colored single edge — no left stripe, top bar, rail,
+  marker column, or inset box-shadow as status or selection. Single-side
+  neutral 1px dividers are fine.
+- Selection is `--dk-accent-soft` fill with neutral border and accent text.
+  Status is a tinted background fill (`--dk-*-bg`) plus `dk-badge` (fill-only)
+  or `dk-dot` plus text.
+- Single exception: the keyboard focus indicator (`outline: 3px solid
+  var(--dk-focus-ring)` with `outline-offset: 2px` on `:focus-visible`).
 
 ## Buttons
 

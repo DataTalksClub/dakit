@@ -9,9 +9,14 @@ isn't settled by a token.
 Neutral gray surfaces do the work; color is spent in exactly one place — the
 accent — plus semantic status. A screen should pass the squint test as
 structure, not as confetti. Inherited from dataops (Primer-style neutrals) and
-dapier ("one signal green" → here: one signal blue). Colored left stripes,
-top bars, rails, and inset edge shadows fail this test: they spend color on
-decoration instead of on the control or the status badge.
+dapier ("one signal green" → here: one signal blue). Accent borders are
+strictly forbidden: no colored outlined alert or callout boxes, no status- or
+accent-colored perimeters, and no colored left stripes, top bars, rails, or
+inset edge shadows. Borders are always neutral, 1px, and even on all sides.
+Status is communicated via tinted background fills (`--dk-*-bg`) plus
+text/icon/badge (badges are fill-only). The single exception to colored
+outlines is the keyboard focus indicator (`outline` with `--dk-focus-ring`
+on `:focus-visible`).
 
 ## 2. Color is status, not decoration
 
