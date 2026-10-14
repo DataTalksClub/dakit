@@ -1,4 +1,4 @@
-/* dakit 0.2.0 cc3effe */
+/* dakit 0.2.0 da02fc2 */
 export declare const version: string;
 export declare const commit: string;
 export declare const light: Record<string, string>;

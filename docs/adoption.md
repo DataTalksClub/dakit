@@ -208,3 +208,20 @@ recorded snapshot, not whether a newer release exists; commit the lock with
 vendored files and review both when upgrading. Additional app-owned files in
 the destination are ignored. A vendored tool supports checking; updating
 requires running the tool from the dakit checkout.
+
+## Showcase screenshots
+
+After building, capture the live showcase in light and dark at desktop 1440px
+and mobile 390px. The script waits for fonts and fails on page or resource errors:
+
+```bash
+node scripts/shots.mjs
+node scripts/shots.mjs --out /tmp/dakit-review
+```
+
+The default output is `~/tmp/agent-reports/dakit-showcase/`, with four full-page
+PNGs named by theme, viewport, and width. It uses an existing Playwright install
+(local resolution first, then `~/git/dataops/node_modules/playwright`); set
+`PLAYWRIGHT_MODULE` to a module path for another install. Chromium must already
+be available to that install. Dakit adds no browser dependency. These captures
+are review artifacts, not automated comparisons against committed baselines.
