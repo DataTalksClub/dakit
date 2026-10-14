@@ -108,8 +108,13 @@ both themes.
 
 ## 5. Filling the height
 
-`.dk-main` becomes a flex column whenever it contains a `.dk-split`
-(`:has()`), and `.dk-main__inner` grows to fill it. The split is `flex: 1`.
+`.dk-main` becomes a flex column whenever it contains a visible `.dk-split`
+(`:has()`; a `[hidden]` split, such as one on an inactive tab, doesn't
+count), and `.dk-main__inner` grows to fill it. Inside a `.dk-fill` column only
+the split or the next `.dk-fill` grows; headers, stat strips and toolbars above
+it keep their natural height. An app rule that sets `display: grid` on a
+wrapper beats `.dk-fill` (the kit is in a cascade layer), so such a wrapper
+needs its own `display: flex; flex-direction: column` while it holds a split. The split is `flex: 1`.
 So in the dakit shell, a split placed directly in `.dk-main__inner` fills
 the viewport with no extra code.
 
@@ -126,8 +131,11 @@ Above the split, page headers, tabs and toolbars keep their natural height and
 
 - `data-view="list"` shows only the list. `data-view="detail"` shows only the
   detail. The app sets it from the URL: an id in the URL means `detail`.
-- `.dk-split__back` (hidden on desktop) is a link to the list URL, labelled
-  with the list's name ("Runs", "Sponsors"), not just "Back".
+- `.dk-split__back` (hidden on desktop) is a link or button to the list URL.
+  Its visible label is the list's name ("‹ Runs", "‹ Sponsors"), not just
+  "Back", and its accessible name contains that label:
+  `aria-label="Back to Runs"`. It has no padding, so the label lines up with
+  the pane title.
 - Opening an item moves focus to the detail's title (`dakitSplit.show`).
   Back moves focus to the row it came from and scrolls that row into view.
 - Don't auto-select a row on a phone. The first thing on the screen is the

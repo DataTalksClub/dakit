@@ -229,6 +229,16 @@ test('resize grip: keyboard steps 16px, clamps, persists per data-dk-split key',
   await page.close();
 });
 
+test('fill: a hidden split (an inactive tab) leaves the page scrolling normally', async (t) => {
+  const page = await open(t, '/showcase-split.html?theme=light', desktop);
+  if (!page) return;
+  const display = () => page.evaluate(() => getComputedStyle(document.querySelector('.dk-main')).display);
+  assert.equal(await display(), 'flex');
+  await page.evaluate(() => { document.querySelector('.dk-split').hidden = true; });
+  assert.equal(await display(), 'block');
+  await page.close();
+});
+
 test('no page errors', (t) => {
   if (skip) { t.skip(skip); return; }
   assert.deepEqual(errors, []);

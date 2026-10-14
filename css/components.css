@@ -808,9 +808,13 @@
    flex column while it hosts a split; app wrappers between it and the split
    carry .dk-fill so the height reaches the split. */
 
-.dk-main:has(.dk-split) { display: flex; flex-direction: column; }
-.dk-main:has(.dk-split) > .dk-main__inner { flex: 1 1 auto; min-height: 0; width: 100%; }
+.dk-main:has(.dk-split:not([hidden])) { display: flex; flex-direction: column; }
+.dk-main:has(.dk-split:not([hidden])) > .dk-main__inner { flex: 1 1 auto; min-height: 0; width: 100%; }
 .dk-fill { display: flex; flex-direction: column; flex: 1 1 auto; min-height: 0; min-width: 0; }
+/* Only the split (or the next .dk-fill) grows; headers, stat strips and
+   toolbars above it keep their natural height instead of being squeezed. */
+.dk-fill > :not(.dk-split, .dk-fill),
+.dk-main:has(.dk-split:not([hidden])) > .dk-main__inner > :not(.dk-split, .dk-fill) { flex-shrink: 0; }
 
 .dk-split {
   --dk-split-list: var(--dk-size-split-list);
@@ -906,9 +910,8 @@
   align-items: center;
   gap: var(--dk-space-1);
   height: var(--dk-size-touch);
-  padding: 0 var(--dk-space-2);
+  padding: 0;
   border: 0;
-  border-radius: var(--dk-radius-md);
   background: transparent;
   color: var(--dk-text-link);
   font: inherit;
@@ -917,7 +920,8 @@
   text-decoration: none;
   cursor: pointer;
 }
-.dk-split__back:hover { background: var(--dk-bg-hover); }
+/* No padding, so the label lines up with the pane title under it. */
+.dk-split__back:hover { text-decoration: underline; }
 .dk-split__back > svg { width: 16px; height: 16px; flex: none; }
 
 /* Optional resize grip on the list's edge (role=separator, dist/split.js). */
@@ -948,7 +952,6 @@
   .dk-split[data-view="detail"] > .dk-split__list,
   .dk-split:not([data-view="detail"]) > .dk-split__detail { display: none; }
   .dk-split__back { display: inline-flex; }
-  .dk-split__head:has(> .dk-split__back) { padding-left: var(--dk-space-1); }
   .dk-split__handle { display: none; }
 }
 @media (max-width: 820px), (pointer: coarse) {
