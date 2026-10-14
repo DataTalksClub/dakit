@@ -282,6 +282,8 @@ test('spinner: rotates normally, stands still with reduced motion; busy button h
   a = await anim(page);
   assert.doesNotMatch(a.standalone, /dk-spin/);
   assert.doesNotMatch(a.button, /dk-spin/);
+  // The label hides --dk-loading-delay-busy after load; poll, don't race it.
+  await settles(page, () => getComputedStyle(document.querySelector('#loading .dk-button[aria-busy="true"]')).webkitTextFillColor === 'rgba(0, 0, 0, 0)', 'label is hidden visually');
   const label = await page.evaluate(() => {
     const b = document.querySelector('#loading .dk-button[aria-busy="true"]');
     return { text: b.textContent, fill: getComputedStyle(b).webkitTextFillColor };
