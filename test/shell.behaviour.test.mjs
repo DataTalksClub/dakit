@@ -261,6 +261,11 @@ test('device login: a long identity wraps and Switch account stays whole', async
   assert.equal(box.clipped, false, 'identity is not clipped');
   assert.equal(box.lines, 1, 'Switch account does not break');
   assert.ok(box.right <= box.vw, 'Switch account is inside the viewport');
+  // Apps may use the sidebar's .dk-brand markup for the wordmark; it never truncates either.
+  await page.evaluate(() => { document.querySelector('.dk-auth-page__brand').outerHTML = '<a class="dk-brand" href="#"><span class="dk-brand__name">DataOps</span></a>'; });
+  const name = await page.evaluate(() => { const n = document.querySelector('.dk-auth-page__bar .dk-brand__name'); return { clipped: n.scrollWidth > n.clientWidth, height: n.closest('.dk-brand').getBoundingClientRect().height }; });
+  assert.equal(name.clipped, false, 'wordmark is not truncated');
+  assert.ok(name.height >= 44, `wordmark target ${name.height}`);
   await page.close();
 });
 
