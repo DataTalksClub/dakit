@@ -112,6 +112,9 @@ in a minor version with migration notes.
 
 ### Fixed
 
+- A `.dk-tabs` placed directly in a `.dk-dialog__head` stays one row: the
+  head's stacking rule for its title block no longer applies to the track.
+
 - The build resolves a role that aliases another role (`{accent.default}`)
   regardless of the order the roles were visited in.
 

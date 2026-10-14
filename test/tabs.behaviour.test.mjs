@@ -198,3 +198,19 @@ test('overflow scrolls inside the track instead of wrapping, and keeps the choic
   assert.ok(visible, 'the chosen last segment is scrolled into view');
   await page.close();
 });
+
+test('a track inside a dialog head stays one row (the head stacks only its title block)', async (t) => {
+  const page = await open(t);
+  if (!page) return;
+  const rows = await page.evaluate(() => {
+    const head = document.createElement('div');
+    head.className = 'dk-dialog__head';
+    head.innerHTML = '<div><h2>Issue</h2><p>Sub</p></div><div class="dk-tabs" role="tablist" aria-label="Issue views"><button class="dk-tab" role="tab" aria-selected="true">Details</button><button class="dk-tab" role="tab" aria-selected="false">Compose</button></div>';
+    document.body.append(head);
+    const tops = [...head.querySelectorAll('.dk-tab')].map((el) => Math.round(el.getBoundingClientRect().top));
+    head.remove();
+    return new Set(tops).size;
+  });
+  assert.equal(rows, 1);
+  await page.close();
+});
