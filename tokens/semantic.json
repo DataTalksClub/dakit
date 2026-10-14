@@ -82,6 +82,23 @@
       "overlay": { "$value": "0 8px 24px rgba(15, 23, 42, 0.16)" }
     },
 
+    "spinner": {
+      "$description": "The one loading indicator (.dk-spinner, and the ring a busy .dk-button draws). size fits inside a sm button; size-lg is the centred loading overlay. color is the arc and track the rest of the ring on a surface; inside a button the arc takes the button's text colour instead. duration is one full turn; with reduced motion the ring stands still.",
+      "size": { "$type": "dimension", "$value": "{space.4}" },
+      "size-lg": { "$type": "dimension", "$value": "{space.6}" },
+      "stroke": { "$type": "dimension", "$value": "2px" },
+      "color": { "$type": "color", "$value": "{accent.default}" },
+      "track": { "$type": "color", "$value": "{border.default}" },
+      "duration": { "$type": "duration", "$value": "800ms" }
+    },
+
+    "loading": {
+      "$type": "duration",
+      "$description": "Load-before-open timing (docs/dialog-loading.md). A dialog that needs data opens only once the data is in; until then the trigger is busy. delay-busy: how long a load may take before any spinner shows, so fast loads never flicker. delay-overlay: how long a busy button may wait before the centred loading overlay takes over (a trigger with no room for a spinner, like a row, gets the overlay at delay-busy).",
+      "delay-busy": { "$value": "150ms" },
+      "delay-overlay": { "$value": "500ms" }
+    },
+
     "gap": {
       "$type": "dimension",
       "$description": "Layout rhythm by role, so apps stop inventing 6/10/14px gaps. control: between adjacent interactive controls (also the row gap when a group wraps). block: between a block (table, panel, empty state, form) and the controls before or after it. section: between page sections.",

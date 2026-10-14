@@ -36,6 +36,9 @@
     { "fg": "text.on-accent", "bg": "danger.text", "min": 4.5 },
     { "fg": "text.on-accent", "bg": "danger.hover", "min": 4.5 },
     { "fg": "info.text", "bg": "info.bg", "min": 4.5 },
-    { "fg": "info.text", "bg": "bg.page", "min": 4.5 }
+    { "fg": "info.text", "bg": "bg.page", "min": 4.5 },
+
+    { "fg": "spinner.color", "bg": "bg.raised", "min": 3.0 },
+    { "fg": "spinner.color", "bg": "bg.surface", "min": 3.0 }
   ]
 }

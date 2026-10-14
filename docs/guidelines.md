@@ -69,6 +69,13 @@ which is why the panel keeps `padding: 0`) closes it. A press that starts
 inside the panel never dismisses, so text selection is safe; Escape keeps
 its native behavior.
 
+A dialog that needs server data never opens half-loaded: load first, open
+when the content is ready, and let the trigger show it is busy meanwhile.
+Use `dakitDialogs.openWhenReady(trigger, load, render)` from the same file;
+it handles the busy trigger (`aria-busy`, same size, spinner after 150ms),
+the double-click guard, the `.dk-loading` overlay for slow loads, Escape to
+cancel, and the error toast with Retry. See `docs/dialog-loading.md`.
+
 ### Touch
 
 At ≤820px or on a coarse pointer, `.dk-button`, `.dk-input`, `.dk-select`

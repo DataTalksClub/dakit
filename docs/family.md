@@ -125,7 +125,8 @@ migrate to the 24-grid set — do not mix the two sets in one app.)
 
 ## States, copy, dark mode
 
-- Loading = skeleton/reserved space; empty = explain + safe next action;
+- Loading = skeleton/reserved space; a dialog that needs data opens only
+  once the data is in (busy trigger meanwhile, `docs/dialog-loading.md`); empty = explain + safe next action;
   partial = keep loaded rows + name the unavailable source + one retry;
   failure = concise operator copy, never a stack trace. Never a false zero.
 - Resolve names before render; no raw IDs, state codes, or provider names in

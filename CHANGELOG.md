@@ -8,6 +8,19 @@ in a minor version with migration notes.
 
 ### Added
 
+- Load before open (`docs/dialog-loading.md`): a dialog that needs data
+  never opens half-loaded. `dakitDialogs.openWhenReady(trigger, load, render,
+  options)` in `dist/dialogs.js` keeps the trigger busy (`aria-busy`, same
+  size, spinner after `--dk-loading-delay-busy`), swallows double clicks,
+  shows the `.dk-loading` overlay (dialog backdrop + centred spinner) past
+  `--dk-loading-delay-overlay` or at once for row/card triggers, cancels on
+  Escape, backdrop click or a newer trigger (`AbortSignal`), opens the dialog
+  only with its content in place, and on failure opens nothing and shows a
+  `.dk-toast--danger` with Retry (or `onError`). New `.dk-spinner`
+  (`--lg`), busy `.dk-button`/`.dk-icon-button`, `.dk-loading`, `.dk-toast`;
+  tokens `spinner.{size,size-lg,stroke,color,track,duration}` and
+  `loading.{delay-busy,delay-overlay}` (both themes; the ring stands still
+  under reduced motion). Showcase section `#loading`.
 - List–detail split `.dk-split` (`docs/list-detail.md`, `dist/split.js`,
   `showcase-split.html`): list and detail panes fill the content area and
   scroll independently (the page doesn't), header bands stay put, selection
@@ -63,6 +76,11 @@ in a minor version with migration notes.
   `border.control-hover`, or `border.strong`.
 - Primitive color ramps from generated CSS. Use semantic roles instead;
   primitives remain available in JavaScript for the showcase.
+
+### Fixed
+
+- The build resolves a role that aliases another role (`{accent.default}`)
+  regardless of the order the roles were visited in.
 
 ## [0.1.0]
 

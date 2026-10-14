@@ -210,6 +210,66 @@
     <script>document.getElementById("demo-dialog-open").addEventListener("click", () => document.getElementById("demo-dialog").showModal());</script>
   </section>
 
+  <section id="loading">
+    <h2>Loading data for a dialog</h2>
+    <p class="caption">A dialog that needs data opens only when the data is in (docs/dialog-loading.md). Until then the trigger is busy: same size, spinner after 150ms, a second click ignored. Past 500ms the dialog backdrop appears with a centred spinner; Escape or a backdrop click cancels. A failed load opens nothing and shows a toast with Retry. A row has no room for a spinner, so it gets the overlay at 150ms.</p>
+    <div class="row">
+      <button class="dk-button dk-button--primary" type="button" data-demo-load="80">Open run (fast)</button>
+      <button class="dk-button dk-button--secondary" type="button" data-demo-load="1500">Open run (slow)</button>
+      <button class="dk-button dk-button--secondary" type="button" data-demo-load="600" data-demo-fail>Open run (fails)</button>
+    </div>
+    <div class="row">
+      <span class="caption" style="margin: 0">Busy states:</span>
+      <button class="dk-button dk-button--primary" type="button" aria-busy="true" aria-disabled="true">Save changes</button>
+      <button class="dk-button dk-button--secondary dk-button--sm" type="button" aria-busy="true" aria-disabled="true">Details</button>
+      <button class="dk-icon-button" type="button" aria-label="Edit" aria-busy="true" aria-disabled="true"><svg width="16" height="16" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.5" aria-hidden="true"><path d="M3 13h3l7-7-3-3-7 7z"/></svg></button>
+      <span class="dk-spinner" role="status" aria-label="Loading"></span>
+      <span class="dk-spinner dk-spinner--lg" role="status" aria-label="Loading"></span>
+    </div>
+    <div class="dk-card" style="padding: 0; overflow: hidden">
+      <table class="dk-table">
+        <thead><tr><th>Run</th><th>Status</th><th>Started</th></tr></thead>
+        <tbody>
+          <tr tabindex="0" style="cursor: pointer" data-demo-load="900"><td>nightly-sync</td><td><span class="dk-dot dk-dot--success"></span> Succeeded</td><td class="dk-mono">2026-10-08 17:56</td></tr>
+          <tr tabindex="0" style="cursor: pointer" data-demo-load="900"><td>invoice-parser</td><td><span class="dk-dot dk-dot--danger"></span> Failed</td><td class="dk-mono">2026-10-08 09:22</td></tr>
+        </tbody>
+      </table>
+    </div>
+    <dialog class="dk-dialog" id="run-dialog" aria-labelledby="run-dialog-title">
+      <form method="dialog" style="display: contents">
+        <div class="dk-dialog__head"><div><h2 id="run-dialog-title"></h2><p id="run-dialog-meta" class="dk-mono"></p></div></div>
+        <div class="dk-dialog__body"><dl class="dk-dl" id="run-dialog-body"></dl></div>
+        <div class="dk-dialog__foot"><button class="dk-button dk-button--primary" value="ok">Done</button></div>
+      </form>
+    </dialog>
+    <script>
+      (() => {
+        const dialog = document.getElementById("run-dialog");
+        // A fake API: resolves after `delay`, or fails; honours the abort signal.
+        const fetchRun = (name, delay, fail) => (signal) => new Promise((ok, no) => {
+          const t = setTimeout(() => (fail ? no(new Error("503 Service Unavailable")) : ok({ name, id: "r1038", steps: 12, duration: "4m 12s" })), delay);
+          signal.addEventListener("abort", () => { clearTimeout(t); no(signal.reason); });
+        });
+        const render = (run) => {
+          dialog.querySelector("#run-dialog-title").textContent = run.name;
+          dialog.querySelector("#run-dialog-meta").textContent = run.id;
+          dialog.querySelector("#run-dialog-body").innerHTML = "<dt>Steps</dt><dd class=dk-mono></dd><dt>Duration</dt><dd class=dk-mono></dd>";
+          const dd = dialog.querySelectorAll("#run-dialog-body dd");
+          dd[0].textContent = run.steps; dd[1].textContent = run.duration;
+          return dialog;
+        };
+        const open = (trigger) => {
+          const name = trigger.matches("tr") ? trigger.cells[0].textContent : "nightly-sync";
+          dakitDialogs.openWhenReady(trigger, fetchRun(name, Number(trigger.dataset.demoLoad), trigger.hasAttribute("data-demo-fail")), render, { label: "Loading run…" });
+        };
+        document.querySelectorAll("#loading [data-demo-load]").forEach((el) => {
+          el.addEventListener("click", () => open(el));
+          if (el.matches("tr")) el.addEventListener("keydown", (e) => { if (e.key === "Enter") open(el); });
+        });
+      })();
+    </script>
+  </section>
+
   <section>
     <h2>App shell, list–detail &amp; device login</h2>
     <p class="caption">Full-page demos with every state (docs/shell.md, docs/device-login.md). Add <code>?state=account|notif|rail|rail-notif|drawer</code> or <code>?variant=topbar</code> to the shell, <code>?state=review-warning|approved|notfound…</code> or <code>?code=…</code> to the device page.</p>

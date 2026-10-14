@@ -26,7 +26,9 @@ Token name = JSON key path with `-` separators, `dk-` prefixed:
 | `space.3` | `--dk-space-3` |
 
 Semantic prefixes: `bg-`, `text-`, `border-`, `accent-`, `focus-`,
-`success-`, `warning-`, `danger-`, `info-`, `shadow-`, the spacing roles
+`success-`, `warning-`, `danger-`, `info-`, `shadow-`, `spinner-` and
+`loading-` (the loading indicator and load-before-open timing, see
+`docs/dialog-loading.md`), the spacing roles
 `gap-` and `pad-` (aliases onto `space-`, see guidelines "Spacing by role"),
 plus the scale groups `text-` (type sizes), `space-`, `radius-`, `size-`. If a name needs a second
 dash-level to be understood (`bg-inset`, `text-on-accent`), that's fine; if it
@@ -58,6 +60,8 @@ Semantic values reference primitives with `{ramp.step}` using DTCG `$value`:
 A value may combine several references (`"{space.2} {space.3}"`, a padding
 shorthand); each resolves in place. The build resolves aliases at build time
 and fails on dangling references.
+A role may alias another role (`"{accent.default}"`): it takes that role's
+value in the same theme, so a dark override must repeat the alias.
 Dark-theme values may also alias primitives (`{blue.400}`), and are validated
 to override roles that exist in the light theme — dark is a remap, not new
 vocabulary.

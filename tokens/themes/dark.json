@@ -79,5 +79,10 @@
   "shadow": {
     "$type": "shadow",
     "overlay": { "$value": "0 8px 24px rgba(1, 4, 9, 0.6)" }
+  },
+  "spinner": {
+    "$type": "color",
+    "color": { "$value": "{accent.default}" },
+    "track": { "$value": "{border.default}" }
   }
 }

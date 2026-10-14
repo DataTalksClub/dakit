@@ -49,7 +49,7 @@ tokens/contrast.json       WCAG pairs the build verifies in both themes
 css/base.css               reset + element defaults
 css/components.css         .dk-* components (buttons, fields, cards, chips, tables, callouts, menus, auth card…)
 css/shell.css              app shell: sidebar, icon rail, topbar, drawer, account menu, notifications
-js/dialogs.js              click-outside dismissal for <dialog> (copied to dist/ verbatim)
+js/dialogs.js              <dialog> backdrop dismissal + openWhenReady (load before open; copied to dist/ verbatim)
 js/shell.js                shell behaviour: collapse, drawer, popovers, counts, theme, copy
 js/split.js                list–detail split: list keyboard, focus per pane, resize grip
 js/device-code.js          device-login code normalize/format (ES module, never truncates)
@@ -60,6 +60,7 @@ showcase.html              living style guide — open after building
 showcase-shell.html        app shell in every state (?state=, ?variant=topbar)
 showcase-device.html       device-login page, live mock flow + every state
 showcase-split.html        list–detail split (?run=, ?state=scrolled, ?empty=1)
+docs/dialog-loading.md     a dialog never opens half-loaded: busy trigger, spinner, loading overlay, error toast
 docs/                      principles, token model, usage guidelines, adoption maps
 ```
 
