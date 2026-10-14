@@ -40,7 +40,8 @@ padding instead of `gap-block`.
 - `.dk-cluster` is a wrapping row at `gap-control`: button groups, filter
   rows, chip lists.
 - `.dk-toolbar` is the one bar above a register: search and filters first,
-  then a count, then actions in `.dk-toolbar__end` (pushed right). It wraps
+  then actions in `.dk-toolbar__end` (pushed right). No "N shown" count when
+  the heading already states it — a count is said once. It wraps
   as a unit and keeps `gap-block` below. Never stack a separate action row
   above a filter row.
 - `.dk-table-footer` (alias `.dk-panel__footer`) is the register's last band:
@@ -83,6 +84,21 @@ cancel, and the error toast with Retry. See `docs/dialog-loading.md`.
 At ≤820px or on a coarse pointer, `.dk-button`, `.dk-input`, `.dk-select`
 and `.dk-textarea` grow to `--dk-size-touch` (44). Checkboxes keep their
 16px look; wrap them in `label.dk-check` so the label is the 44px target.
+
+### Counts and metrics
+
+No vanity metrics (principle 4 in `docs/principles.md`). A working screen
+leads with its actionable list, not a stat strip or KPI tiles restating it.
+
+- Do: `Review 7 open items` as the button, then a "Needs attention" register
+  where every row has its fix.
+- Do: one count in the register heading (`Review queue · 503`), or none.
+- Don't: tiles for Total / Upcoming / Drafting / Scheduled above the list,
+  zero tiles, or the same number in the header, the toolbar ("503 shown")
+  and a tile.
+- Exception: a performance view where the numbers are the content (campaign
+  opens, clicks, CTR) uses one `.dk-stat-strip`, and each figure shows its
+  comparison or trend in `.dk-stat__meta`.
 
 ## Typography
 

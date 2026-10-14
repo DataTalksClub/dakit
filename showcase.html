@@ -371,10 +371,11 @@
       </div>
       <div class="dk-page-header__actions"><button class="dk-button dk-button--secondary" type="button">Snooze</button><button class="dk-button dk-button--primary" type="button">Mark done</button></div>
     </header>
-    <div class="dk-stat-strip">
-      <div class="dk-stat"><span class="dk-stat__label">Runs today</span><span class="dk-stat__value">1,024</span><span class="dk-stat__meta">+12% vs yesterday</span></div>
-      <div class="dk-stat"><span class="dk-stat__label">Failed</span><span class="dk-stat__value">3</span><span class="dk-stat__meta"><span class="dk-badge dk-badge--danger">needs action</span></span></div>
-      <div class="dk-stat"><span class="dk-stat__label">p95 latency</span><span class="dk-stat__value">412ms</span><span class="dk-stat__meta">last hour</span></div>
+    <!-- Performance views only (principle 4): every figure carries a comparison. -->
+    <div class="dk-stat-strip" aria-label="Issue #212 performance">
+      <div class="dk-stat"><span class="dk-stat__label">Open rate</span><span class="dk-stat__value">48.3%</span><span class="dk-stat__meta">+2.1 pp vs last 4 issues</span></div>
+      <div class="dk-stat"><span class="dk-stat__label">Click rate</span><span class="dk-stat__value">6.4%</span><span class="dk-stat__meta">−0.8 pp vs last 4 issues</span></div>
+      <div class="dk-stat"><span class="dk-stat__label">Unsubscribes</span><span class="dk-stat__value">0.12%</span><span class="dk-stat__meta">median 0.15%</span></div>
     </div>
     <div class="dk-stack dk-stack--tight">
       <div class="dk-callout"><div class="dk-callout__body"><span class="dk-callout__title">Neutral</span><span>Read-only until the import finishes.</span></div></div>

@@ -8,6 +8,15 @@ in a minor version with migration notes.
 
 ### Added
 
+- Principle 4, "No vanity metrics" (`docs/principles.md`, guidelines
+  "Counts and metrics"): working screens show the actionable list, not stat
+  strips/KPI tiles/count bars restating it; at most one inline actionable
+  count in a heading or button; a count is said once (no header count +
+  "N shown" + tile). `.dk-stat-strip` stays only for performance/analytics
+  views (e.g. campaign opens, clicks, CTR), each figure with a comparison or
+  trend. Showcase demos updated: the task list and Live Q&A lose their
+  strips; the component demo is now an issue's performance with deltas.
+  Later principles renumber to 5–8.
 - Segmented control standard (`docs/segmented.md`, `dist/tabs.js`):
   `.dk-tabs` is the one look for every view switcher and list filter — a
   rounded track, the selected segment in the kit selection (accent-soft fill,

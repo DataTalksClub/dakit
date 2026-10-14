@@ -39,8 +39,9 @@ account-chrome rules that used to live here. In short:
    apps (32px only in single-purpose views) + an optional one-line muted
    description. Utility actions share the row only if short; primary action
    first, content-width.
-2. One dominant question per page. Summary/attention strips are compact
-   segmented rows, not dashboard card grids.
+2. One dominant question per page. No summary stat strips or count tiles on
+   working screens (principle 4, no vanity metrics): show the "needs
+   attention" list itself, with at most one count in its heading or button.
 3. Content in **one bordered container with divided rows** — not nested
    cards. Container header/footer bands sit on `--dk-bg-muted`.
 4. Readable measure for text-heavy work: 760–820px (dataops queues use 896px

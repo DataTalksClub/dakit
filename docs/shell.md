@@ -84,7 +84,11 @@ Banned (and kept out by review):
 6. Solid-accent logo or letter blocks.
 7. A collapsed state that hides navigation, notifications or account.
 8. Popovers that overlap the sidebar column on desktop.
-9. Detached stat cards with coloured dots. Use one `.dk-stat-strip`.
+9. Stat strips, KPI tiles or count bars on a working screen, and the same
+   count shown twice (header count + "N shown" + tile). Show the actionable
+   list with at most one count in its heading or button. `.dk-stat-strip` is
+   only for performance views, each figure with a comparison (principle 4,
+   `docs/principles.md`). Never detached stat cards with coloured dots.
 10. Any accent or status border, tab underline stripe, side rail or inset
     coloured shadow (AGENTS.md). Selection uses a `--dk-accent-soft` fill.
 11. Off-grid spacing, inline `style=` offsets, or negative-margin tricks.
@@ -128,7 +132,7 @@ Z-order: popovers 40, scrim 45, drawer 50, mobile sheets 60.
 │ DataOps            [🔔3] │  .dk-page-header                            │
 │ [⌕ Search…         /]   │  Title                    [Secondary][Primary]│
 │ ─────────────────────── │  .dk-tabs  (optional)                         │
-│ WORKSPACE               │  .dk-stat-strip (optional)                    │
+│ WORKSPACE               │  (no stat strip: principle 4)                 │
 │ [▣] Home                │  .dk-toolbar                                  │
 │ [▣] Tasks            12 │  one bordered work container                  │
 │ [▣] Inbox               │                                               │
@@ -452,7 +456,7 @@ borders or fill only.
 |---|---|
 | `.dk-icon-button` | 32×32 (`--sm` 24×24), `--dk-radius-md`, transparent, icon `--dk-text-muted`. Hover and `[aria-expanded="true"]`: `--dk-bg-hover` + `--dk-text-primary`. It always has an `aria-label`. |
 | `.dk-callout` (+ `--info/--success/--warning/--danger`) | Neutral: `--dk-bg-muted` + 1px `--dk-border-default`. Status: tinted `--dk-*-bg` fill, `--dk-*-text`, and `border-color: transparent`. `display: flex; gap: var(--dk-space-3); padding: var(--dk-space-3) var(--dk-space-4); border-radius: var(--dk-radius-md); font-size: var(--dk-text-md)`. Slots: optional 16px `__icon`, `__body` (`__title` semibold + text), `__actions` (end). `role="status"` or `role="alert"` is set by the app. |
-| `.dk-stat-strip` / `.dk-stat` | One container: 1px `--dk-border-default`, `--dk-radius-md`, `--dk-bg-surface`, `overflow: hidden`, `display: grid; grid-template-columns: repeat(auto-fit, minmax(160px, 1fr))`. Each `.dk-stat` (`padding: var(--dk-space-3) var(--dk-space-4)`, transparent) draws neutral 1px hairlines on its right and bottom edges (`box-shadow: 1px 0 0 …, 0 1px 0 …` in `--dk-border-default`). The strip clips the outer ones, so a short last row leaves plain surface. There are no negative margins and no filled gaps. `__label` is `--dk-text-sm` muted. `__value` is mono `--dk-text-xl` medium, tabular, heading colour. `__meta` is `--dk-text-xs` faint. Status is shown with a `.dk-badge` in `__meta`, never a coloured value. |
+| `.dk-stat-strip` / `.dk-stat` | **Performance and analytics views only** (principle 4: no vanity metrics on working screens); every `__meta` carries a comparison or trend. One container: 1px `--dk-border-default`, `--dk-radius-md`, `--dk-bg-surface`, `overflow: hidden`, `display: grid; grid-template-columns: repeat(auto-fit, minmax(160px, 1fr))`. Each `.dk-stat` (`padding: var(--dk-space-3) var(--dk-space-4)`, transparent) draws neutral 1px hairlines on its right and bottom edges (`box-shadow: 1px 0 0 …, 0 1px 0 …` in `--dk-border-default`). The strip clips the outer ones, so a short last row leaves plain surface. There are no negative margins and no filled gaps. `__label` is `--dk-text-sm` muted. `__value` is mono `--dk-text-xl` medium, tabular, heading colour. `__meta` is `--dk-text-xs` faint. Status is shown with a `.dk-badge` in `__meta`, never a coloured value. |
 | `.dk-dl` | `display: grid; grid-template-columns: minmax(112px, max-content) minmax(0, 1fr); gap: var(--dk-space-2) var(--dk-space-4); margin: 0`. `dt` is `--dk-text-sm` muted. `dd` is `--dk-text-md`, `overflow-wrap: anywhere`, and gets `.dk-mono` for IDs, IPs and times. `--stacked` uses one column, with `dt` above `dd`. `--divided` puts a 1px hairline between pairs (`padding-block: var(--dk-space-2)`). |
 | `.dk-empty` | Centred grid, `gap: var(--dk-space-2); padding: var(--dk-space-8) var(--dk-space-6)`. `__title` is `--dk-text-body` semibold heading. `__desc` is `--dk-text-md` muted, `max-width: 44ch`, and says why it's empty and what to do. `__actions`: one safe next action. No illustration. `--compact` uses `padding: var(--dk-space-6) var(--dk-space-4)`. |
 | `.dk-switch` | A `button[role="switch"][aria-checked]` (or a span inside such a row). Track 32×20, `--dk-radius-full`, 1px `--dk-border-strong`, `--dk-bg-inset`. Thumb 12px `--dk-text-muted`, `margin: var(--dk-space-1)`. Checked: the track is `--dk-accent-default` with `border-color: transparent`, and the thumb is `--dk-text-on-accent` at `translateX(12px)`. `transition: 120ms` under `prefers-reduced-motion: no-preference` only. |
