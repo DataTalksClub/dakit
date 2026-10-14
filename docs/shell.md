@@ -255,15 +255,18 @@ The rail is the same DOM; only CSS changes. Every control is a centred
 │ [▣]• │ a nav count becomes an 8px --dk-accent-default dot top-right
 │      │
 │ ──── │
-│ [»]  │ expand toggle
 │ (G)  │ avatar-only account trigger
+│ [»]  │ expand toggle, last (same order as the DOM)
 └──────┘
 ```
 
 - The brand row becomes a column of brand tile and bell
   (`flex-direction: column; height: auto; padding: var(--dk-space-2) 0; gap: var(--dk-space-1)`).
-  The account row becomes a column with the toggle on top
-  (`height: auto; padding: var(--dk-space-2) 0`).
+  The account row becomes a column with the avatar on top and the toggle
+  at the very bottom, matching DOM and focus order
+  (`flex-direction: column; height: auto; padding: var(--dk-space-2) 0`).
+  The nav scroll area hides its scrollbar in the rail (`scrollbar-width: none`;
+  wheel and keyboard scrolling still work), so nothing shifts.
 - The bell keeps its numeric `.dk-count` pill. Nav counts become dots.
 - Labels use `.dk-visually-hidden` (they're never removed), so accessible
   names don't change. `shell.js` shows a `.dk-tooltip` beside the item on
