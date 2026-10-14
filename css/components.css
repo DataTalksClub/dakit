@@ -289,7 +289,7 @@
   /* Standalone text links (Switch account, Manage CLI sessions) get a 44px
      hit area from 16px inline padding, which doesn't move the line. */
   :is(.dk-auth-page__identity, .dk-auth-card__foot) a { padding-block: var(--dk-space-4); }
-  .dk-auth-page__identity { line-height: var(--dk-size-topbar); }
+  .dk-auth-page__brand { min-height: var(--dk-size-touch); }
 }
 
 /* --- misc ---------------------------------------------------------------------- */
@@ -608,6 +608,10 @@
 }
 .dk-code-block pre { flex: 1 1 auto; min-width: 0; margin: 0; padding: var(--dk-space-1) 0; overflow-x: auto; }
 .dk-code-block code { padding: 0; background: none; color: var(--dk-text-primary); font-size: var(--dk-text-sm); white-space: pre; }
+/* Copy reserves the width of "Copied" before the first click, so the label
+   swap never moves the button. The reserve is an invisible zero-height line. */
+.dk-button[data-dk-copy] { flex-direction: column; gap: 0; }
+.dk-button[data-dk-copy]::after { content: "Copied"; height: 0; overflow: hidden; visibility: hidden; }
 
 /* Field-level error (role="alert", linked via aria-describedby). */
 .dk-field-error { margin-top: var(--dk-space-1); color: var(--dk-danger-text); font-size: var(--dk-text-sm); }
@@ -625,9 +629,12 @@
 /* --- device login (docs/device-login.md) ------------------------------------------- */
 
 .dk-auth-page { min-height: 100dvh; display: grid; grid-template-rows: auto 1fr; background: var(--dk-bg-page); }
-.dk-auth-page__bar { height: var(--dk-size-topbar); display: flex; align-items: center; justify-content: space-between; gap: var(--dk-space-4); padding: 0 var(--dk-space-4); min-width: 0; }
-.dk-auth-page__brand { color: var(--dk-text-heading); font-size: var(--dk-text-body); font-weight: var(--dk-weight-semibold); text-decoration: none; }
-.dk-auth-page__identity { min-width: 0; overflow: hidden; color: var(--dk-text-muted); font-size: var(--dk-text-sm); text-overflow: ellipsis; white-space: nowrap; }
+/* The bar is 48px for a normal identity. A long address wraps (never clips),
+   the bar grows, and Switch account stays whole on the last line. */
+.dk-auth-page__bar { min-height: var(--dk-size-topbar); display: flex; align-items: center; justify-content: space-between; gap: var(--dk-space-4); padding: var(--dk-space-1) var(--dk-space-4); min-width: 0; }
+.dk-auth-page__brand { flex: none; display: inline-flex; align-items: center; color: var(--dk-text-heading); font-size: var(--dk-text-body); font-weight: var(--dk-weight-semibold); text-decoration: none; }
+.dk-auth-page__identity { min-width: 0; color: var(--dk-text-muted); font-size: var(--dk-text-sm); text-align: right; overflow-wrap: anywhere; }
+.dk-auth-page__identity a { white-space: nowrap; }
 .dk-auth-page__main { display: grid; justify-items: center; align-content: start; padding: var(--dk-space-8) var(--dk-space-4); }
 
 .dk-auth-card {
@@ -645,7 +652,7 @@
 .dk-auth-card__title:focus { outline: none; }
 .dk-auth-card__title > svg { width: 20px; height: 20px; flex: none; }
 .dk-auth-card__icon--success { color: var(--dk-success-text); }
-.dk-auth-card__lede { color: var(--dk-text-muted); font-size: var(--dk-text-body); }
+.dk-auth-card__lede { color: var(--dk-text-muted); font-size: var(--dk-text-body); overflow-wrap: anywhere; }
 .dk-auth-card__body { display: grid; gap: var(--dk-space-4); }
 .dk-auth-card__actions { display: grid; grid-template-columns: 1fr 1fr; gap: var(--dk-space-3); }
 .dk-auth-card__actions > .dk-button { width: 100%; }

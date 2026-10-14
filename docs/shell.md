@@ -243,7 +243,7 @@ text field.
 ### 5.5 Collapsed rail (`[data-sidebar="collapsed"]`, 56px)
 
 The rail is the same DOM; only CSS changes. Every control is a centred
-36×36 square:
+36×36 square (44×44 on a coarse pointer, §10):
 
 ```
 ┌──────┐
@@ -456,7 +456,7 @@ borders or fill only.
 | `.dk-avatar` | 28px (`--xs` 20, `--sm` 24, `--lg` 36), `--dk-radius-full`, `--dk-accent-soft` fill, `--dk-accent-default` text, `--dk-text-xs` semibold sans initials (one or two), no border. `<img>` inside covers it. It's decorative (`aria-hidden`) when a name sits next to it. |
 | `.dk-count` | §7.2. |
 | `.dk-kbd` | Mono `--dk-text-xs`, `min-width: 20px; height: 20px; padding: 0 var(--dk-space-1)`, `--dk-bg-surface`, 1px `--dk-border-default`, `--dk-radius-sm`, `--dk-text-muted`. |
-| `.dk-code-block` + `.dk-copy-button` | Block: `display: flex; align-items: flex-start; gap: var(--dk-space-3); padding: var(--dk-space-2) var(--dk-space-3); background: var(--dk-bg-inset); border: 1px solid var(--dk-border-default); border-radius: var(--dk-radius-md)`. `<pre><code>` mono `--dk-text-sm`, `flex: 1; min-width: 0; overflow-x: auto; white-space: pre`. Never truncate or ellipsize code or secrets. Use exactly `<div class="dk-code-block"><pre><code>…</code></pre><button …>Copy</button></div>`, so the code takes the free width and Copy sits at the far edge. On touch, `pre` gets `padding-block: var(--dk-space-3)`, so the first line centres on the 44px button. Copy button: `.dk-button--sm` secondary with `data-dk-copy`, labelled "Copy". On success its label reads "Copied" for 1.5s (the button width doesn't change, because `min-width` is set from the longer label) and `#dk-live` announces "Copied". On failure it reads "Press Ctrl+C" and selects the text. |
+| `.dk-code-block` + `.dk-copy-button` | Block: `display: flex; align-items: flex-start; gap: var(--dk-space-3); padding: var(--dk-space-2) var(--dk-space-3); background: var(--dk-bg-inset); border: 1px solid var(--dk-border-default); border-radius: var(--dk-radius-md)`. `<pre><code>` mono `--dk-text-sm`, `flex: 1; min-width: 0; overflow-x: auto; white-space: pre`. Never truncate or ellipsize code or secrets. Use exactly `<div class="dk-code-block"><pre><code>…</code></pre><button …>Copy</button></div>`, so the code takes the free width and Copy sits at the far edge. On touch, `pre` gets `padding-block: var(--dk-space-3)`, so the first line centres on the 44px button. Copy button: `.dk-button--sm` secondary with `data-dk-copy`, labelled "Copy". On success its label reads "Copied" for 1.5s (the button width doesn't change: CSS reserves the width of "Copied" before the first click with an invisible zero-height line) and `#dk-live` announces "Copied". On failure it reads "Press Ctrl+C" and selects the text. |
 | `.dk-tooltip` | §5.5: rail labels only. |
 
 ## 10. Mobile (≤ 820px)
@@ -499,8 +499,10 @@ navigation.**
 - Choosing a destination closes the drawer.
 - Popovers become sheets under the bar: `position: fixed; top: calc(var(--dk-size-topbar) + var(--dk-space-2)); left: var(--dk-space-2); right: var(--dk-space-2); width: auto; max-height: calc(100dvh - var(--dk-size-topbar) - var(--dk-space-4));`.
 - Touch: inside `@media (max-width: 820px), (pointer: coarse)`, nav items,
-  menu rows, tabs and icon buttons get `min-height: var(--dk-size-touch)`.
-  Icon buttons also become 44×44. `.dk-main` padding becomes
+  menu rows, tabs, the brand link, search and the account trigger are
+  `var(--dk-size-touch)` tall. Icon buttons also become 44×44. On a coarse
+  pointer above 820px the collapsed rail keeps its 56px column, and its
+  controls grow from 36×36 to 44×44 inside it. `.dk-main` padding becomes
   `var(--dk-space-4)`.
 
 ## 11. Keyboard and accessibility

@@ -208,6 +208,62 @@ test('device login on touch: standalone links have a 44px hit area', async (t) =
   await page.close();
 });
 
+test('touch: every shell control is 44px; the coarse rail keeps its 56px column', async (t) => {
+  const page = await open(t, '/showcase-shell.html?theme=light', { width: 1440, height: 900 }, { hasTouch: true, isMobile: true });
+  if (!page) return;
+  assert.ok(await page.evaluate(() => matchMedia('(pointer: coarse)').matches), 'context is a coarse pointer');
+  const sizes = (sel) => page.evaluate((s) => [...document.querySelectorAll(s)]
+    .filter((el) => el.getClientRects().length && getComputedStyle(el).visibility !== 'hidden')
+    .map((el) => { const r = el.getBoundingClientRect(); return `${Math.round(r.width)}x${Math.round(r.height)}`; }), sel);
+  const controls = '.dk-sidebar :is(.dk-brand, .dk-search, .dk-search__rail, .dk-nav-item, .dk-account-trigger, .dk-icon-button)';
+  const expanded = await sizes(controls);
+  assert.ok(expanded.length > 5 && expanded.every((s) => +s.split('x')[1] >= 44), `expanded heights ${expanded}`);
+  await page.evaluate(() => dakitShell.setSidebar(document.querySelector('.dk-shell'), 'collapsed'));
+  await settles(page, () => document.querySelector('.dk-sidebar').getBoundingClientRect().width === 56, 'rail stays 56px');
+  const rail = await sizes(controls);
+  assert.ok(rail.length > 5 && rail.every((s) => s === '44x44'), `rail controls ${rail}`);
+  await page.close();
+});
+
+test('touch: drawer search and brand are 44px', async (t) => {
+  const page = await open(t, '/showcase-shell.html?theme=light', { width: 390, height: 844 }, { hasTouch: true, isMobile: true });
+  if (!page) return;
+  await page.click('[data-dk-drawer-toggle]');
+  await settles(page, () => getComputedStyle(document.querySelector('.dk-sidebar')).visibility === 'visible', 'drawer opens');
+  const heights = await page.evaluate(() => ['.dk-sidebar .dk-brand', '.dk-sidebar .dk-search', '.dk-sidebar__close']
+    .map((s) => Math.round(document.querySelector(s).getBoundingClientRect().height)));
+  assert.deepEqual(heights, [44, 44, 44]);
+  await page.close();
+});
+
+test('copy: the width of "Copied" is reserved before the first click', async (t) => {
+  const page = await open(t, '/showcase-device.html?theme=light&state=approved', { width: 390, height: 844 },
+    { hasTouch: true, permissions: ['clipboard-read', 'clipboard-write'] });
+  if (!page) return;
+  const button = page.locator('.dk-code-block [data-dk-copy]');
+  const before = await button.evaluate((b) => b.getBoundingClientRect().width);
+  await button.click();
+  await settles(page, () => document.querySelector('.dk-code-block [data-dk-copy]').textContent === 'Copied', 'label swaps to Copied');
+  const after = await button.evaluate((b) => b.getBoundingClientRect().width);
+  assert.equal(after, before, 'button width is stable');
+  assert.ok(await button.evaluate((b) => b.getBoundingClientRect().height >= 44), '44px on touch');
+  await page.close();
+});
+
+test('device login: a long identity wraps and Switch account stays whole', async (t) => {
+  const page = await open(t, '/showcase-device.html?theme=light&state=review', { width: 390, height: 844 }, { hasTouch: true });
+  if (!page) return;
+  await page.evaluate(() => { document.querySelector('#identity').firstChild.textContent = 'grace.brewster.murray.hopper.long-address@engineering.datatalks.club · '; });
+  const box = await page.evaluate(() => {
+    const id = document.querySelector('#identity'); const a = id.querySelector('a'); const r = a.getBoundingClientRect();
+    return { clipped: id.scrollWidth > id.clientWidth, lines: a.getClientRects().length, right: r.right, vw: innerWidth };
+  });
+  assert.equal(box.clipped, false, 'identity is not clipped');
+  assert.equal(box.lines, 1, 'Switch account does not break');
+  assert.ok(box.right <= box.vw, 'Switch account is inside the viewport');
+  await page.close();
+});
+
 test('no page errors', (t) => {
   if (skip) { t.skip(skip); return; }
   assert.deepEqual(errors, []);

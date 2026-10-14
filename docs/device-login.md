@@ -53,13 +53,17 @@ consent decision is noise, and the dataops embedding is retired.
 ```
 
 - `.dk-auth-page` uses `min-height: 100dvh; display: grid; grid-template-rows: auto 1fr; background: var(--dk-bg-page);`.
-- `.dk-auth-page__bar` uses `height: var(--dk-size-topbar); display: flex; align-items: center; justify-content: space-between; padding: 0 var(--dk-space-4);`.
+- `.dk-auth-page__bar` uses `min-height: var(--dk-size-topbar); display: flex; align-items: center; justify-content: space-between; padding: var(--dk-space-1) var(--dk-space-4);`.
   It has no border: the bar is a plain line of text, not a band.
   - On the left is the wordmark (`.dk-brand__name`), linking home.
   - On the right is the identity line, `role="status"`, in
     `--dk-text-sm` muted. When signed in it shows the email plus a "Switch
     account" link that returns to the same `?code=`. This line matters:
     the person must see *which* account will be granted.
+    It's never clipped or ellipsized: a long address wraps
+    (`overflow-wrap: anywhere`, right-aligned), the bar grows, and the
+    "Switch account" link stays whole (`white-space: nowrap`). The card's
+    lede wraps the same way.
 - `.dk-auth-page__main` uses `display: grid; place-items: start center; padding: var(--dk-space-8) var(--dk-space-4);`.
   The card sits in the upper third, not dead centre, so the layout doesn't
   jump between states.
@@ -286,7 +290,8 @@ export function bindCodeInput(input, { alphabet } = {}): () => void; // returns 
 - All controls are ≥ 44px at ≤820px or `(pointer: coarse)`, links
   included. The kit gives the Switch-account link in the identity line and
   the links in `.dk-auth-card__foot` a 44px hit area from 16px inline
-  padding, which leaves the text where it is. Facts switch
+  padding, which leaves the text where it is. The wordmark link gets
+  `min-height: var(--dk-size-touch)`. Facts switch
   to `.dk-dl--stacked` at ≤480px.
 - Copy, labels and errors are plain text. The machine label is never
   injected as HTML.
