@@ -166,6 +166,29 @@ It discovers files exactly like the border checker and is vendored next to it
 by `sync.mjs` (it imports the border checker's parser, so keep both files
 together). The dakit build runs it over `css/`.
 
+## Scale enforcement (scripts/check-scale.mjs)
+
+Apps space and size things on dakit's scales. The scale checker fails on:
+
+- a px `padding`, `margin`, `gap` or `inset` value (any longhand) that is not a multiple of 4;
+- a raw px `font-size` (use a `--dk-text-*` step);
+- any negative `margin`, which is a layout trick the grid cannot express (a
+  hit area faked with `margin: -6px`); restructure the box.
+
+Existing debt goes in a baseline file that may only shrink. A violation that is
+not in the baseline fails, and so does a baseline entry that no longer occurs,
+so migrating a rule forces the list down. `--write-baseline` creates the file
+and later rewrites it with entries removed; it refuses to add or raise one.
+
+```bash
+node path/to/vendor/dakit/check-scale.mjs --baseline path/to/scale-baseline.json path/to/app/styles
+node path/to/vendor/dakit/check-scale.mjs --write-baseline path/to/scale-baseline.json path/to/app/styles
+```
+
+Baseline keys are file paths relative to the baseline file. File discovery and
+vendoring match the other checkers. It is opt-in per site: only DataOps runs it
+today.
+
 ## Cascade layers
 
 The built `dist/dakit.css` declares `@layer dk.base, dk.components;` and wraps
@@ -203,7 +226,7 @@ node "$HOME/git/dakit/scripts/sync.mjs" --dest path/to/vendor/dakit
 
 The destination contains the dist files directly (`dakit.css`, `tokens.css`,
 `tokens.js`, etc.), a `fonts/` directory with the license, `check-borders.mjs`,
-`check-colors.mjs`,
+`check-colors.mjs`, `check-scale.mjs`,
 `sync.mjs`, and `dakit.lock.json`. CSS font URLs are rewritten from
 `../fonts/` to `./fonts/` for this flat layout. Update app imports to match.
 The bundle already includes tokens; apps loading it do not need `tokens.css`
@@ -217,7 +240,7 @@ node "$HOME/git/dakit/scripts/sync.mjs" --dest path/to/vendor/dakit --files daki
 ```
 
 `--fonts-dir` chooses a font directory inside the destination. Fonts, license,
-and all three tools are always included. No app-specific source CSS copies or `sed`
+and all the tools are always included. No app-specific source CSS copies or `sed`
 steps are needed. The lock records the built version and source commit plus
 SHA-256 checksums of the delivered bytes, including rewritten CSS and tools.
 

@@ -20,6 +20,7 @@ test('filtered sync rewrites font URLs, records metadata and verifies without a 
     assert.ok(lock.files['sync.mjs']);
     assert.ok(lock.files['check-borders.mjs']);
     assert.ok(lock.files['check-colors.mjs']);
+    assert.ok(lock.files['check-scale.mjs']);
     assert.ok(!lock.files['tokens.css']);
     assert.match(readFileSync(join(dest, 'dakit.css'), 'utf8'), /url\("\.\/assets\/fonts\/inter-var.woff2"\)/);
     const vendored = join(dest, 'sync.mjs');
