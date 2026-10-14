@@ -96,7 +96,7 @@ exception like dataqna's phone body, not a palette divergence.
 
 | dataqna | dakit | change |
 |---|---|---|
-| `--slate-*` ramp | `--dk-gray-*` | same structure |
+| `--slate-*` ramp | semantic `--dk-bg-*`, `--dk-text-*`, `--dk-border-*` | replace palette references with roles; primitive ramps are not shipped |
 | `--navy-*` dark surfaces | `--dk-bg-*` dark values | navy → neutral dark |
 | `--blurple-*` accent | `--dk-accent-*` | **hue changes** blurple → blue |
 | `--bg`, `--text-*`, `--accent` semantics | `--dk-bg-*`, `--dk-text-*`, `--dk-accent-*` | same architecture, already the dakit model |
@@ -143,3 +143,12 @@ It fails (exit 1, printing `file:line: reason`) on:
 - Single-side borders or border-widths (`border-left`, `border-top`, etc.) that are wider than 1px or colored (neutral 1px dividers pass).
 - Inset box shadows: any `box-shadow` with `inset` that has a colored value or is used as an edge stripe (e.g. `inset Npx 0 0`).
 - Colored outlines outside `:focus` / `:focus-visible` rules (keyboard focus indicators with `--dk-focus-ring` on `:focus-visible` pass).
+
+## Cascade layers
+
+The built `dist/dakit.css` declares `@layer dk.base, dk.components;` and wraps
+base styles and shared components in those layers. Tokens stay unlayered.
+Unlayered app CSS always wins over normal dakit declarations, regardless of
+selector specificity. Put product overrides in ordinary app CSS; there is no
+need to increase specificity or add `!important`. If an app uses its own
+layers, declare its layer after `dk.components`.

@@ -10,7 +10,7 @@ semantic.json            roles, light theme. the ONLY layer apps touch.
 themes/dark.json   ───►  same roles, different values.
       │  build.mjs
       ▼
-dist/tokens.css          :root { primitives + light }  :root[data-theme="dark"] { dark }
+dist/tokens.css          :root { scales + light roles }  :root[data-theme="dark"] { dark }
 ```
 
 ## Naming
@@ -19,7 +19,7 @@ Token name = JSON key path with `-` separators, `dk-` prefixed:
 
 | JSON path | CSS variable |
 |---|---|
-| `gray.200` | `--dk-gray-200` |
+| `gray.200` | internal primitive; resolved at build time |
 | `text.body` | `--dk-text-body` |
 | `bg.page` | `--dk-bg-page` |
 | `border.default` | `--dk-border-default` |
