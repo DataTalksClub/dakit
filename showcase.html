@@ -15,6 +15,7 @@
 </script>
 <link rel="stylesheet" href="dist/dakit.css">
 <script src="dist/dialogs.js"></script>
+<script src="dist/shell.js" defer></script>
 <style>
   /* Showcase chrome only — everything below demonstrates the system itself. */
   .page { max-width: var(--dk-size-content-max); margin: 0 auto; padding: var(--dk-space-7) var(--dk-space-6) var(--dk-space-8); display: grid; gap: var(--dk-space-7); }
@@ -207,6 +208,62 @@
       </form>
     </dialog>
     <script>document.getElementById("demo-dialog-open").addEventListener("click", () => document.getElementById("demo-dialog").showModal());</script>
+  </section>
+
+  <section>
+    <h2>App shell &amp; device login</h2>
+    <p class="caption">Full-page demos with every state (docs/shell.md, docs/device-login.md). Add <code>?state=account|notif|rail|rail-notif|drawer</code> or <code>?variant=topbar</code> to the shell, <code>?state=review-warning|approved|notfound…</code> or <code>?code=…</code> to the device page.</p>
+    <div class="row">
+      <a class="dk-button dk-button--secondary" href="showcase-shell.html">App shell</a>
+      <a class="dk-button dk-button--secondary" href="showcase-shell.html?variant=topbar">Topbar shell</a>
+      <a class="dk-button dk-button--secondary" href="showcase-device.html">Device login</a>
+    </div>
+  </section>
+
+  <section>
+    <h2>Workspace components</h2>
+    <p class="caption">Shared by two or more apps (docs/shell.md §9). Status is fill-only; selection is the accent-soft fill.</p>
+    <header class="dk-page-header">
+      <div class="dk-page-header__main">
+        <nav class="dk-page-header__crumb" aria-label="Breadcrumb"><a href="#">Tasks</a><span aria-hidden="true">/</span><span class="dk-mono">T-1042</span></nav>
+        <h3 class="dk-page-header__title">Confirm guest for episode 42</h3>
+        <p class="dk-page-header__subtitle">Podcast · waiting on reply since Tue</p>
+      </div>
+      <div class="dk-page-header__actions"><button class="dk-button dk-button--secondary" type="button">Snooze</button><button class="dk-button dk-button--primary" type="button">Mark done</button></div>
+    </header>
+    <div class="row">
+      <nav class="dk-tabs" aria-label="Demo tabs"><a class="dk-tab" href="#" aria-current="page">Open <span class="dk-count">12</span></a><a class="dk-tab" href="#">Waiting <span class="dk-count">4</span></a><a class="dk-tab" href="#">Done</a></nav>
+      <div class="dk-tabs dk-tabs--sm" role="tablist" aria-label="Small tabs"><button class="dk-tab" role="tab" aria-selected="true" type="button">Unread</button><button class="dk-tab" role="tab" aria-selected="false" type="button">All</button></div>
+    </div>
+    <div class="dk-stat-strip">
+      <div class="dk-stat"><span class="dk-stat__label">Runs today</span><span class="dk-stat__value">1,024</span><span class="dk-stat__meta">+12% vs yesterday</span></div>
+      <div class="dk-stat"><span class="dk-stat__label">Failed</span><span class="dk-stat__value">3</span><span class="dk-stat__meta"><span class="dk-badge dk-badge--danger">needs action</span></span></div>
+      <div class="dk-stat"><span class="dk-stat__label">p95 latency</span><span class="dk-stat__value">412ms</span><span class="dk-stat__meta">last hour</span></div>
+    </div>
+    <div class="dk-stack dk-stack--tight">
+      <div class="dk-callout"><div class="dk-callout__body"><span class="dk-callout__title">Neutral</span><span>Read-only until the import finishes.</span></div></div>
+      <div class="dk-callout dk-callout--info"><div class="dk-callout__body"><span>Two tasks were reassigned to you.</span></div><div class="dk-callout__actions"><button class="dk-button dk-button--secondary dk-button--sm" type="button">Review</button></div></div>
+      <div class="dk-callout dk-callout--success"><div class="dk-callout__body"><span>Export finished: 1,024 rows.</span></div></div>
+      <div class="dk-callout dk-callout--warning"><div class="dk-callout__body"><span class="dk-callout__title">Token expires in 3 days.</span><span>Rotate it before Friday.</span></div></div>
+      <div class="dk-callout dk-callout--danger"><div class="dk-callout__body"><span>Couldn't load notifications.</span></div><div class="dk-callout__actions"><button class="dk-button dk-button--secondary dk-button--sm" type="button">Retry</button></div></div>
+    </div>
+    <div class="row" style="align-items: start; gap: var(--dk-space-7)">
+      <dl class="dk-dl dk-dl--divided" style="min-width: 320px">
+        <dt>Machine</dt><dd class="dk-mono">grace@build-box</dd>
+        <dt>Requested from</dt><dd class="dk-mono">203.0.113.7</dd>
+        <dt>Expires</dt><dd class="dk-mono">2026-11-13 14:02</dd>
+      </dl>
+      <div class="dk-card" style="padding: 0; flex: 1; min-width: 280px"><div class="dk-empty dk-empty--compact"><p class="dk-empty__title">No CLI sessions</p><p class="dk-empty__desc">Run <code>dataops login</code> on a machine to create one.</p><div class="dk-empty__actions"><button class="dk-button dk-button--secondary dk-button--sm" type="button">Read the CLI guide</button></div></div></div>
+    </div>
+    <div class="row">
+      <button class="dk-switch" type="button" role="switch" aria-checked="false" aria-label="Off example"></button>
+      <button class="dk-switch" type="button" role="switch" aria-checked="true" aria-label="On example"></button>
+      <span class="dk-avatar dk-avatar--xs">G</span><span class="dk-avatar dk-avatar--sm">GH</span><span class="dk-avatar">GH</span><span class="dk-avatar dk-avatar--lg">GH</span>
+      <span class="dk-count">4</span><span class="dk-count">99+</span>
+      <kbd class="dk-kbd">/</kbd><kbd class="dk-kbd">⌘B</kbd>
+      <button class="dk-icon-button" type="button" aria-label="Notifications, 3 unread"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M6 8a6 6 0 0 1 12 0c0 7 3 9 3 9H3s3-2 3-9"/><path d="M10.3 21a1.94 1.94 0 0 0 3.4 0"/></svg><span class="dk-count" aria-hidden="true">3</span></button>
+    </div>
+    <div class="dk-code-block" style="max-width: 560px"><pre><code>dataops login --profile prod</code></pre><button class="dk-button dk-button--secondary dk-button--sm" type="button" data-dk-copy>Copy</button></div>
   </section>
 
   <section>

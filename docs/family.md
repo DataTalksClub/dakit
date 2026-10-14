@@ -14,80 +14,29 @@ select chevron, focus ring) in its own stylesheet — dataops, the canonical
 reference, does exactly that; keep such mirrors byte-equal to `css/base.css`
 and never bake raw colors into them.
 
-## Who uses which shell
+## Shell and account chrome
 
-- **Operator apps with several destinations** (dataops, relay, dapier
-  designer, dataqna admin): persistent **268px sidebar** (`--dk-size-sidebar`)
-  + main canvas, and that is the whole shell — **no top toolbar**. The bar
-  spent 64px of every screen on two controls; those live in the sidebar
-  footer instead (see Account chrome). Icon-plus-text nav rows, never
-  icon-only. Every destination stays visible; no "More" menu. A collapsed
-  sidebar collapses to a slim rail whose only control is the expand button,
-  never to zero.
-- **Single-purpose views** (dataqna room on a phone, present on a projector,
-  public/legal pages): no sidebar. They inherit the same components, type
-  scale, and status language, so they still read as family.
-- **Mobile** (≤820px): 64px top bar with menu; navigation opens as a modal
-  drawer with scrim, focus trap, and restoration. One pane at a time.
+The app shell is a kit component now: `css/shell.css` + `dist/shell.js`,
+specified in **[shell.md](shell.md)**, which supersedes the sidebar recipe and
+account-chrome rules that used to live here. In short:
 
-Sidebar recipe (port verbatim, tokens do the theming):
-
-```css
-.app-sidebar { width: var(--dk-size-sidebar); background: var(--dk-bg-muted);
-  border-right: 1px solid var(--dk-border-default); }
-.nav-item { display: flex; align-items: center; gap: 10px;
-  min-height: 36px; padding: 6px 10px; border-radius: var(--dk-radius-md);
-  font-size: var(--dk-text-body); font-weight: 500; color: var(--dk-text-primary); }
-.nav-item:hover { background: var(--dk-bg-hover); }
-.nav-item[aria-current="page"] { background: var(--dk-accent-soft);
-  color: var(--dk-accent-default); font-weight: 600; }
-/* selection signal is the filled row ONLY — no left border, rail, or stripe.
-   The same ban applies to cards, sessions, queues, and callouts. */
-.nav-group-label { font-size: var(--dk-text-xs); color: var(--dk-text-muted);
-  font-weight: 600; text-transform: uppercase; letter-spacing: 0.07em;
-  margin: 18px 10px 5px; }
-```
-
-## Account chrome (operator apps)
-
-The sidebar owns identity, appearance, and sign-out — there is no top
-toolbar to host them. dataops is the reference
-(`docs/family-reference/account-menu-*`; on mobile the account sheet is
-entered from the bar avatar).
-Copy this placement even when the app has no teammate-scope or workspace
-links.
-
-- **Sidebar footer** is the shell's global strip, pinned to the bottom of
-  the sidebar (sticky when the nav scrolls). It holds, top to bottom:
-  utilities that are not destinations (help, notifications with its count
-  badge) as icon-plus-text rows in the nav-row vocabulary, then the
-  **account trigger** as the last row: avatar initial, display name,
-  chevron. Accessible name "Account". Never an anonymous gear.
-- **Popover** anchored above the footer, left-aligned to the sidebar:
-  overlay radius `--dk-radius-lg`, `--dk-shadow-overlay`, Escape, restore
-  focus. Sections in this order, omitting any the app does not have:
-  1. Identity — "Signed in as", name, email.
-  2. Show work for — only apps that can scope another person's work.
-  3. Workspace — destinations that are not in the sidebar.
-  4. Appearance — one labeled switch (`Dark mode` / `Light mode`) with a
-     track toggle. This is the only theme control in the app.
-  5. Version — muted, mono.
-  6. Sign out — danger text, explicitly labelled.
-- **Mobile (≤820px)** keeps the 64px top bar with menu and title, plus one
-  account entry point: either the avatar alone in the bar (overlays anchor
-  under it) or the drawer's pinned footer account row. The drawer carries
-  the same footer rows, so every account action is reachable from the
-  drawer either way.
-- The footer may also show environment or region as status copy. Account
-  actions appear nowhere but the popover — no duplicate sign-out or theme
-  controls in rows, toolbars, or page headers.
-
-Single-purpose views (dataqna room, present, public pages) keep a compact
-theme control in their own top bar; they have no account popover.
+- **Operator apps with 4+ destinations** (dataops, relay, dapier, agent-hub):
+  240px sidebar (`--dk-size-sidebar`) holding only navigation — brand row with
+  the notification bell, optional search, grouped nav, one account row. It
+  collapses to a 56px icon rail (`--dk-size-rail`) that keeps every control.
+- **2–3 destinations** (dataqna admin, dapier designer): `.dk-shell--topbar`,
+  a 48px bar with brand, links, and an avatar-only account trigger.
+- **Single-purpose views** (dataqna room, present, public pages, the device
+  approval page): no shell; they keep a compact theme control of their own.
+- **Mobile (≤820px)**: 48px bar with menu, title, bell, avatar; navigation in
+  a modal drawer.
+- Account menu: identity, optional scope, Dark mode (the only theme control),
+  utilities, version/region (mono), Sign out. Never destinations or widgets.
 
 ## Page anatomy (hierarchy)
 
-1. Page header: one `h1` at 32px semibold (22px mobile) + one-line muted
+1. Page header (`.dk-page-header`): one `h1` at 22px semibold in operator
+   apps (32px only in single-purpose views) + an optional one-line muted
    description. Utility actions share the row only if short; primary action
    first, content-width.
 2. One dominant question per page. Summary/attention strips are compact

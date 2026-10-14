@@ -113,7 +113,12 @@
     "control-md": { "$value": "34px" },
     "control-lg": { "$value": "40px" },
     "touch": { "$value": "44px" },
-    "sidebar": { "$value": "268px" },
+    "sidebar": { "$value": "240px" },
+    "rail": { "$value": "56px" },
+    "topbar": { "$value": "48px" },
+    "menu": { "$value": "256px" },
+    "panel": { "$value": "384px" },
+    "measure": { "$value": "896px" },
     "content-max": { "$value": "1120px" }
   }
 }

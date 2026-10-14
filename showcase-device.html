@@ -1,0 +1,229 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="robots" content="noindex">
+<title>dakit — device login</title>
+<script>
+  const params = new URLSearchParams(location.search);
+  const urlTheme = params.get("theme");
+  let stored = null;
+  try { stored = localStorage.getItem("dakit-theme"); } catch {}
+  const theme = urlTheme === "dark" || urlTheme === "light" ? urlTheme : stored;
+  document.documentElement.dataset.theme =
+    theme === "dark" || theme === "light" ? theme : (matchMedia("(prefers-color-scheme: dark)").matches ? "dark" : "light");
+</script>
+<link rel="stylesheet" href="dist/dakit.css">
+</head>
+<body>
+<svg width="0" height="0" style="position: absolute" aria-hidden="true">
+  <defs>
+    <g id="i-check-circle"><circle cx="12" cy="12" r="10"/><path d="m9 12 2 2 4-4"/></g>
+    <g id="i-alert"><path d="m21.73 18-8-14a2 2 0 0 0-3.48 0l-8 14A2 2 0 0 0 4 20h16a2 2 0 0 0 1.73-2"/><path d="M12 9v4M12 17h.01"/></g>
+  </defs>
+</svg>
+
+<div class="dk-auth-page">
+  <header class="dk-auth-page__bar">
+    <a class="dk-auth-page__brand" href="#">DataOps</a>
+    <p class="dk-auth-page__identity" role="status" id="identity">grace@datatalks.club · <a href="#">Switch account</a></p>
+  </header>
+  <main class="dk-auth-page__main">
+    <section class="dk-auth-card" id="card" aria-labelledby="card-title"></section>
+  </main>
+</div>
+
+<script type="module">
+  // Demo of docs/device-login.md. A real page swaps the fake API below for
+  // GET /api/auth/device/pending and POST /api/auth/device/approve.
+  import { normalizeUserCode, describeUserCodeError, bindCodeInput } from "./dist/device-code.js";
+
+  const APP = "DataOps";
+  const CLI = "dataops";
+  const card = document.getElementById("card");
+  const esc = (s) => String(s).replace(/[&<>"']/g, (c) => ({ "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;", "'": "&#39;" })[c]);
+  const icon = (id, cls = "") => `<svg class="${cls}" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><use href="#${id}"/></svg>`;
+
+  // --- fake API (server clock = now) -------------------------------------------
+  const grants = {
+    BCDFGHJK: { label: "grace@build-box", request_ip: "203.0.113.7", same_network: true },
+    WXZBCDFG: { label: "grace@unknown-host", request_ip: "198.51.100.23", same_network: false },
+  };
+  const api = {
+    async pending(code) {
+      await new Promise((r) => setTimeout(r, 350));
+      const g = grants[code];
+      if (!g) return { status: 404 };
+      const now = Date.now();
+      return { status: 200, body: { ...g, created_at: now - 120000, expires_at: now + 461000, now } };
+    },
+    async approve(code, approve) {
+      await new Promise((r) => setTimeout(r, 350));
+      return { status: 200, body: { status: approve ? "approved" : "denied" } };
+    },
+  };
+
+  // --- rendering ------------------------------------------------------------------
+  let seq = 0;          // request sequencing: a stale response never paints
+  let timer = null;
+
+  function paint(html, { focusTitle = true } = {}) {
+    clearInterval(timer);
+    card.innerHTML = html;
+    if (focusTitle) card.querySelector(".dk-auth-card__title")?.focus();
+  }
+
+  function head(title, lede, { iconHtml = "", status = false } = {}) {
+    return `<div class="dk-auth-card__head"${status ? ' role="status"' : ""}>
+      <h1 class="dk-auth-card__title" id="card-title" tabindex="-1">${iconHtml}${title}</h1>
+      <p class="dk-auth-card__lede">${lede}</p></div>`;
+  }
+
+  function renderEnter({ value = "", prefilled = false, error = "" } = {}) {
+    paint(`${head("Authorize a device", `${APP} CLI asked to sign in as you. Enter the code shown in your terminal.`)}
+      <form class="dk-auth-card__body" id="enter" novalidate>
+        <div>
+          <label class="dk-label" for="device-code">Device code</label>
+          <input class="dk-input dk-code-input" id="device-code" name="code" placeholder="XXXX-XXXX"
+            autocomplete="off" autocapitalize="characters" spellcheck="false" inputmode="text" enterkeyhint="go"
+            aria-describedby="code-hint code-error" value="${esc(value)}">
+          <p class="dk-hint" id="code-hint"${prefilled ? "" : " hidden"}>Check that this matches your terminal exactly.</p>
+          <p class="dk-field-error" id="code-error" role="alert"${error ? "" : " hidden"}>${esc(error)}</p>
+        </div>
+        <div class="dk-auth-card__actions"><button class="dk-button dk-button--primary dk-button--lg" type="submit" id="continue">Continue</button></div>
+      </form>`, { focusTitle: prefilled });
+    const input = card.querySelector("#device-code");
+    const button = card.querySelector("#continue");
+    const errorEl = card.querySelector("#code-error");
+    let result = normalizeUserCode(value);
+    const showError = (message) => {
+      errorEl.textContent = message;
+      errorEl.hidden = !message;
+      input.setAttribute("aria-invalid", String(Boolean(message)));
+    };
+    input.addEventListener("dk-code-change", (e) => {
+      result = e.detail;
+      button.disabled = !result.ok;
+      seq++; // an edit cancels any in-flight lookup
+      button.textContent = "Continue";
+      button.removeAttribute("aria-busy");
+      // Only "too long" / invalid show while typing; "too short" waits for submit.
+      showError(result.error === "too_long" || result.error === "invalid_char" ? describeUserCodeError(result) : "");
+    });
+    bindCodeInput(input);
+    if (error) input.setAttribute("aria-invalid", "true");
+    button.disabled = !result.ok;
+    if (!prefilled && !error) input.focus();
+    card.querySelector("#enter").addEventListener("submit", async (event) => {
+      event.preventDefault();
+      if (!result.ok) { showError(describeUserCodeError(result)); input.focus(); return; }
+      const mine = ++seq;
+      button.disabled = true;
+      button.textContent = "Checking…";
+      button.setAttribute("aria-busy", "true");
+      const res = await api.pending(result.code);
+      if (mine !== seq) return;
+      if (res.status === 200) renderReview(result.display, res.body);
+      else renderError("notfound");
+    });
+  }
+
+  function renderReview(display, g) {
+    const offset = Date.now() - g.now; // server clock → local
+    const started = new Date(g.created_at);
+    const warn = g.same_network === false;
+    paint(`${head("Authorize this device?", `It will be able to act as <strong>grace@datatalks.club</strong> in ${APP} for 90 days, until you sign it out.`)}
+      <div class="dk-auth-card__body">
+        <dl class="dk-dl">
+          <dt>Code</dt><dd class="dk-mono">${esc(display)}</dd>
+          <dt>Machine</dt><dd><span class="dk-mono">${esc(g.label)}</span><span class="dk-dl__note">reported by the machine</span></dd>
+          <dt>Requested from</dt><dd class="dk-mono">${esc(g.request_ip)}</dd>
+          <dt>Started</dt><dd class="dk-mono">${started.toLocaleTimeString([], { hour: "2-digit", minute: "2-digit" })} · 2 min ago</dd>
+          <dt>Expires in</dt><dd class="dk-mono" id="expires"></dd>
+        </dl>
+        ${warn ? `<div class="dk-callout dk-callout--warning" id="net-warning">
+          ${icon("i-alert", "dk-callout__icon")}
+          <div class="dk-callout__body">
+            <span class="dk-callout__title">This request came from a different network.</span>
+            <span>Only continue if you started this login yourself on that machine.</span>
+            <label class="dk-check"><input type="checkbox" id="ack"> I started this login on that machine</label>
+          </div></div>` : ""}
+        <div class="dk-auth-card__actions">
+          <button class="dk-button dk-button--secondary dk-button--lg" type="button" id="deny">Deny</button>
+          <button class="dk-button dk-button--primary dk-button--lg" type="button" id="approve"${warn ? ' disabled aria-describedby="net-warning"' : ""}>Authorize</button>
+        </div>
+      </div>
+      <div class="dk-auth-card__foot"><span>Didn't start this? Deny it. Nothing is shared.</span><span>Wrong account? <a href="#">Switch account</a></span></div>`);
+    const expires = card.querySelector("#expires");
+    let announced = false;
+    const tick = () => {
+      const left = Math.max(0, Math.round((g.expires_at - (Date.now() - offset)) / 1000));
+      expires.textContent = `${Math.floor(left / 60)}:${String(left % 60).padStart(2, "0")}`;
+      if (left <= 60 && !announced) { announced = true; expires.insertAdjacentHTML("beforeend", ' <span class="dk-badge dk-badge--warning">ending</span>'); }
+      if (left === 0) renderError("expired");
+    };
+    tick();
+    timer = setInterval(tick, 1000);
+    const approve = card.querySelector("#approve");
+    const deny = card.querySelector("#deny");
+    card.querySelector("#ack")?.addEventListener("change", (e) => { approve.disabled = !e.target.checked; });
+    const decide = async (yes) => {
+      approve.disabled = deny.disabled = true;
+      (yes ? approve : deny).textContent = yes ? "Authorizing…" : "Denying…";
+      const res = await api.approve(display, yes);
+      renderResult(res.body.status);
+    };
+    approve.addEventListener("click", () => decide(true));
+    deny.addEventListener("click", () => decide(false));
+  }
+
+  function renderResult(status) {
+    if (status === "approved") {
+      paint(`${head("Device authorized", "Return to your terminal. The CLI finishes signing in within a few seconds.", { iconHtml: icon("i-check-circle", "dk-auth-card__icon--success"), status: true })}
+        <div class="dk-auth-card__body">
+          <div class="dk-code-block"><pre><code>${CLI} logout</code></pre><button class="dk-button dk-button--secondary dk-button--sm" type="button" data-dk-copy>Copy</button></div>
+          <p class="dk-hint">Run this on that machine to sign it out.</p>
+        </div>
+        <div class="dk-auth-card__foot"><span><a href="#">Manage CLI sessions</a></span></div>`);
+    } else {
+      paint(head("Request denied", `Nothing was authorized and the code no longer works. If you meant to sign in, run <code>${CLI} login</code> again.`, { status: true }));
+    }
+  }
+
+  const ERRORS = {
+    notfound: ["Code not found", "danger", `This code is wrong, expired, or already used. Run <code>${CLI} login</code> again for a new one.`, "Enter another code"],
+    expired: ["Code expired", "danger", `Codes last 10 minutes. Run <code>${CLI} login</code> again for a new one.`, "Enter another code"],
+    ratelimited: ["Slow down", "warning", "Too many codes tried from this account. Wait a few minutes and try again.", "Try again"],
+    signin: ["Sign in to continue", "warning", `Sign in to ${APP} to authorize this device. You'll come back here with your code.`, "Sign in"],
+    network: ["Couldn't reach " + APP, "", "Check your connection and try again. Your code is still valid until it expires.", "Try again"],
+  };
+
+  function renderError(kind) {
+    const [title, tone, sentence, action] = ERRORS[kind];
+    paint(`${head(title, "")}
+      <div class="dk-auth-card__body">
+        <div class="dk-callout${tone ? ` dk-callout--${tone}` : ""}" role="alert"><div class="dk-callout__body"><span>${sentence}</span></div></div>
+        <div class="dk-auth-card__actions"><button class="dk-button dk-button--secondary dk-button--lg" type="button" id="recover">${action}</button></div>
+      </div>`);
+    card.querySelector(".dk-auth-card__lede").remove();
+    card.querySelector("#recover").addEventListener("click", () => renderEnter());
+    if (kind === "signin") document.getElementById("identity").textContent = "Not signed in";
+  }
+
+  // ?state= renders one state for screenshots; no state = the live mock flow.
+  // Try BCDF-GHJK (same network) or WXZB-CDFG (different network).
+  const state = params.get("state");
+  const prefill = params.get("code");
+  const sample = { label: "grace@build-box", request_ip: "203.0.113.7", now: Date.now(), created_at: Date.now() - 120000, expires_at: Date.now() + 461000 };
+  if (state === "enter-error") renderEnter({ value: "BCDF-GHJK-M", error: describeUserCodeError(normalizeUserCode("BCDFGHJKM")) });
+  else if (state === "review") renderReview("BCDF-GHJK", { ...sample, same_network: true });
+  else if (state === "review-warning") renderReview("WXZB-CDFG", { ...sample, label: "grace@unknown-host", request_ip: "198.51.100.23", same_network: false });
+  else if (state === "approved" || state === "denied") renderResult(state);
+  else if (state && ERRORS[state]) renderError(state);
+  else if (prefill) { renderEnter({ value: prefill, prefilled: true }); history.replaceState(null, "", location.pathname + (urlTheme ? `?theme=${urlTheme}` : "")); }
+  else renderEnter();
+</script>
+<script src="dist/shell.js"></script>
+</body>
+</html>

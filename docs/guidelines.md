@@ -9,7 +9,10 @@ and why. Examples use the `.dk-*` components from `css/components.css`.
   Between cards/sections: `space-4` to `space-6`. Page gutter: `space-6`.
 - Page content maxes out at `--dk-size-content-max` and centers; dense
   operational screens may use the full width when the data needs it.
-- Sidebars use `--dk-size-sidebar`. Control heights: `sm` 28 (toolbars, table
+- Shell widths: `--dk-size-sidebar` (240), `--dk-size-rail` (56),
+  `--dk-size-topbar` (48); popovers `--dk-size-menu` (256) and
+  `--dk-size-panel` (384); reading/queue surfaces `--dk-size-measure` (896).
+  Control heights: `sm` 28 (toolbars, table
   rows), `md` 34 (default), `lg` 40 (page-level actions). Never below 44px
   touch targets on anything usable from a phone.
 

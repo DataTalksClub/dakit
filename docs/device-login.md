@@ -115,9 +115,11 @@ Check that this matches your terminal exactly.     (only when prefilled)
   history.
 - **Continue** (primary, spans both columns). It's disabled until
   `normalizeUserCode` returns `ok`. Pressing Enter in the field submits.
-- Client-side errors show under the field (`.dk-field__error`,
+- Client-side errors show under the field (`.dk-field-error`,
   `role="alert"`, `--dk-danger-text`, `--dk-text-sm`) and set
-  `aria-invalid="true"`:
+  `aria-invalid="true"`. The field's border stays neutral. Too long and
+  invalid characters show while typing; too short waits for Continue.
+  `describeUserCodeError()` returns these sentences:
   - Too short: "Codes have 8 characters. This one has 6."
   - Too long: "Codes have 8 characters. This one has 9. Check for an
     extra character." The full input stays visible.
@@ -247,6 +249,9 @@ export function normalizeUserCode(raw, { alphabet = USER_CODE_ALPHABET } = {});
 // formatUserCode("bcdfghjkx") === "BCDF-GHJK-X"
 export function formatUserCode(raw);
 
+// The §4.1 sentence for a failed result ("" for ok or empty).
+export function describeUserCodeError(result, { length } = {});
+
 // Optional: wires an <input> — formats on input while preserving the caret
 // position relative to non-separator characters, handles paste, and
 // dispatches "dk-code-change" with the normalizeUserCode result.
@@ -291,6 +296,10 @@ needs it. Until then, it stays a recipe in this file.
 
 ## 9. Showcase
 
-`showcase-device.html` renders every state in §4, both themes, at 1440 and
-390. That's Enter (empty, prefilled, each client error), Review (plain and
-with the different-network warning), Approved, Denied, and each error row.
+`showcase-device.html` runs the whole flow against a mock API. Try
+`BCDF-GHJK` (same network) or `WXZB-CDFG` (different network, acknowledgement
+required), or open it with `?code=bcdfghjk` for the prefill path. `?state=`
+renders one state for screenshots: `enter-error`, `review`, `review-warning`,
+`approved`, `denied`, `notfound`, `expired`, `ratelimited`, `signin`,
+`network`. Its render functions are the reference markup for app pages. The
+Copy button on the Approved state uses `dist/shell.js` (`data-dk-copy`).

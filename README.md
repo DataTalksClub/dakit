@@ -47,12 +47,17 @@ tokens/semantic.json       light-theme roles (bg, text, border, accent, status�
 tokens/themes/dark.json    dark-theme remaps of the same roles
 tokens/contrast.json       WCAG pairs the build verifies in both themes
 css/base.css               reset + element defaults
-css/components.css         .dk-* components (buttons, fields, cards, chips, tables)
+css/components.css         .dk-* components (buttons, fields, cards, chips, tables, callouts, menus, auth card…)
+css/shell.css              app shell: sidebar, icon rail, topbar, drawer, account menu, notifications
 js/dialogs.js              click-outside dismissal for <dialog> (copied to dist/ verbatim)
+js/shell.js                shell behaviour: collapse, drawer, popovers, counts, theme, copy
+js/device-code.js          device-login code normalize/format (ES module, never truncates)
 build.mjs                  tokens → dist/; validates aliases, dark coverage, contrast
-dist/                      generated: dakit.css (bundle), tokens.css, tokens.js, dialogs.js
+dist/                      generated: dakit.css (bundle), tokens.css, tokens.js, dialogs.js, shell.js, device-code.js
 fonts/                     self-hosted Inter + IBM Plex Mono (SIL OFL)
 showcase.html              living style guide — open after building
+showcase-shell.html        app shell in every state (?state=, ?variant=topbar)
+showcase-device.html       device-login page, live mock flow + every state
 docs/                      principles, token model, usage guidelines, adoption maps
 ```
 

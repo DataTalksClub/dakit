@@ -155,6 +155,11 @@ export const primitives = {
   "--dk-size-control-md": "34px",
   "--dk-size-control-lg": "40px",
   "--dk-size-touch": "44px",
-  "--dk-size-sidebar": "268px",
+  "--dk-size-sidebar": "240px",
+  "--dk-size-rail": "56px",
+  "--dk-size-topbar": "48px",
+  "--dk-size-menu": "256px",
+  "--dk-size-panel": "384px",
+  "--dk-size-measure": "896px",
   "--dk-size-content-max": "1120px"
 };

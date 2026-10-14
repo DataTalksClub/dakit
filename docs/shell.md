@@ -109,6 +109,9 @@ All values below are on the 4px grid. Token changes land in phase B through
 There are no new colour roles. Everything uses existing roles and existing
 contrast pairs (`accent-default` / `text-on-accent` for the count pill).
 
+Other new classes: `.dk-skip-link`, `.dk-search`, `.dk-field-error`
+(field-level error text), `.dk-skeleton` (loading block).
+
 Fixed component dimensions (not tokens, all on the grid): row heights 32/36px,
 icon 20px (nav) or 16px (menus), avatar 24/28/36px, count pill 16px tall.
 Z-order: popovers 40, scrim 45, drawer 50, mobile sheets 60.
@@ -164,8 +167,8 @@ and dapier designer. A 240px column for two links is waste.
 - On the right (`margin-left: auto`) are the bell, then an avatar-only
   account trigger (`.dk-account-trigger--compact`, 32×32). Popovers drop
   below the trigger and align to the right edge: `top: calc(var(--dk-size-topbar) + var(--dk-space-1)); right: var(--dk-space-4)`.
-- At ≤820px it stays a bar. The nav links move into a menu behind `☰` once
-  they no longer fit.
+- At ≤820px it stays a bar. Two or three links fit at 390px; if they don't,
+  the link row scrolls horizontally (`.dk-shell__nav`). There's no drawer.
 
 ---
 
@@ -207,7 +210,8 @@ text field.
 - `.dk-nav-group` is a `display: grid; gap: var(--dk-space-1)` container
   labelled by its `.dk-nav-group__label` (via `aria-labelledby`). The label
   is `--dk-text-xs`, semibold, uppercase, `letter-spacing: 0.06em`,
-  `--dk-text-faint`, with `padding: 0 var(--dk-space-2); height: 24px;`
+  `--dk-text-muted` (faint text fails AA on the sidebar's `--dk-bg-muted`, so
+  faint is for surfaces only), with `padding: 0 var(--dk-space-2); height: 24px;`
   aligned to the end. Use groups only with 6 or more items. Below that,
   one unlabelled group.
 - `.dk-nav-item` is an `<a>` (or a `<button>` for in-app surfaces):
@@ -359,26 +363,33 @@ using the `.dk-menu` surface with `padding: 0` and a flex column.
 
 - **Head** (`__head`) uses `height: 44px; padding: 0 var(--dk-space-2) 0 var(--dk-space-4); border-bottom: 1px solid var(--dk-border-default)`,
   with no grey band. The title is `h2`, `--dk-text-md`, semibold.
-  "Mark all read" is a quiet `.dk-button--sm` (ghost) that is `hidden`
-  when nothing is unread.
+  "Mark all read" is a `.dk-button--secondary.dk-button--sm` that is
+  `hidden` when nothing is unread. On touch the head grows to 52px so the 44px
+  button keeps a 4px margin.
 - **Body** (`__body`) has `overflow-y: auto`. Day labels (`Today`,
   `Yesterday`, `Earlier`) are `.dk-nav-group__label` style, sticky, on
   `--dk-bg-surface`.
 - **Row** (`.dk-notif-item`): `display: grid; grid-template-columns: 8px minmax(0, 1fr) auto; column-gap: var(--dk-space-3); padding: var(--dk-space-3) var(--dk-space-4); border-top: 1px solid var(--dk-border-default);`
-  (the first row has no border). The whole row is one `<a>` to the item.
-  Hover is `--dk-bg-hover`.
-  - Column 1 is the unread marker. It's a `.dk-dot--info` aligned with the
-    first text line (`align-self: start; margin-top: var(--dk-space-2)`,
-    which is grid-aligned and needs no inline offset), plus
-    `<span class="dk-visually-hidden">Unread:</span>`. On read rows it's empty.
-  - Column 2 holds the title (`--dk-text-md`: semibold `--dk-text-heading`
-    when unread, medium `--dk-text-primary` when read) and one line of
-    context (`--dk-text-sm` muted, ellipsis).
-  - Column 3 holds the relative time (mono `--dk-text-xs` faint, with a
-    `<time datetime>` whose `title` is the absolute time). Under it sits a
-    24×24 **Mark read** icon button. It shows on row hover or focus-within,
-    and always shows on `(pointer: coarse)`.
-  - Activating a row marks it read and navigates. Per-row inline actions
+  (the first row and each row after a day label have no border). Hover is
+  `--dk-bg-hover`.
+  - Column 1 (`__marker`) is one line tall (`height: 1lh`), so the
+    `.dk-dot--info` centres on the title line with no offsets. It holds the
+    dot plus `<span class="dk-visually-hidden">Unread:</span>`. On read rows
+    it's empty.
+  - Column 2 (`__main`) holds the title link (`.dk-notif-item__link`,
+    `--dk-text-md`: semibold `--dk-text-heading` when unread, medium
+    `--dk-text-primary` when read) and one line of context (`__desc`,
+    `--dk-text-sm` muted, ellipsis). The link's `::after` covers the whole
+    row, so the row is one click target without nesting a button inside an
+    `<a>`. Its focus ring is drawn on the row (`:has(:focus-visible)`).
+  - Column 3 (`__side`) holds the relative time (`__time`, mono
+    `--dk-text-xs` faint, `<time datetime>` with the absolute time in
+    `title`). On unread rows a 24×24 **Mark read** icon button
+    (`__read`, `aria-label="Mark read: <title>"`) shares the same grid cell:
+    on row hover or focus-within the button replaces the time, so read and
+    unread rows are the same height. On `(pointer: coarse)` both show,
+    stacked.
+  - Activating the row marks it read and navigates. Per-row inline actions
     aren't allowed; actions happen on the item's page.
 - **States**: loading shows three skeleton rows (`--dk-bg-hover` blocks).
   Error shows a `.dk-callout--danger` inside the body with "Couldn't load
@@ -437,7 +448,7 @@ borders or fill only.
 |---|---|
 | `.dk-icon-button` | 32×32 (`--sm` 24×24), `--dk-radius-md`, transparent, icon `--dk-text-muted`. Hover and `[aria-expanded="true"]`: `--dk-bg-hover` + `--dk-text-primary`. It always has an `aria-label`. |
 | `.dk-callout` (+ `--info/--success/--warning/--danger`) | Neutral: `--dk-bg-muted` + 1px `--dk-border-default`. Status: tinted `--dk-*-bg` fill, `--dk-*-text`, and `border-color: transparent`. `display: flex; gap: var(--dk-space-3); padding: var(--dk-space-3) var(--dk-space-4); border-radius: var(--dk-radius-md); font-size: var(--dk-text-md)`. Slots: optional 16px `__icon`, `__body` (`__title` semibold + text), `__actions` (end). `role="status"` or `role="alert"` is set by the app. |
-| `.dk-stat-strip` / `.dk-stat` | One container: 1px `--dk-border-default`, `--dk-radius-md`, `overflow: hidden`. Inside, `display: grid; grid-template-columns: repeat(auto-fit, minmax(160px, 1fr)); gap: 1px; background: var(--dk-border-default)`; the 1px gap shows the hairlines with no negative margins. `.dk-stat` has a `--dk-bg-surface` background and `padding: var(--dk-space-3) var(--dk-space-4)`. `__label` is `--dk-text-sm` muted. `__value` is mono `--dk-text-xl` medium, tabular, heading colour. `__meta` is `--dk-text-xs` faint. Status is shown with a `.dk-badge` in `__meta`, never a coloured value. |
+| `.dk-stat-strip` / `.dk-stat` | One container: 1px `--dk-border-default`, `--dk-radius-md`, `--dk-bg-surface`, `overflow: hidden`, `display: grid; grid-template-columns: repeat(auto-fit, minmax(160px, 1fr))`. Each `.dk-stat` (`padding: var(--dk-space-3) var(--dk-space-4)`, transparent) draws neutral 1px hairlines on its right and bottom edges (`box-shadow: 1px 0 0 …, 0 1px 0 …` in `--dk-border-default`). The strip clips the outer ones, so a short last row leaves plain surface. There are no negative margins and no filled gaps. `__label` is `--dk-text-sm` muted. `__value` is mono `--dk-text-xl` medium, tabular, heading colour. `__meta` is `--dk-text-xs` faint. Status is shown with a `.dk-badge` in `__meta`, never a coloured value. |
 | `.dk-dl` | `display: grid; grid-template-columns: minmax(112px, max-content) minmax(0, 1fr); gap: var(--dk-space-2) var(--dk-space-4); margin: 0`. `dt` is `--dk-text-sm` muted. `dd` is `--dk-text-md`, `overflow-wrap: anywhere`, and gets `.dk-mono` for IDs, IPs and times. `--stacked` uses one column, with `dt` above `dd`. `--divided` puts a 1px hairline between pairs (`padding-block: var(--dk-space-2)`). |
 | `.dk-empty` | Centred grid, `gap: var(--dk-space-2); padding: var(--dk-space-8) var(--dk-space-6)`. `__title` is `--dk-text-body` semibold heading. `__desc` is `--dk-text-md` muted, `max-width: 44ch`, and says why it's empty and what to do. `__actions`: one safe next action. No illustration. `--compact` uses `padding: var(--dk-space-6) var(--dk-space-4)`. |
 | `.dk-switch` | A `button[role="switch"][aria-checked]` (or a span inside such a row). Track 32×20, `--dk-radius-full`, 1px `--dk-border-strong`, `--dk-bg-inset`. Thumb 12px `--dk-text-muted`, `margin: var(--dk-space-1)`. Checked: the track is `--dk-accent-default` with `border-color: transparent`, and the thumb is `--dk-text-on-accent` at `translateX(12px)`. `transition: 120ms` under `prefers-reduced-motion: no-preference` only. |
@@ -466,9 +477,11 @@ navigation.**
     `aria-expanded`), the current page title (`--dk-text-body` semibold,
     ellipsis; the page `h1` remains in content), the 44×44 bell, and a
     44×44 avatar-only account trigger.
-  - The bell and account trigger in the bar are the **same elements**,
-    moved by CSS grid areas rather than duplicated, so ids and counts stay
-    singular. `shell.js` doesn't clone them.
+  - The bell and account trigger in the bar are the **same elements**.
+    `shell.js` moves them into `.dk-topbar__end` when the viewport crosses
+    820px, and back again, so ids, counts and listeners stay singular. They're
+    never cloned. Without JS they stay in the drawer, whose account row then
+    shows (`.dk-sidebar__foot` hides only when it's empty).
 - The drawer is `.dk-sidebar` at `position: fixed; inset: 0 auto 0 0; width: min(288px, 100vw - 48px); z-index: 50; box-shadow: var(--dk-shadow-overlay); transform: translateX(-100%); visibility: hidden;`.
   `[data-drawer="open"]` slides it in (180ms; instant under reduced motion).
   It always shows labels (collapse state is ignored) and has no account row
@@ -553,35 +566,45 @@ navigation.**
 ```
 
 Popovers are siblings of the sidebar, not children, so `overflow` on the
-nav never clips them. The mobile bar places the bell and account trigger
-through grid areas (§10).
+nav never clips them. Other markup hooks: `.dk-topbar__end` (the mobile slot
+the triggers move into), `.dk-sidebar__close` (drawer close, shown only on
+mobile), `.dk-search` + `.dk-search__rail[data-dk-search-expand]` (the field,
+and its icon form in the rail). `data-dk-autofocus` marks the element a
+popover focuses on open, and `data-dk-count="n"` on a `.dk-count` is applied
+through `setCount` at init. Leave `data-app` off a demo or test shell and the
+collapse state isn't persisted. The full working markup is
+`showcase-shell.html`.
 
 ### 12.2 `js/shell.js` → `dist/shell.js`
 
-The file is ESM and also works as a plain `<script>`, with an idempotent
-global guard like `dialogs.js`. Listeners are delegated on `document`, so
-markup added later works without re-init.
+The file is a classic script with an idempotent global guard, like
+`dialogs.js`. Load it once at the end of `<body>` (or `import "dakit/dist/shell.js"`
+for its side effects). Listeners are delegated on `document`, so markup added
+later works without re-init.
 
 | Attribute | Behaviour |
 |---|---|
-| `.dk-shell[data-app]` | Namespaces the persisted collapse state: `localStorage["dk-sidebar:<app>"] = "collapsed" \| "expanded"`. It's read on init before first paint. Apps can also set `data-sidebar` server-side. |
+| `.dk-shell[data-app]` | Namespaces the persisted collapse state: `localStorage["dk-sidebar:<app>"] = "collapsed" \| "expanded"`. It's applied on init. Apps can also set `data-sidebar` server-side. |
 | `[data-dk-sidebar-toggle]` | Toggles `data-sidebar`, updates the label and `aria-expanded`, persists the state. |
-| `[data-dk-drawer-toggle]` / `[data-dk-drawer-close]` | Mobile drawer: scrim, `inert`, focus trap, Esc, focus return. |
-| `[data-dk-popover-trigger="<id>"]` + `[data-dk-popover]` | Open, close, single-open rule, positioning class for rail vs expanded vs mobile, outside click, Esc, focus in and return, arrow keys in `.dk-menu`. |
+| `[data-dk-drawer-toggle]` / `[data-dk-drawer-close]` | Mobile drawer: scrim, `inert`, focus trap, Esc, focus return. A nav link click closes it. |
+| `[data-dk-popover-trigger="<id>"]` + `[data-dk-popover]` | Open, close, single-open rule, outside click, Esc, focus in and return, closing on Tab-out, arrow keys in `.dk-menu`. Position comes from CSS (expanded, rail, topbar, mobile). |
 | `[data-dk-theme-toggle]` | Flips `html[data-theme]`, syncs `aria-checked`, persists `localStorage["dakit-theme"]` (the README boot-script key). |
 | `[data-dk-copy="<selector>"]` | Copies the target's `textContent` (or the nearest `.dk-code-block code`), handles the label swap and the live announcement. |
-| `.dk-nav-item` in the rail | Tooltip on hover and focus. |
+| `[data-dk-search-expand]` | In the rail: expands the sidebar and focuses `.dk-search input`. |
+| `.dk-nav-item` and rail controls | Tooltip on hover and keyboard focus while collapsed. |
+| `?` key | Dispatches `dk:shortcuts` on `document`. The app opens its own help dialog. |
 
 Every storage access is wrapped in `try/catch`. Blocked storage means the
 defaults are used, never an exception.
 
 ```js
-export function initShell(root = document): void;           // auto-runs on DOMContentLoaded
-export function setSidebar(shell, state /* "collapsed"|"expanded" */): void;
-export function openPopover(id, { trigger }?): void;
-export function closePopovers({ restoreFocus = true }?): void;
-export function setCount(el /* .dk-count */, n: number): void;  // hidden at ≤0, 99+, updates owner aria-label
-export function announce(message: string): void;               // #dk-live; the caller applies the once-a-minute throttle from §7.3
+dakitShell.initShell(root = document);                 // runs automatically; call again for a new shell root
+dakitShell.setSidebar(shell, "collapsed" | "expanded");
+dakitShell.toggleDrawer(shell, open?);
+dakitShell.openPopover(id, { trigger }?);
+dakitShell.closePopovers({ restoreFocus = true }?);
+dakitShell.setCount(countEl, n);                        // hidden at ≤0, 99+, updates the owner's aria-label
+dakitShell.announce(message);                           // #dk-live; the caller applies the §7.3 throttle
 ```
 
 `setCount` updates the owning trigger's `aria-label` from

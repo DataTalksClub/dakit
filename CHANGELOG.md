@@ -14,6 +14,22 @@ in a minor version with migration notes.
 - Border checker CLI and build enforcement of neutral borders.
 - Cascade layers `dk.base` and `dk.components` in the built bundle.
 - Version and source commit stamps in every built file, plus JavaScript metadata exports.
+- App shell (`css/shell.css`, `dist/shell.js`; contract in `docs/shell.md`):
+  240px sidebar that collapses to a 56px icon rail with tooltips, topbar
+  variant for 2–3 destinations, mobile bar + modal drawer, account menu,
+  notification bell and panel (hidden at 0, `99+`), popovers that open beside
+  the sidebar, ⌘/Ctrl+B and `/` shortcuts.
+- Shared components: `dk-icon-button`, `dk-count`, `dk-kbd`, `dk-avatar`,
+  `dk-callout`, `dk-page-header`, `dk-section-header`, `dk-tabs`,
+  `dk-stat-strip`, `dk-dl`, `dk-empty`, `dk-switch`, `dk-menu`,
+  `dk-code-block` + `data-dk-copy`, `dk-field-error`, `dk-skeleton`, `dk-skip-link`.
+- Device login (`docs/device-login.md`): `dk-auth-page`, `dk-auth-card`,
+  `dk-code-input`, and `dist/device-code.js` (`normalizeUserCode`,
+  `formatUserCode`, `describeUserCodeError`, `bindCodeInput`).
+- Size tokens `size.rail` (56), `size.topbar` (48), `size.menu` (256),
+  `size.panel` (384), `size.measure` (896); contrast pairs for text on
+  `bg.muted`/`bg.hover`.
+- `showcase-shell.html` and `showcase-device.html`.
 
 ### Changed
 
@@ -21,6 +37,11 @@ in a minor version with migration notes.
   text or badges; keyboard focus outlines remain the sole exception.
 - Token files use W3C DTCG 2025.10 `$value`, `$type`, and `$description` syntax.
 - Native `color-scheme` is included for token-only consumers.
+- `size.sidebar` is 240px (was 268px).
+- The app shell recipe and account chrome in `docs/family.md` are superseded
+  by `docs/shell.md`: no utility rows in the sidebar, the bell sits in the
+  brand row, the account is the single bottom row, and collapse goes to an
+  icon rail instead of a blank strip. Operator page titles are 22px.
 
 ### Removed
 
