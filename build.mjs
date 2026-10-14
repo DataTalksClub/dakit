@@ -76,25 +76,19 @@ function resolveCompound(name, value) {
   });
 }
 
-function resolve(map, seen = new Set()) {
-  const out = {};
-  for (const [name, value] of Object.entries(map)) {
-    if (/\{[^{}]+\}/.test(value) && !/^\{[^{}]+\}$/.test(value)) {
-      out[name] = resolveCompound(name, value);
-      continue;
-    }
-    if (!/^\{.+\}$/.test(value)) {
-      out[name] = value;
-      continue;
-    }
-    if (seen.has(name)) throw new Error(`alias cycle at ${name}`);
-    seen.add(name);
+function resolve(map) {
+  // Each chain carries its own seen-set: a role that aliases another role
+  // resolves the same whether or not that role was already visited.
+  const lookup = (name, value, chain) => {
+    if (/\{[^{}]+\}/.test(value) && !/^\{[^{}]+\}$/.test(value)) return resolveCompound(name, value);
+    if (!/^\{.+\}$/.test(value)) return value;
+    if (chain.has(name)) throw new Error(`alias cycle at ${name}`);
     const ref = "--dk-" + value.slice(1, -1).replaceAll(".", "-");
     const target = prim[ref] ?? map[ref];
     if (target === undefined) throw new Error(`unresolved alias ${value} (used by ${name})`);
-    out[name] = /^\{.+\}$/.test(target) && !seen.has(ref) ? resolve({ [ref]: target }, seen)[ref] : target;
-  }
-  return out;
+    return lookup(ref, target, new Set(chain).add(name));
+  };
+  return Object.fromEntries(Object.entries(map).map(([name, value]) => [name, lookup(name, value, new Set())]));
 }
 
 const lightResolved = resolve(light);
