@@ -1,6 +1,6 @@
 {
   "name": "dakit",
-  "version": "0.1.0",
+  "version": "0.2.0",
   "description": "Shared design system for the internal tools (dapier, dataops, dataqna, relay): design tokens, base styles, components, guidelines.",
   "type": "module",
   "private": true,

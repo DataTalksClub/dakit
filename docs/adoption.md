@@ -152,3 +152,18 @@ Unlayered app CSS always wins over normal dakit declarations, regardless of
 selector specificity. Put product overrides in ordinary app CSS; there is no
 need to increase specificity or add `!important`. If an app uses its own
 layers, declare its layer after `dk.components`.
+
+## Versioning and deprecation
+
+Every `dist/` file starts with `/* dakit <version> <git short sha> */`.
+`tokens.js` exports `version` and `commit`; the plain-global build exposes the
+same metadata on `dakitTokens`. The commit identifies HEAD when the build ran
+(the source revision), rather than the later commit containing generated files.
+The package version may describe an unreleased entry until the release is tagged.
+
+When renaming a token, retain the old name as an alias for one minor version and
+mark it with DTCG `$deprecated: "Use <replacement>"`. Document the replacement
+in the changelog and remove the alias in the following minor while below 1.0
+(or the next major after 1.0). Removing a role or class and changing its meaning
+requires a migration note. The 0.2.0 accent-border removal is immediate policy
+enforcement: migrate those roles to neutral borders when updating.
