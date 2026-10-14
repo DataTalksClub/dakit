@@ -291,6 +291,46 @@ test('spinner: rotates normally, stands still with reduced motion; busy button h
   await page.close();
 });
 
+test('busy trigger keeps its accessible name after the spinner shows', async (t) => {
+  const page = await open(t, URL_);
+  if (!page) return;
+  await arm(page);
+  // Buttons label themselves three ways: bare text, an icon + a <span> label,
+  // and an icon button named by aria-label. All three must stay findable by
+  // role + name once the spinner has replaced the label on screen.
+  await page.evaluate(() => {
+    const row = document.createElement('div');
+    row.className = 'row';
+    row.innerHTML = '<button id="busy-span" class="dk-button dk-button--secondary" type="button">'
+      + '<svg width="16" height="16" viewBox="0 0 16 16" aria-hidden="true"><path d="M3 13h3l7-7-3-3-7 7z"/></svg>'
+      + '<span>Run now</span></button>'
+      + '<button id="busy-icon" class="dk-icon-button" type="button" aria-label="Edit run">'
+      + '<svg width="16" height="16" viewBox="0 0 16 16" aria-hidden="true"><path d="M3 13h3l7-7-3-3-7 7z"/></svg></button>';
+    document.getElementById('loading').append(row);
+  });
+  const size = (sel) => page.evaluate((s) => { const r = document.querySelector(s).getBoundingClientRect(); return [r.width, r.height]; }, sel);
+  const sizes = [await size(slow), await size('#busy-span'), await size('#busy-icon')];
+  await page.evaluate(() => {
+    window.__start('#loading [data-demo-load="1500"]');
+    for (const id of ['busy-span', 'busy-icon']) {
+      const b = document.getElementById(id);
+      b.setAttribute('aria-busy', 'true');
+      b.setAttribute('aria-disabled', 'true');
+    }
+  });
+  await page.waitForTimeout(300); // past --dk-loading-delay-busy: the spinner is up
+  for (const name of ['Open run (slow)', 'Run now', 'Edit run']) {
+    const button = page.getByRole('button', { name, exact: true });
+    assert.equal(await button.count(), 1, `"${name}" still resolves by role + name while busy`);
+    assert.equal(await button.getAttribute('aria-busy'), 'true');
+  }
+  assert.deepEqual([await size(slow), await size('#busy-span'), await size('#busy-icon')], sizes, 'busy triggers keep their size');
+  const hidden = await page.evaluate(() => [...document.querySelectorAll('#busy-span > *')].map((c) => getComputedStyle(c).opacity));
+  assert.deepEqual(hidden, ['0', '0'], 'the label and icon are hidden on screen only');
+  await page.evaluate(() => window.__ok({ name: 'nightly-sync' }));
+  await page.close();
+});
+
 test('no page errors', () => {
   assert.deepEqual(errors, []);
 });

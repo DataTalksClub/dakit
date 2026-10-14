@@ -310,7 +310,9 @@
   margin: auto;
 }
 @keyframes dk-busy-label { to { -webkit-text-fill-color: transparent; } }
-@keyframes dk-busy-child { to { visibility: hidden; } }
+/* Opacity, never visibility/display: a hidden child leaves the accessibility
+   tree, and a button labelled by a <span> would lose its accessible name. */
+@keyframes dk-busy-child { to { opacity: 0; } }
 
 /* The loading overlay is a modal <dialog class="dk-loading"> (padding 0, per
    the dialogs.js contract), so Escape and a backdrop click cancel the load. */

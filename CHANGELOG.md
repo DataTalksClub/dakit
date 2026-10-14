@@ -112,6 +112,13 @@ in a minor version with migration notes.
 
 ### Fixed
 
+- A busy `.dk-button` / `.dk-icon-button` whose label sits in a child
+  element (`<span>`, icon + text) kept its accessible name only until the
+  spinner showed: children were hidden with `visibility: hidden`, which
+  removed them from the accessibility tree, so `getByRole('button', { name })`
+  stopped resolving. Children now fade to `opacity: 0`; the name, size and
+  focus are unchanged while busy. Behaviour test covers bare text, icon +
+  `<span>`, and `aria-label` icon buttons.
 - A `.dk-tabs` placed directly in a `.dk-dialog__head` stays one row: the
   head's stacking rule for its title block no longer applies to the track.
 

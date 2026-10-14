@@ -41,8 +41,13 @@ progress cursor.
 
 Busy is **not** `disabled`. A disabled button drops keyboard focus to
 `<body>` and turns grey, which would flash on every fast load. A busy button
-keeps its colours and its focus, and its label stays in the accessibility
-tree.
+keeps its colours and its focus, and its accessible name never changes:
+bare label text goes transparent, and child elements (an icon, a `<span>`
+label) go to `opacity: 0`, never `visibility: hidden` or `display: none`,
+both of which would drop them from the accessibility tree. So
+`getByRole('button', { name: 'Save changes' })` still finds the trigger while
+the spinner shows. The spinner is a decorative `::before` with no text, so the
+name gains no "Loading" suffix; `aria-busy="true"` is what announces the state.
 
 ### Spinner: `.dk-spinner`
 
