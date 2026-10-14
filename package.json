@@ -7,7 +7,7 @@
   "scripts": {
     "build": "node build.mjs",
     "check-borders": "node scripts/check-borders.mjs css showcase.html",
-    "test": "node test/check-borders.test.mjs",
+    "test": "node test/check-borders.test.mjs && node --test test/sync.test.mjs",
     "watch": "node --watch-path=tokens --watch-path=css build.mjs"
   },
   "exports": {

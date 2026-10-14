@@ -8,6 +8,8 @@ in a minor version with migration notes.
 
 ### Added
 
+- Shared zero-dependency sync tool with font URL rewriting and a SHA-256 lock
+  for drift checks that work without the dakit checkout.
 - Border checker CLI and build enforcement of neutral borders.
 - Cascade layers `dk.base` and `dk.components` in the built bundle.
 - Version and source commit stamps in every built file, plus JavaScript metadata exports.

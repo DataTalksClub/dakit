@@ -167,3 +167,44 @@ in the changelog and remove the alias in the following minor while below 1.0
 (or the next major after 1.0). Removing a role or class and changing its meaning
 requires a migration note. The 0.2.0 accent-border removal is immediate policy
 enforcement: migrate those roles to neutral borders when updating.
+
+## Vendoring and drift checks
+
+Replace each app's `scripts/sync_dakit.sh` copy/sed logic with a single command
+(point `--dest` at the app's chosen vendored directory):
+
+```bash
+node "$HOME/git/dakit/scripts/sync.mjs" --dest path/to/vendor/dakit
+```
+
+The destination contains the dist files directly (`dakit.css`, `tokens.css`,
+`tokens.js`, etc.), a `fonts/` directory with the license, `check-borders.mjs`,
+`sync.mjs`, and `dakit.lock.json`. CSS font URLs are rewritten from
+`../fonts/` to `./fonts/` for this flat layout. Update app imports to match.
+The bundle already includes tokens; apps loading it do not need `tokens.css`
+as a second stylesheet. Sync builds from `dist/`, so run the dakit build first.
+
+Token-only consumers can select files; names may be space- or comma-separated:
+
+```bash
+node "$HOME/git/dakit/scripts/sync.mjs" --dest path/to/vendor/dakit --files tokens.css tokens.js
+node "$HOME/git/dakit/scripts/sync.mjs" --dest path/to/vendor/dakit --files dakit.css dialogs.js --fonts-dir assets/fonts
+```
+
+`--fonts-dir` chooses a font directory inside the destination. Fonts, license,
+and both tools are always included. No app-specific source CSS copies or `sed`
+steps are needed. The lock records the built version and source commit plus
+SHA-256 checksums of the delivered bytes, including rewritten CSS and tools.
+
+Run the vendored tool in app CI without a sibling dakit checkout:
+
+```bash
+node path/to/vendor/dakit/sync.mjs --check --dest path/to/vendor/dakit
+node path/to/vendor/dakit/check-borders.mjs path/to/app/styles
+```
+
+`--check` exits nonzero for changed or missing locked files. It verifies the
+recorded snapshot, not whether a newer release exists; commit the lock with
+vendored files and review both when upgrading. Additional app-owned files in
+the destination are ignored. A vendored tool supports checking; updating
+requires running the tool from the dakit checkout.
