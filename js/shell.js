@@ -56,8 +56,19 @@
       if (scrim) scrim.hidden = false;
       outside.forEach((el) => { el.inert = true; });
       toggles.forEach((t) => t.setAttribute("aria-expanded", "true"));
+      // The drawer's visibility flips through a transition (the slide, or the
+      // reduced-motion 0.01ms one from base.css), so on this frame it's still
+      // hidden and can't take focus. Focus as soon as the target is visible.
       const target = sidebar && (sidebar.querySelector('[aria-current="page"]') || focusables(sidebar)[0]);
-      requestAnimationFrame(() => target && target.focus());
+      let frames = 0;
+      const focusWhenVisible = () => {
+        if (shell.dataset.drawer !== "open" || !target) return;
+        // Check the target itself: under base.css's reduced-motion rule each
+        // element transitions its own inherited visibility.
+        if (getComputedStyle(target).visibility === "visible") target.focus();
+        else if (++frames < 30) requestAnimationFrame(focusWhenVisible);
+      };
+      focusWhenVisible();
     } else {
       if (shell.dataset.drawer !== "open") return false;
       delete shell.dataset.drawer;

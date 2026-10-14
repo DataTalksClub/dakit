@@ -59,6 +59,12 @@ async function open(t, path, viewport = { width: 1440, height: 900 }, extra = {}
   await page.goto(base + path);
   return page;
 }
+// Layout can trail a state change by a frame when the machine is busy (the
+// test runner runs files in parallel), so geometry is polled, not read once.
+async function settles(page, predicate, message, arg) {
+  const ok = await page.waitForFunction(predicate, arg, { timeout: 3000 }).then(() => true, () => false);
+  assert.ok(ok, message);
+}
 const focused = (page) => page.evaluate(() => {
   const el = document.activeElement;
   return { cls: el.className, text: el.textContent.trim().slice(0, 24), id: el.id, ring: el.matches(':focus-visible') };
@@ -128,15 +134,14 @@ test('rail: Ctrl+B collapses to 56px, popovers open beside it, / expands to sear
   await page.keyboard.press('Control+b');
   assert.equal(await page.getAttribute('.dk-shell', 'data-sidebar'), 'collapsed');
   assert.equal(await page.getAttribute('.dk-sidebar__toggle', 'aria-label'), 'Expand sidebar');
-  assert.equal(await page.evaluate(() => document.querySelector('.dk-sidebar').getBoundingClientRect().width), 56);
+  await settles(page, () => document.querySelector('.dk-sidebar').getBoundingClientRect().width === 56, 'rail is 56px');
   await page.click('.dk-account-trigger');
-  assert.equal(await page.evaluate(() => document.getElementById('dk-account-menu').getBoundingClientRect().left), 64);
+  await settles(page, () => document.getElementById('dk-account-menu').getBoundingClientRect().left === 64, 'menu opens beside the rail');
   await page.keyboard.press('Escape');
   await page.keyboard.press('/');
-  await page.waitForTimeout(50);
   assert.equal(await page.getAttribute('.dk-shell', 'data-sidebar'), 'expanded');
-  assert.equal(await page.evaluate(() => document.activeElement.type), 'search');
-  assert.equal(await page.evaluate(() => document.querySelector('.dk-sidebar').getBoundingClientRect().width), 240);
+  await settles(page, () => document.activeElement.type === 'search', '/ focuses search');
+  await settles(page, () => document.querySelector('.dk-sidebar').getBoundingClientRect().width === 240, 'sidebar back to 240px');
   await page.close();
 });
 
@@ -148,14 +153,14 @@ test('mobile: triggers move to the bar, drawer traps focus and returns it', asyn
   await page.click('[data-dk-drawer-toggle]');
   assert.equal(await page.getAttribute('.dk-shell', 'data-drawer'), 'open');
   assert.ok(await page.evaluate(() => document.querySelector('.dk-main').inert));
+  await settles(page, () => document.querySelector('.dk-sidebar').contains(document.activeElement), 'focus enters the drawer');
   for (let i = 0; i < 30; i++) await page.keyboard.press('Tab');
   assert.ok(await page.evaluate(() => document.querySelector('.dk-sidebar').contains(document.activeElement)));
   await page.keyboard.press('Escape');
   assert.equal(await page.getAttribute('.dk-shell', 'data-drawer'), null);
   assert.ok(await page.evaluate(() => document.activeElement.matches('[data-dk-drawer-toggle]')));
   await page.setViewportSize({ width: 1200, height: 800 });
-  await page.waitForTimeout(100);
-  assert.ok(await page.evaluate(() => !!document.querySelector('.dk-sidebar__head .dk-notif-trigger') && !!document.querySelector('.dk-sidebar__foot .dk-account-trigger')));
+  await settles(page, () => !!document.querySelector('.dk-sidebar__head .dk-notif-trigger') && !!document.querySelector('.dk-sidebar__foot .dk-account-trigger'), 'triggers move back on desktop');
   await page.close();
 });
 
