@@ -1,4 +1,4 @@
-/* dakit 0.2.0 a482f68 */
+/* dakit 0.2.0 3d12aa1 */
 /* dakit list–detail split (docs/list-detail.md): keyboard movement in the
    list, focus that follows the visible pane, and the optional resize grip.
    Classic script with an idempotent global guard, like shell.js. Listeners
@@ -95,8 +95,10 @@
     if (split) remember(split);
   });
 
-  // Apps re-render the list after a selection; if that drops focus to <body>,
-  // put it back on the selected row (or the detail heading on a phone).
+  // Apps re-render the list after a selection, sometimes more than once (a
+  // loading pass, then the data); whenever that drops focus to <body> within
+  // the next two seconds, put it back on the selected row (or the detail
+  // heading on a phone).
   var last = null;
   function remember(split) { last = { split: split, at: Date.now() }; }
   function rescue() {
@@ -104,7 +106,6 @@
     var active = document.activeElement;
     if (active && active !== document.body && document.contains(active)) return;
     var split = document.contains(last.split) ? last.split : document.querySelector(".dk-split");
-    last = null;
     if (!split) return;
     var target = phone.matches && split.getAttribute("data-view") === "detail" ? detailTarget(split) : selected(split);
     if (target) target.focus({ preventScroll: true });
