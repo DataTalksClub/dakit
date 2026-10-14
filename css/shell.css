@@ -398,6 +398,8 @@ button.dk-brand[aria-expanded="true"] { background: var(--dk-bg-hover); }
   .dk-notif-item__side > * { grid-area: auto; }
   .dk-notif-item__read { opacity: 1; }
   .dk-notif-item[data-unread="true"] .dk-notif-item__time { visibility: visible; }
+  /* Two lines so a trailing date ("Due 12 Oct") isn't what the ellipsis eats. */
+  .dk-notif-item__desc { display: -webkit-box; -webkit-box-orient: vertical; -webkit-line-clamp: 2; white-space: normal; }
 }
 
 /* --- topbar shell (2–3 destinations) ----------------------------------------------- */

@@ -379,7 +379,7 @@ using the `.dk-menu` surface with `padding: 0` and a flex column.
   - Column 2 (`__main`) holds the title link (`.dk-notif-item__link`,
     `--dk-text-md`: semibold `--dk-text-heading` when unread, medium
     `--dk-text-primary` when read) and one line of context (`__desc`,
-    `--dk-text-sm` muted, ellipsis). The link's `::after` covers the whole
+    `--dk-text-sm` muted, ellipsis; two lines on coarse pointers so a trailing date isn't cut). The link's `::after` covers the whole
     row, so the row is one click target without nesting a button inside an
     `<a>`. Its focus ring is drawn on the row (`:has(:focus-visible)`).
   - Column 3 (`__side`) holds the relative time (`__time`, mono
