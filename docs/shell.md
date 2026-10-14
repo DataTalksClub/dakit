@@ -265,8 +265,15 @@ The rail is the same DOM; only CSS changes. Every control is a centred
   The account row becomes a column with the avatar on top and the toggle
   at the very bottom, matching DOM and focus order
   (`flex-direction: column; height: auto; padding: var(--dk-space-2) 0`).
-  The nav scroll area hides its scrollbar in the rail (`scrollbar-width: none`;
-  wheel and keyboard scrolling still work), so nothing shifts.
+  The nav scroll area hides its scrollbar in the rail (`scrollbar-width: none`
+  plus `::-webkit-scrollbar { display: none }`; wheel and keyboard scrolling
+  still work), so icons stay centred in the 56px column. In the expanded
+  sidebar the scrollbar is thin and neutral, and `scrollbar-gutter` reserves
+  no space. Overflow is signalled by neutral scroll shadows (a
+  `background-attachment: local/scroll` gradient pair) at the top and bottom
+  of the nav, visible only while there is more content that way. Rail nav
+  gap is `--dk-space-1` so a typical nav fits a 900px-tall window; targets
+  stay 36px (44px on coarse pointers). Focus scrolls items into view natively.
 - The bell keeps its numeric `.dk-count` pill. Nav counts become dots.
 - Labels use `.dk-visually-hidden` (they're never removed), so accessible
   names don't change. `shell.js` shows a `.dk-tooltip` beside the item on
