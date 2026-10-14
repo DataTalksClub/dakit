@@ -51,13 +51,15 @@ css/components.css         .dk-* components (buttons, fields, cards, chips, tabl
 css/shell.css              app shell: sidebar, icon rail, topbar, drawer, account menu, notifications
 js/dialogs.js              click-outside dismissal for <dialog> (copied to dist/ verbatim)
 js/shell.js                shell behaviour: collapse, drawer, popovers, counts, theme, copy
+js/split.js                list–detail split: list keyboard, focus per pane, resize grip
 js/device-code.js          device-login code normalize/format (ES module, never truncates)
 build.mjs                  tokens → dist/; validates aliases, dark coverage, contrast
-dist/                      generated: dakit.css (bundle), tokens.css, tokens.js, dialogs.js, shell.js, device-code.js
+dist/                      generated: dakit.css (bundle), tokens.css, tokens.js, dialogs.js, shell.js, split.js, device-code.js
 fonts/                     self-hosted Inter + IBM Plex Mono (SIL OFL)
 showcase.html              living style guide — open after building
 showcase-shell.html        app shell in every state (?state=, ?variant=topbar)
 showcase-device.html       device-login page, live mock flow + every state
+showcase-split.html        list–detail split (?run=, ?state=scrolled, ?empty=1)
 docs/                      principles, token model, usage guidelines, adoption maps
 ```
 

@@ -8,6 +8,13 @@ in a minor version with migration notes.
 
 ### Added
 
+- List–detail split `.dk-split` (`docs/list-detail.md`, `dist/split.js`,
+  `showcase-split.html`): list and detail panes fill the content area and
+  scroll independently (the page doesn't), header bands stay put, selection
+  is the accent-soft fill + accent name, URL-driven one-pane-at-a-time phone
+  layout with Back, ↑/↓/Home/End in the list, focus that follows the visible
+  pane, optional persisted resize grip. New token `--dk-size-split-list`
+  (320px); `.dk-fill` carries the height through app wrappers.
 - Shared zero-dependency sync tool with font URL rewriting and a SHA-256 lock
   for drift checks that work without the dakit checkout.
 - Playwright showcase screenshot script for both themes at desktop and mobile sizes.

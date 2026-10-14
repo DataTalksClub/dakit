@@ -104,6 +104,7 @@ All values below are on the 4px grid. Token changes land in phase B through
 | `--dk-size-menu` | 256px | new | account menu, brand switcher |
 | `--dk-size-panel` | 384px | new | notification panel |
 | `--dk-size-measure` | 896px | new | queue/reading/form surfaces |
+| `--dk-size-split-list` | 320px | new | list pane of `.dk-split` (`docs/list-detail.md`) |
 | `--dk-size-content-max` | 1120px | — | default content width |
 
 There are no new colour roles. Everything uses existing roles and existing
@@ -470,6 +471,7 @@ borders or fill only.
 | inline `code` | Mono chip (`--dk-bg-inset`). `:not(pre) > code` is `white-space: nowrap`, so an inline command such as `dataops login` never splits across lines. Long-form prose readers that may hold long code spans opt back into wrapping in their own reader styles. |
 | `.dk-code-block` + `.dk-copy-button` | Block: `display: flex; align-items: flex-start; gap: var(--dk-space-3); padding: var(--dk-space-2) var(--dk-space-3); background: var(--dk-bg-inset); border: 1px solid var(--dk-border-default); border-radius: var(--dk-radius-md)`. `<pre><code>` mono `--dk-text-sm`, `flex: 1; min-width: 0; overflow-x: auto; white-space: pre`. Never truncate or ellipsize code or secrets. Use exactly `<div class="dk-code-block"><pre><code>…</code></pre><button …>Copy</button></div>`, so the code takes the free width and Copy sits at the far edge. On touch, `pre` gets `padding-block: var(--dk-space-3)`, so the first line centres on the 44px button. Copy button: `.dk-button--sm` secondary with `data-dk-copy`, labelled "Copy". On success its label reads "Copied" for 1.5s (the button width doesn't change: CSS reserves the width of "Copied" before the first click with an invisible zero-height line) and `#dk-live` announces "Copied". On failure it reads "Press Ctrl+C" and selects the text. |
 | `.dk-tooltip` | §5.5: rail labels only. |
+| `.dk-split` | List–detail view: list pane + detail pane that fill the content area and scroll independently, URL-driven selection, one pane at a time on phones. Contract in `docs/list-detail.md`; behaviour in `dist/split.js`. |
 
 ## 10. Mobile (≤ 820px)
 

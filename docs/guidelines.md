@@ -11,7 +11,9 @@ and why. Examples use the `.dk-*` components from `css/components.css`.
   operational screens may use the full width when the data needs it.
 - Shell widths: `--dk-size-sidebar` (240), `--dk-size-rail` (56),
   `--dk-size-topbar` (48); popovers `--dk-size-menu` (256) and
-  `--dk-size-panel` (384); reading/queue surfaces `--dk-size-measure` (896).
+  `--dk-size-panel` (384); reading/queue surfaces `--dk-size-measure` (896);
+  the list pane of a list–detail split `--dk-size-split-list` (320, see
+  `docs/list-detail.md`).
   Control heights: `sm` 28 (toolbars, table
   rows), `md` 34 (default), `lg` 40 (page-level actions). Never below 44px
   touch targets on anything usable from a phone.

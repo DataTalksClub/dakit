@@ -118,6 +118,7 @@
     "topbar": { "$value": "48px" },
     "menu": { "$value": "256px" },
     "panel": { "$value": "384px" },
+    "split-list": { "$value": "320px" },
     "measure": { "$value": "896px" },
     "content-max": { "$value": "1120px" }
   }

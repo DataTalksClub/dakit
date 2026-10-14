@@ -21,6 +21,8 @@
     { "fg": "text.on-accent", "bg": "accent.default", "min": 4.5 },
     { "fg": "accent.default", "bg": "bg.page", "min": 4.5 },
     { "fg": "accent.default", "bg": "accent.soft", "min": 4.5 },
+    { "fg": "text.primary", "bg": "accent.soft", "min": 4.5 },
+    { "fg": "text.muted", "bg": "accent.soft", "min": 4.5 },
     { "fg": "text.on-deep", "bg": "accent.deep", "min": 4.5 },
     { "fg": "text.on-deep", "bg": "accent.deep-hover", "min": 4.5 },
     { "fg": "text.on-deep", "bg": "accent.deeper", "min": 4.5 },

@@ -1,0 +1,274 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>dakit — list–detail split</title>
+<script>
+  const params = new URLSearchParams(location.search);
+  const urlTheme = params.get("theme");
+  let stored = null;
+  try { stored = localStorage.getItem("dakit-theme"); } catch {}
+  const theme = urlTheme === "dark" || urlTheme === "light" ? urlTheme : stored;
+  document.documentElement.dataset.theme =
+    theme === "dark" || theme === "light" ? theme : (matchMedia("(prefers-color-scheme: dark)").matches ? "dark" : "light");
+</script>
+<link rel="stylesheet" href="dist/dakit.css">
+<style>
+  /* Demo-only: the app's own detail content. */
+  .demo-detail { display: grid; gap: var(--dk-gap-section); max-width: var(--dk-size-measure); }
+  .demo-detail p { margin: 0; color: var(--dk-text-primary); font-size: var(--dk-text-body); line-height: var(--dk-leading-normal); }
+  .demo-log { margin: 0; padding: var(--dk-space-3); border-radius: var(--dk-radius-md); background: var(--dk-bg-inset); font-family: var(--dk-font-mono); font-size: var(--dk-text-sm); white-space: pre-wrap; }
+  .demo-when { margin-left: auto; font-family: var(--dk-font-mono); font-variant-numeric: tabular-nums; }
+</style>
+</head>
+<body>
+<svg width="0" height="0" style="position: absolute" aria-hidden="true">
+  <defs>
+    <g id="i-home"><path d="m3 10 9-7 9 7v10a2 2 0 0 1-2 2h-4v-7H9v7H5a2 2 0 0 1-2-2Z"/></g>
+    <g id="i-inbox"><path d="M22 12h-6l-2 3h-4l-2-3H2"/><path d="M5.45 5.11 2 12v6a2 2 0 0 0 2 2h16a2 2 0 0 0 2-2v-6l-3.45-6.89A2 2 0 0 0 16.76 4H7.24a2 2 0 0 0-1.79 1.11Z"/></g>
+    <g id="i-tasks"><path d="m9 11 3 3L22 4"/><path d="M21 12v7a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h11"/></g>
+    <g id="i-cards"><rect x="3" y="3" width="7" height="9" rx="1"/><rect x="14" y="3" width="7" height="5" rx="1"/><rect x="14" y="12" width="7" height="9" rx="1"/><rect x="3" y="16" width="7" height="5" rx="1"/></g>
+    <g id="i-calendar"><rect x="3" y="4" width="18" height="18" rx="2"/><path d="M16 2v4M8 2v4M3 10h18"/></g>
+    <g id="i-invoice"><path d="M4 2v20l3-2 3 2 3-2 3 2 3-2 1 .67V2l-1 .67L16 2l-3 2-3-2-3 2Z"/><path d="M8 8h8M8 12h8M8 16h5"/></g>
+    <g id="i-sponsor"><circle cx="12" cy="12" r="10"/><path d="M16 8h-6a2 2 0 1 0 0 4h4a2 2 0 1 1 0 4H8M12 18V6"/></g>
+    <g id="i-doc"><path d="M15 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V7Z"/><path d="M14 2v4a2 2 0 0 0 2 2h4"/></g>
+    <g id="i-book"><path d="M4 19.5v-15A2.5 2.5 0 0 1 6.5 2H20v20H6.5a2.5 2.5 0 0 1 0-5H20"/></g>
+    <g id="i-users"><path d="M16 21v-2a4 4 0 0 0-4-4H6a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M22 21v-2a4 4 0 0 0-3-3.87M16 3.13a4 4 0 0 1 0 7.75"/></g>
+    <g id="i-settings"><path d="M4 21v-7M4 10V3M12 21v-9M12 8V3M20 21v-5M20 12V3M1 14h6M9 8h6M17 16h6"/></g>
+    <g id="i-bell"><path d="M6 8a6 6 0 0 1 12 0c0 7 3 9 3 9H3s3-2 3-9"/><path d="M10.3 21a1.94 1.94 0 0 0 3.4 0"/></g>
+    <g id="i-search"><circle cx="11" cy="11" r="8"/><path d="m21 21-4.3-4.3"/></g>
+    <g id="i-panel"><rect x="3" y="3" width="18" height="18" rx="2"/><path d="M9 3v18"/></g>
+    <g id="i-chevrons"><path d="m7 15 5 5 5-5M7 9l5-5 5 5"/></g>
+    <g id="i-logout"><path d="M9 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h4M16 17l5-5-5-5M21 12H9"/></g>
+    <g id="i-moon"><path d="M12 3a6 6 0 0 0 9 9 9 9 0 1 1-9-9Z"/></g>
+    <g id="i-keyboard"><rect x="2" y="4" width="20" height="16" rx="2"/><path d="M6 8h.01M10 8h.01M14 8h.01M18 8h.01M8 12h.01M12 12h.01M16 12h.01M7 16h10"/></g>
+    <g id="i-help"><circle cx="12" cy="12" r="10"/><path d="M9.09 9a3 3 0 0 1 5.83 1c0 2-3 3-3 3M12 17h.01"/></g>
+    <g id="i-terminal"><path d="m4 17 6-6-6-6M12 19h8"/></g>
+    <g id="i-check"><path d="M20 6 9 17l-5-5"/></g>
+    <g id="i-x"><path d="M18 6 6 18M6 6l12 12"/></g>
+    <g id="i-menu"><path d="M4 6h16M4 12h16M4 18h16"/></g>
+    <g id="i-refresh"><path d="M21 12a9 9 0 1 1-9-9c2.52 0 4.93 1 6.74 2.74L21 8"/><path d="M21 3v5h-5"/></g>
+    <g id="i-plus"><path d="M5 12h14M12 5v14"/></g>
+    <g id="i-info"><circle cx="12" cy="12" r="10"/><path d="M12 16v-4M12 8h.01"/></g>
+    <g id="i-mic"><path d="M12 2a3 3 0 0 0-3 3v7a3 3 0 0 0 6 0V5a3 3 0 0 0-3-3Z"/><path d="M19 10v2a7 7 0 0 1-14 0v-2M12 19v3"/></g>
+    <g id="i-history"><path d="M3 12a9 9 0 1 0 9-9 9.75 9.75 0 0 0-6.74 2.74L3 8"/><path d="M3 3v5h5M12 7v5l4 2"/></g>
+  </defs>
+</svg>
+
+<div class="dk-shell" data-sidebar="expanded">
+  <a class="dk-skip-link" href="#main-content">Skip to content</a>
+
+  <header class="dk-topbar">
+    <button class="dk-icon-button" type="button" data-dk-drawer-toggle aria-controls="dk-sidebar" aria-expanded="false" aria-label="Open navigation"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><use href="#i-menu"/></svg></button>
+    <a class="dk-topbar__title" href="#">DataOps</a>
+    <div class="dk-topbar__end"></div>
+  </header>
+
+  <aside class="dk-sidebar" id="dk-sidebar" aria-label="Workspace">
+    <div class="dk-sidebar__head">
+      <a class="dk-brand" href="#"><span class="dk-brand__tile" aria-hidden="true">D</span><span class="dk-brand__name">DataOps</span></a>
+      <button class="dk-icon-button dk-notif-trigger" type="button" data-dk-popover-trigger="dk-notif-panel" aria-expanded="false" aria-controls="dk-notif-panel" data-dk-count-label="Notifications" aria-label="Notifications">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><use href="#i-bell"/></svg>
+        <span class="dk-count" id="bell-count" data-dk-count="3" aria-hidden="true" hidden></span>
+      </button>
+      <button class="dk-icon-button dk-sidebar__close" type="button" data-dk-drawer-close aria-label="Close navigation"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><use href="#i-x"/></svg></button>
+    </div>
+
+    <div class="dk-sidebar__search">
+      <label class="dk-search">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><use href="#i-search"/></svg>
+        <input type="search" placeholder="Search" aria-label="Search tasks, cards and docs">
+        <kbd class="dk-kbd">/</kbd>
+      </label>
+      <button class="dk-icon-button dk-search__rail" type="button" data-dk-search-expand aria-label="Search"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><use href="#i-search"/></svg></button>
+    </div>
+
+    <nav class="dk-sidebar__nav" aria-label="Primary">
+      <div class="dk-nav-group" role="group" aria-labelledby="g-ws">
+        <div class="dk-nav-group__label" id="g-ws">Workspace</div>
+        <a class="dk-nav-item" href="#"><svg class="dk-nav-item__icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><use href="#i-home"/></svg><span class="dk-nav-item__label">Home</span></a>
+        <a class="dk-nav-item" href="#"><svg class="dk-nav-item__icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><use href="#i-inbox"/></svg><span class="dk-nav-item__label">Inbox</span><span class="dk-count">4</span></a>
+        <a class="dk-nav-item" href="#" aria-current="page"><svg class="dk-nav-item__icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><use href="#i-tasks"/></svg><span class="dk-nav-item__label">Tasks</span><span class="dk-count">12</span></a>
+        <a class="dk-nav-item" href="#"><svg class="dk-nav-item__icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><use href="#i-cards"/></svg><span class="dk-nav-item__label">Cards</span></a>
+        <a class="dk-nav-item" href="#"><svg class="dk-nav-item__icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><use href="#i-calendar"/></svg><span class="dk-nav-item__label">Planner</span></a>
+      </div>
+      <div class="dk-nav-group" role="group" aria-labelledby="g-fin">
+        <div class="dk-nav-group__label" id="g-fin">Finance</div>
+        <a class="dk-nav-item" href="#"><svg class="dk-nav-item__icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><use href="#i-invoice"/></svg><span class="dk-nav-item__label">Invoices</span></a>
+        <a class="dk-nav-item" href="#"><svg class="dk-nav-item__icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><use href="#i-sponsor"/></svg><span class="dk-nav-item__label">Sponsors</span></a>
+      </div>
+      <div class="dk-nav-group" role="group" aria-labelledby="g-know">
+        <div class="dk-nav-group__label" id="g-know">Knowledge</div>
+        <a class="dk-nav-item" href="#"><svg class="dk-nav-item__icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><use href="#i-doc"/></svg><span class="dk-nav-item__label">Process docs</span></a>
+        <a class="dk-nav-item" href="#"><svg class="dk-nav-item__icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><use href="#i-book"/></svg><span class="dk-nav-item__label">Knowledge base</span></a>
+      </div>
+      <div class="dk-nav-group" role="group" aria-labelledby="g-admin">
+        <div class="dk-nav-group__label" id="g-admin">Admin</div>
+        <a class="dk-nav-item" href="#"><svg class="dk-nav-item__icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><use href="#i-users"/></svg><span class="dk-nav-item__label">Users</span></a>
+        <a class="dk-nav-item" href="#"><svg class="dk-nav-item__icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><use href="#i-settings"/></svg><span class="dk-nav-item__label">Settings</span></a>
+      </div>
+    </nav>
+
+    <div class="dk-sidebar__foot">
+      <button class="dk-account-trigger" type="button" data-dk-popover-trigger="dk-account-menu" aria-expanded="false" aria-controls="dk-account-menu" aria-label="Account, Grace Hopper">
+        <span class="dk-avatar dk-avatar--sm" aria-hidden="true">GH</span>
+        <span class="dk-account-trigger__name">Grace Hopper</span>
+        <svg class="dk-account-trigger__chev" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><use href="#i-chevrons"/></svg>
+      </button>
+      <button class="dk-icon-button dk-sidebar__toggle" type="button" data-dk-sidebar-toggle aria-controls="dk-sidebar" aria-expanded="true" aria-label="Collapse sidebar"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><use href="#i-panel"/></svg></button>
+    </div>
+  </aside>
+  <div class="dk-scrim" data-dk-drawer-close hidden></div>
+
+  <main class="dk-main" id="main-content" tabindex="-1">
+    <div class="dk-main__inner">
+      <header class="dk-page-header">
+        <div class="dk-page-header__main">
+          <h1 class="dk-page-header__title">Agent runs</h1>
+          <p class="dk-page-header__meta">Updated 12s ago</p>
+        </div>
+        <div class="dk-page-header__actions">
+          <button class="dk-button dk-button--secondary" type="button"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><use href="#i-refresh"/></svg>Refresh</button>
+        </div>
+      </header>
+
+      <div class="dk-split" id="demo-split" data-dk-split="demo-runs" data-view="list">
+        <section class="dk-split__list" aria-labelledby="runs-title">
+          <header class="dk-split__head">
+            <h2 class="dk-split__title" id="runs-title">Runs</h2>
+            <span class="dk-split__count" id="runs-count"></span>
+          </header>
+          <div class="dk-split__tools">
+            <input class="dk-input" type="search" id="runs-search" placeholder="Filter runs" aria-label="Filter runs">
+          </div>
+          <div class="dk-split__scroll" id="runs-scroll">
+            <ul class="dk-split__items" id="runs-list" aria-label="Agent runs"></ul>
+          </div>
+          <div class="dk-split__foot"><span>Showing the last 7 days</span></div>
+          <div class="dk-split__handle" aria-controls="runs-list"></div>
+        </section>
+        <section class="dk-split__detail" id="run-detail" aria-label="Selected run"></section>
+      </div>
+    </div>
+  </main>
+
+  <div class="dk-menu dk-account-menu" id="dk-account-menu" data-dk-popover hidden>
+    <div class="dk-menu__identity"><span class="dk-menu__name">Grace Hopper</span><span class="dk-menu__email">grace@datatalks.club</span></div>
+    <hr class="dk-menu__sep">
+    <div class="dk-menu__label" id="scope-label">Viewing work for</div>
+    <div role="radiogroup" aria-labelledby="scope-label" style="display: grid">
+      <button class="dk-menu__item" type="button" role="radio" aria-checked="true"><span class="dk-avatar dk-avatar--xs" aria-hidden="true">GH</span>Grace (you)<svg class="dk-menu__check" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><use href="#i-check"/></svg></button>
+      <button class="dk-menu__item" type="button" role="radio" aria-checked="false"><span class="dk-avatar dk-avatar--xs" aria-hidden="true">AK</span>Ana Kovač<svg class="dk-menu__check" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><use href="#i-check"/></svg></button>
+    </div>
+    <hr class="dk-menu__sep">
+    <button class="dk-menu__item" type="button" role="switch" aria-checked="false" data-dk-theme-toggle><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><use href="#i-moon"/></svg>Dark mode<span class="dk-switch" aria-hidden="true"></span></button>
+    <button class="dk-menu__item" type="button"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><use href="#i-keyboard"/></svg>Keyboard shortcuts<kbd class="dk-kbd">?</kbd></button>
+    <a class="dk-menu__item" href="#"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><use href="#i-help"/></svg>Help</a>
+    <a class="dk-menu__item" href="showcase-device.html"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><use href="#i-terminal"/></svg>CLI sessions</a>
+    <hr class="dk-menu__sep">
+    <div class="dk-menu__meta"><span>v0.2.0</span><span>eu-west-1</span></div>
+    <form method="post" action="#"><button class="dk-menu__item dk-menu__item--danger" type="button"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><use href="#i-logout"/></svg>Sign out</button></form>
+  </div>
+
+  <section class="dk-menu dk-notif-panel" id="dk-notif-panel" role="dialog" aria-labelledby="dk-notif-title" data-dk-popover hidden>
+    <div class="dk-notif-panel__head">
+      <h2 class="dk-notif-panel__title" id="dk-notif-title" tabindex="-1" data-dk-autofocus>Notifications</h2>
+      <button class="dk-button dk-button--secondary dk-button--sm" type="button" id="mark-all">Mark all read</button>
+    </div>
+    <div class="dk-notif-panel__body" id="notif-body">
+      <div class="dk-notif-panel__day">Today</div>
+      <div class="dk-notif-item" data-unread="true">
+        <span class="dk-notif-item__marker"><span class="dk-dot dk-dot--info"></span><span class="dk-visually-hidden">Unread:</span></span>
+        <div class="dk-notif-item__main"><a class="dk-notif-item__link" href="#">Guest reply waiting</a><span class="dk-notif-item__desc">Episode 42 · you asked on Tue</span></div>
+        <div class="dk-notif-item__side"><time class="dk-notif-item__time" datetime="2026-10-14T13:48" title="14 Oct 2026, 13:48">14m</time><button class="dk-icon-button dk-icon-button--sm dk-notif-item__read" type="button" aria-label="Mark read: Guest reply waiting"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><use href="#i-check"/></svg></button></div>
+      </div>
+      <div class="dk-notif-item" data-unread="true">
+        <span class="dk-notif-item__marker"><span class="dk-dot dk-dot--info"></span><span class="dk-visually-hidden">Unread:</span></span>
+        <div class="dk-notif-item__main"><a class="dk-notif-item__link" href="#">Ana assigned you 2 tasks</a><span class="dk-notif-item__desc">Countersign INV-2291, Publish newsletter draft</span></div>
+        <div class="dk-notif-item__side"><time class="dk-notif-item__time" datetime="2026-10-14T12:10" title="14 Oct 2026, 12:10">1h</time><button class="dk-icon-button dk-icon-button--sm dk-notif-item__read" type="button" aria-label="Mark read: Ana assigned you 2 tasks"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><use href="#i-check"/></svg></button></div>
+      </div>
+      <div class="dk-notif-item" data-unread="true">
+        <span class="dk-notif-item__marker"><span class="dk-dot dk-dot--info"></span><span class="dk-visually-hidden">Unread:</span></span>
+        <div class="dk-notif-item__main"><a class="dk-notif-item__link" href="#">Nightly export failed</a><span class="dk-notif-item__desc">Knowledge storage · GitHub push rejected</span></div>
+        <div class="dk-notif-item__side"><time class="dk-notif-item__time" datetime="2026-10-14T03:02" title="14 Oct 2026, 03:02">10h</time><button class="dk-icon-button dk-icon-button--sm dk-notif-item__read" type="button" aria-label="Mark read: Nightly export failed"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><use href="#i-check"/></svg></button></div>
+      </div>
+      <div class="dk-notif-panel__day">Earlier</div>
+      <div class="dk-notif-item">
+        <span class="dk-notif-item__marker"></span>
+        <div class="dk-notif-item__main"><a class="dk-notif-item__link" href="#">Sponsor invoice countersigned</a><span class="dk-notif-item__desc">Acme Corp finance · INV-2280</span></div>
+        <div class="dk-notif-item__side"><time class="dk-notif-item__time" datetime="2026-10-12T16:40" title="12 Oct 2026, 16:40">Mon</time></div>
+      </div>
+      <div class="dk-notif-item">
+        <span class="dk-notif-item__marker"></span>
+        <div class="dk-notif-item__main"><a class="dk-notif-item__link" href="#">Card moved to Published</a><span class="dk-notif-item__desc">“Data engineering zoomcamp recap” by Ben</span></div>
+        <div class="dk-notif-item__side"><time class="dk-notif-item__time" datetime="2026-10-10T09:15" title="10 Oct 2026, 09:15">Fri</time></div>
+      </div>
+    </div>
+    <div class="dk-notif-panel__foot"><a href="#">View all notifications</a></div>
+  </section>
+
+  <div id="dk-live" class="dk-visually-hidden" aria-live="polite"></div>
+</div>
+
+<script src="dist/shell.js"></script>
+<script src="dist/split.js"></script>
+<script>
+  // Demo harness. Selection lives in the URL (?run=<id>), like the apps:
+  // a row is a link, the list and detail render from location, and on a
+  // phone the URL decides which pane shows. ?empty=1 shows an empty list.
+  (() => {
+    const workflows = ["Invoice intake", "Sponsor follow-up", "Newsletter draft", "Card triage", "Ledger sync", "Podcast notes"];
+    const states = [["Done", "success"], ["Running", "info"], ["Failed", "danger"], ["Waiting", "warning"]];
+    const runs = params.get("empty") ? [] : Array.from({ length: 48 }, (_, i) => {
+      const [label, tone] = states[(i * 7) % 11 === 0 ? 2 : i % 9 === 1 ? 1 : i % 13 === 3 ? 3 : 0];
+      return { id: `r${1040 - i}`, title: `${workflows[i % workflows.length]} #${1040 - i}`, workflow: workflows[i % workflows.length], label, tone, when: `${String(9 + (i % 9)).padStart(2, "0")}:${String((i * 17) % 60).padStart(2, "0")}`, ms: 1200 + ((i * 7919) % 48000) };
+    });
+    const split = document.getElementById("demo-split");
+    const list = document.getElementById("runs-list");
+    const detail = document.getElementById("run-detail");
+    const search = document.getElementById("runs-search");
+    const esc = (s) => String(s).replace(/[&<>"]/g, (c) => ({ "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;" })[c]);
+    const href = (id) => { const u = new URL(location.href); if (id) u.searchParams.set("run", id); else u.searchParams.delete("run"); return u.pathname + u.search; };
+    const back = '<a class="dk-split__back" href="' + href(null) + '" data-demo-nav><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="m15 18-6-6 6-6"/></svg>Runs</a>';
+
+    function render() {
+      const id = new URL(location.href).searchParams.get("run");
+      const q = search.value.trim().toLowerCase();
+      const shown = runs.filter((r) => !q || r.title.toLowerCase().includes(q));
+      document.getElementById("runs-count").textContent = String(shown.length);
+      list.innerHTML = shown.length ? shown.map((r) => `<li><a class="dk-split__item" href="${href(r.id)}" data-demo-nav${r.id === id ? ' aria-current="true"' : ""}><span class="dk-split__name">${esc(r.title)}</span><span class="dk-split__meta"><span class="dk-badge dk-badge--${r.tone}">${r.label}</span><span>${esc(r.workflow)}</span><span class="demo-when">${r.when}</span></span></a></li>`).join("")
+        : '<li><div class="dk-empty dk-empty--compact"><p class="dk-empty__title">' + (runs.length ? "No matching runs" : "No agent runs yet") + '</p><p class="dk-empty__desc">' + (runs.length ? "Clear the filter to see every run." : "Runs appear here when a workflow starts an agent.") + "</p></div></li>";
+      const run = runs.find((r) => r.id === id);
+      detail.innerHTML = run
+        ? `<header class="dk-split__head">${back}<h2 class="dk-split__title">${esc(run.title)}</h2><span class="dk-badge dk-badge--${run.tone}">${run.label}</span></header>
+           <div class="dk-split__scroll"><div class="demo-detail">
+             <dl class="dk-dl dk-dl--divided"><dt>Run</dt><dd class="dk-mono">${run.id}</dd><dt>Workflow</dt><dd>${esc(run.workflow)}</dd><dt>Started</dt><dd class="dk-mono">2026-10-14 ${run.when}</dd><dt>Duration</dt><dd class="dk-mono">${(run.ms / 1000).toFixed(1)}s</dd></dl>
+             ${Array.from({ length: 6 }, (_, k) => `<section class="dk-stack dk-stack--tight"><h3 class="dk-section-header__title">Step ${k + 1}</h3><p>The agent read the inbound message, matched it to the workflow, and wrote its result back to the card. Long detail scrolls inside this pane while the run list keeps its own position.</p><pre class="demo-log">[${run.when}:0${k}] step ${k + 1} ok · ${120 + k * 37}ms</pre></section>`).join("")}
+           </div></div>`
+        : `<div class="dk-split__empty"><div class="dk-empty"><p class="dk-empty__title">Select a run</p><p class="dk-empty__desc">Pick a run on the left to read its result and log. ↑ and ↓ move through the list.</p></div></div>`;
+      dakitSplit.show(split, run ? "detail" : "list", { focus: false });
+    }
+
+    document.addEventListener("click", (event) => {
+      const link = event.target.closest("a[data-demo-nav]");
+      if (link) {
+        event.preventDefault();
+        const toDetail = link.classList.contains("dk-split__item");
+        history.pushState(null, "", link.getAttribute("href"));
+        render();
+        dakitSplit.show(split, toDetail ? "detail" : "list");
+        return;
+      }
+      if (event.target.closest('a[href="#"]')) event.preventDefault();
+    });
+    addEventListener("popstate", render);
+    search.addEventListener("input", render);
+    render();
+    dakitSplit.reveal(split);
+    const state = params.get("state") || "";
+    if (state === "scrolled") document.getElementById("runs-scroll").scrollTop = 900;
+  })();
+</script>
+</body>
+</html>

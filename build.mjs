@@ -36,6 +36,7 @@ const componentsCss = readFileSync(join(root, "css/components.css"), "utf8");
 const shellCss = readFileSync(join(root, "css/shell.css"), "utf8");
 const dialogsJs = readFileSync(join(root, "js/dialogs.js"), "utf8");
 const shellJs = readFileSync(join(root, "js/shell.js"), "utf8");
+const splitJs = readFileSync(join(root, "js/split.js"), "utf8");
 const deviceCodeJs = readFileSync(join(root, "js/device-code.js"), "utf8");
 
 // --- flatten ----------------------------------------------------------------
@@ -250,8 +251,9 @@ emit(
 // the single consumable.
 emit("dialogs.js", dialogsJs);
 emit("shell.js", shellJs);
+emit("split.js", splitJs);
 emit("device-code.js", deviceCodeJs);
 
 console.log(
-  `\nbuilt dist/tokens.css, dist/dakit.css, dist/tokens.js, dist/{dialogs,shell,device-code}.js — ${Object.keys(prim).length} primitives, ${Object.keys(lightResolved).length} semantic roles, ${Object.keys(darkResolved).length} dark overrides`,
+  `\nbuilt dist/tokens.css, dist/dakit.css, dist/tokens.js, dist/{dialogs,shell,split,device-code}.js — ${Object.keys(prim).length} primitives, ${Object.keys(lightResolved).length} semantic roles, ${Object.keys(darkResolved).length} dark overrides`,
 );
