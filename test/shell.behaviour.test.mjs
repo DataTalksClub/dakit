@@ -150,6 +150,7 @@ test('mobile: triggers move to the bar, drawer traps focus and returns it', asyn
   if (!page) return;
   assert.ok(await page.evaluate(() => !!document.querySelector('.dk-topbar__end .dk-notif-trigger') && !!document.querySelector('.dk-topbar__end .dk-account-trigger')));
   assert.equal(await page.evaluate(() => document.querySelectorAll('.dk-notif-trigger').length), 1);
+  assert.equal(await page.textContent('.dk-topbar__title'), 'DataOps', 'bar shows the wordmark; the h1 holds the page title');
   const attrs = () => page.evaluate(() => { const a = document.querySelector('.dk-sidebar'); return ['role', 'aria-modal', 'aria-label'].map((n) => a.getAttribute(n)).join('|'); });
   assert.equal(await attrs(), '||Workspace', 'closed drawer is a plain landmark');
   await page.click('[data-dk-drawer-toggle]');
@@ -194,6 +195,16 @@ test('device login: formats, never truncates, focus never on Authorize, prefill 
   assert.equal(await page.inputValue('#device-code'), 'BCDF-GHJK');
   assert.ok(!(await page.isVisible('#approve')));
   assert.ok(!page.url().includes('code='));
+  await page.close();
+});
+
+test('device login on touch: standalone links have a 44px hit area', async (t) => {
+  const page = await open(t, '/showcase-device.html?theme=light&state=review', { width: 390, height: 844 }, { hasTouch: true });
+  if (!page) return;
+  await page.waitForSelector('.dk-auth-card__foot a');
+  const heights = await page.evaluate(() => [...document.querySelectorAll('.dk-auth-page__identity a, .dk-auth-card__foot a')]
+    .map((a) => { const r = a.getClientRects()[0]; return document.elementFromPoint(r.left + 4, r.top + 1) === a ? Math.round(r.height) : 0; }));
+  assert.ok(heights.length >= 2 && heights.every((h) => h >= 44), `link hit heights ${heights}`);
   await page.close();
 });
 

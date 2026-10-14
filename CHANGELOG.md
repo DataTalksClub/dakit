@@ -23,6 +23,12 @@ in a minor version with migration notes.
   `dk-callout`, `dk-page-header`, `dk-section-header`, `dk-tabs`,
   `dk-stat-strip`, `dk-dl`, `dk-empty`, `dk-switch`, `dk-menu`,
   `dk-code-block` + `data-dk-copy`, `dk-field-error`, `dk-skeleton`, `dk-skip-link`.
+- Mobile bar shows the app wordmark (`a.dk-topbar__title`, home link); the page
+  title appears once, as the content `h1`.
+- Touch: 44px hit areas for the device-login identity and footer links;
+  the code-block's first line centres on the 44px Copy button.
+- Device login: the code query parameter is the app's wire-protocol name
+  (`code` by default, DataOps keeps `userCode`), with no alias.
 - Device login (`docs/device-login.md`): `dk-auth-page`, `dk-auth-card`,
   `dk-code-input`, and `dist/device-code.js` (`normalizeUserCode`,
   `formatUserCode`, `describeUserCodeError`, `bindCodeInput`).

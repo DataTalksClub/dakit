@@ -456,7 +456,7 @@ borders or fill only.
 | `.dk-avatar` | 28px (`--xs` 20, `--sm` 24, `--lg` 36), `--dk-radius-full`, `--dk-accent-soft` fill, `--dk-accent-default` text, `--dk-text-xs` semibold sans initials (one or two), no border. `<img>` inside covers it. It's decorative (`aria-hidden`) when a name sits next to it. |
 | `.dk-count` | §7.2. |
 | `.dk-kbd` | Mono `--dk-text-xs`, `min-width: 20px; height: 20px; padding: 0 var(--dk-space-1)`, `--dk-bg-surface`, 1px `--dk-border-default`, `--dk-radius-sm`, `--dk-text-muted`. |
-| `.dk-code-block` + `.dk-copy-button` | Block: `display: flex; align-items: flex-start; gap: var(--dk-space-3); padding: var(--dk-space-2) var(--dk-space-3); background: var(--dk-bg-inset); border: 1px solid var(--dk-border-default); border-radius: var(--dk-radius-md)`. `<pre><code>` mono `--dk-text-sm`, `flex: 1; min-width: 0; overflow-x: auto; white-space: pre`. Never truncate or ellipsize code or secrets. Copy button: `.dk-button--sm` secondary with `data-dk-copy`, labelled "Copy". On success its label reads "Copied" for 1.5s (the button width doesn't change, because `min-width` is set from the longer label) and `#dk-live` announces "Copied". On failure it reads "Press Ctrl+C" and selects the text. |
+| `.dk-code-block` + `.dk-copy-button` | Block: `display: flex; align-items: flex-start; gap: var(--dk-space-3); padding: var(--dk-space-2) var(--dk-space-3); background: var(--dk-bg-inset); border: 1px solid var(--dk-border-default); border-radius: var(--dk-radius-md)`. `<pre><code>` mono `--dk-text-sm`, `flex: 1; min-width: 0; overflow-x: auto; white-space: pre`. Never truncate or ellipsize code or secrets. Use exactly `<div class="dk-code-block"><pre><code>…</code></pre><button …>Copy</button></div>`, so the code takes the free width and Copy sits at the far edge. On touch, `pre` gets `padding-block: var(--dk-space-3)`, so the first line centres on the 44px button. Copy button: `.dk-button--sm` secondary with `data-dk-copy`, labelled "Copy". On success its label reads "Copied" for 1.5s (the button width doesn't change, because `min-width` is set from the longer label) and `#dk-live` announces "Copied". On failure it reads "Press Ctrl+C" and selects the text. |
 | `.dk-tooltip` | §5.5: rail labels only. |
 
 ## 10. Mobile (≤ 820px)
@@ -466,7 +466,7 @@ navigation.**
 
 ```
 ┌─────────────────────────────────────┐
-│ [☰]  Tasks                [🔔3] (G) │ .dk-topbar 48px
+│ [☰]  DataOps              [🔔3] (G) │ .dk-topbar 48px
 ├─────────────────────────────────────┤
 │ .dk-main (padding 16px)             │
 ```
@@ -474,9 +474,12 @@ navigation.**
 - `.dk-shell` becomes `grid-template-columns: minmax(0, 1fr); grid-template-rows: var(--dk-size-topbar) minmax(0, 1fr);`.
   `.dk-topbar` is shown only here, with `background: var(--dk-bg-muted); border-bottom: 1px solid var(--dk-border-default); padding: 0 var(--dk-space-1);`.
   - It contains a 44×44 menu button (`aria-controls="dk-sidebar"`,
-    `aria-expanded`), the current page title (`--dk-text-body` semibold,
-    ellipsis; the page `h1` remains in content), the 44×44 bell, and a
-    44×44 avatar-only account trigger.
+    `aria-expanded`), the app wordmark (`.dk-topbar__title`,
+    `--dk-text-body` semibold, ellipsis, linking home), the 44×44 bell, and
+    a 44×44 avatar-only account trigger.
+  - The page title appears **once**, as the `h1` in content. The bar
+    doesn't repeat it: the wordmark says which tool of the family you're
+    in, the `h1` says where.
   - The bell and account trigger in the bar are the **same elements**.
     `shell.js` moves them into `.dk-topbar__end` when the viewport crosses
     820px, and back again, so ids, counts and listeners stay singular. They're
@@ -547,7 +550,7 @@ navigation.**
   <a class="dk-skip-link" href="#main-content">Skip to content</a>
   <header class="dk-topbar">            <!-- mobile only -->
     <button class="dk-icon-button" data-dk-drawer-toggle aria-controls="dk-sidebar" aria-expanded="false" aria-label="Open navigation">…</button>
-    <span class="dk-topbar__title">Tasks</span>
+    <a class="dk-topbar__title" href="/">DataOps</a>
   </header>
   <aside class="dk-sidebar" id="dk-sidebar" aria-label="Workspace">
     <div class="dk-sidebar__head">

@@ -23,6 +23,11 @@ anti-pattern this replaces.
    only fills in the field. The person still compares it with the
    terminal and presses Continue. There's no auto-lookup and no
    auto-approve (RFC 8628 §5.4, the cross-device BCP, Storm-2372).
+   **The parameter name belongs to the wire protocol.** `code` is the
+   default for new apps. An app whose backend and CLI already emit another
+   name keeps it as the **only** name, with no alias (DataOps:
+   `?userCode=`). Every `?code=` in this document means "the app's
+   parameter", including the sign-in `next=` and the Switch-account return.
 3. **Focus never lands on Authorize.** After each step, focus goes to the
    step heading. A stray Enter must not grant access.
 4. **The code is never altered behind the person's back.** Input is
@@ -278,7 +283,10 @@ export function bindCodeInput(input, { alphabet } = {}): () => void; // returns 
 - The disabled Authorize behind the acknowledgement checkbox gets
   `aria-describedby` pointing at the warning callout, so the reason is
   announced.
-- All controls are ≥ 44px at ≤820px or `(pointer: coarse)`. Facts switch
+- All controls are ≥ 44px at ≤820px or `(pointer: coarse)`, links
+  included. The kit gives the Switch-account link in the identity line and
+  the links in `.dk-auth-card__foot` a 44px hit area from 16px inline
+  padding, which leaves the text where it is. Facts switch
   to `.dk-dl--stacked` at ≤480px.
 - Copy, labels and errors are plain text. The machine label is never
   injected as HTML.

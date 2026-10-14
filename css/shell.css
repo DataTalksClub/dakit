@@ -449,18 +449,24 @@ button.dk-brand[aria-expanded="true"] { background: var(--dk-bg-hover); }
     border-bottom: 1px solid var(--dk-border-default);
     background: var(--dk-bg-muted);
   }
+  /* The app wordmark (a home link); the page title lives once, in the h1. */
   .dk-topbar__title {
-    flex: 1 1 auto;
+    flex: 0 1 auto;
+    align-self: stretch;
+    display: flex;
+    align-items: center;
     min-width: 0;
     overflow: hidden;
-    padding-left: var(--dk-space-1);
+    padding: 0 var(--dk-space-1);
+    border-radius: var(--dk-radius-sm);
+    text-decoration: none;
     color: var(--dk-text-heading);
     font-size: var(--dk-text-body);
     font-weight: var(--dk-weight-semibold);
     text-overflow: ellipsis;
     white-space: nowrap;
   }
-  .dk-topbar__end { display: flex; align-items: center; }
+  .dk-topbar__end { display: flex; align-items: center; margin-left: auto; }
   .dk-topbar .dk-account-trigger { flex: none; width: var(--dk-size-touch); height: var(--dk-size-touch); padding: 0; justify-content: center; }
   .dk-topbar :is(.dk-account-trigger__name, .dk-account-trigger__chev) {
     position: absolute; width: 1px; height: 1px; overflow: hidden; clip: rect(0 0 0 0); white-space: nowrap;

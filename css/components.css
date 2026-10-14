@@ -286,6 +286,10 @@
   .dk-check { min-width: var(--dk-size-touch); min-height: var(--dk-size-touch); justify-content: center; }
   /* A check with a text label keeps its box at the start of the line. */
   :is(.dk-callout, .dk-auth-card, .dk-menu) .dk-check { justify-content: flex-start; }
+  /* Standalone text links (Switch account, Manage CLI sessions) get a 44px
+     hit area from 16px inline padding, which doesn't move the line. */
+  :is(.dk-auth-page__identity, .dk-auth-card__foot) a { padding-block: var(--dk-space-4); }
+  .dk-auth-page__identity { line-height: var(--dk-size-topbar); }
 }
 
 /* --- misc ---------------------------------------------------------------------- */
@@ -614,6 +618,8 @@
 @media (max-width: 820px), (pointer: coarse) {
   .dk-icon-button { width: var(--dk-size-touch); height: var(--dk-size-touch); }
   .dk-menu__item, .dk-tab { min-height: var(--dk-size-touch); }
+  /* The first code line centres on the 44px Copy button. */
+  .dk-code-block pre { padding-block: var(--dk-space-3); }
 }
 
 /* --- device login (docs/device-login.md) ------------------------------------------- */
