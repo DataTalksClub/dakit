@@ -157,8 +157,10 @@ layers, declare its layer after `dk.components`.
 
 Every `dist/` file starts with `/* dakit <version> <git short sha> */`.
 `tokens.js` exports `version` and `commit`; the plain-global build exposes the
-same metadata on `dakitTokens`. The commit identifies HEAD when the build ran
-(the source revision), rather than the later commit containing generated files.
+same metadata on `dakitTokens`. The commit identifies the last commit touching
+build inputs (`tokens/`, `css/`, `js/`, `fonts/`, `build.mjs`, or `package.json`).
+Documentation-only and generated-output commits do not change this stamp, so
+rebuilding after those commits leaves `dist/` unchanged.
 The package version may describe an unreleased entry until the release is tagged.
 
 When renaming a token, retain the old name as an alias for one minor version and
