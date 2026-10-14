@@ -7,13 +7,16 @@
   "scripts": {
     "build": "node build.mjs",
     "check-borders": "node scripts/check-borders.mjs css showcase.html",
-    "test": "node test/check-borders.test.mjs && node --test test/sync.test.mjs",
-    "watch": "node --watch-path=tokens --watch-path=css build.mjs"
+    "test": "node test/check-borders.test.mjs && node --test test/sync.test.mjs test/device-code.test.mjs test/shell.behaviour.test.mjs",
+    "watch": "node --watch-path=tokens --watch-path=css --watch-path=js build.mjs"
   },
   "exports": {
     ".": "./dist/dakit.css",
     "./tokens.css": "./dist/tokens.css",
-    "./tokens": "./dist/tokens.js"
+    "./tokens": "./dist/tokens.js",
+    "./shell.js": "./dist/shell.js",
+    "./device-code.js": "./dist/device-code.js",
+    "./dialogs.js": "./dist/dialogs.js"
   },
   "files": [
     "dist",

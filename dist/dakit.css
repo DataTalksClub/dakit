@@ -789,6 +789,8 @@ code, kbd, samp { font-family: var(--dk-font-mono); font-size: 0.92em; backgroun
   color: var(--dk-text-primary);
   font-size: var(--dk-text-md);
 }
+/* Pointer-opened menus focus the container itself; it is not a control. */
+.dk-menu:focus { outline: none; }
 .dk-menu__item {
   display: flex;
   align-items: center;

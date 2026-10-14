@@ -45,3 +45,15 @@ test('default sync includes all dist files and refuses traversal', () => {
     assert.equal(run(script, ['--dest', dest, '--files', '../package.json']).status, 1);
   } finally { rmSync(dest, { recursive: true, force: true }); }
 });
+
+test('default sync vendors every dist file, including shell.js and device-code.js', () => {
+  const dest = mkdtempSync(join(tmpdir(), 'dakit-sync-'));
+  try {
+    const result = run(script, ['--dest', dest]);
+    assert.equal(result.status, 0, result.stderr);
+    const lock = JSON.parse(readFileSync(join(dest, 'dakit.lock.json')));
+    for (const name of ['dakit.css', 'tokens.css', 'dialogs.js', 'shell.js', 'device-code.js']) assert.ok(lock.files[name], name);
+  } finally {
+    rmSync(dest, { recursive: true, force: true });
+  }
+});

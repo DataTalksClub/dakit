@@ -505,9 +505,13 @@ navigation.**
   tabs, and `aria-selected` only inside `role="tablist"`.
 - **Popovers** (account, notifications, brand switcher):
   - Triggers carry `aria-expanded` and `aria-controls`. Only one popover is
-    open at a time. When one opens, focus moves to the first focusable
-    element inside: the first menu row, or the notification panel's title
-    (`tabindex="-1"`).
+    open at a time. When one opens, focus moves inside. The notification
+    panel focuses its title (`tabindex="-1"`, `data-dk-autofocus`). A menu
+    opened **from the keyboard** (Enter/Space on the trigger) focuses its
+    first row, with a visible ring. A menu opened **with the pointer**
+    focuses the menu container itself (no ring), so no row shows a ring that
+    reads like a selection border. `↓` then enters the first row and `↑` the
+    last.
   - `Esc`, an outside pointer-down, or clicking the trigger again closes
     it. **Focus returns to the trigger** for Esc and trigger clicks, and
     for outside clicks when focus was inside. Tab past the end closes it

@@ -100,7 +100,10 @@
     return document.querySelectorAll(`[data-dk-popover-trigger="${CSS.escape(id)}"]`);
   }
 
-  function openPopover(id, { trigger } = {}) {
+  // Keyboard opening moves focus to the first row (visible ring). Pointer
+  // opening focuses the menu container instead, so no row shows a ring that
+  // reads like a selection; ArrowDown then enters the rows.
+  function openPopover(id, { trigger, keyboard = false } = {}) {
     const popover = document.getElementById(id);
     if (!popover) return;
     closePopovers({ restoreFocus: false });
@@ -108,9 +111,14 @@
     popover.hidden = false;
     triggersFor(id).forEach((t) => t.setAttribute("aria-expanded", "true"));
     open = { popover, trigger: trigger || triggersFor(id)[0] };
-    const first = popover.querySelector("[data-dk-autofocus]") ||
-      popover.querySelector(".dk-menu__item:not([disabled])") ||
-      focusables(popover)[0];
+    const autofocus = popover.querySelector("[data-dk-autofocus]");
+    if (autofocus) { autofocus.focus(); return; }
+    if (!keyboard && popover.matches(".dk-menu")) {
+      if (!popover.hasAttribute("tabindex")) popover.tabIndex = -1;
+      popover.focus();
+      return;
+    }
+    const first = popover.querySelector(".dk-menu__item:not([disabled])") || focusables(popover)[0];
     if (first) first.focus();
   }
 
@@ -128,7 +136,8 @@
     if (!items.length) return false;
     const i = items.indexOf(document.activeElement);
     const next = key === "Home" ? 0 : key === "End" ? items.length - 1
-      : key === "ArrowDown" ? (i + 1) % items.length : (i - 1 + items.length) % items.length;
+      : key === "ArrowDown" ? (i + 1) % items.length
+      : i < 0 ? items.length - 1 : (i - 1 + items.length) % items.length;
     items[next].focus();
     return true;
   }
@@ -282,7 +291,7 @@
     } else if (t.matches("[data-dk-popover-trigger]")) {
       const id = t.dataset.dkPopoverTrigger;
       if (open && open.popover.id === id) closePopovers();
-      else openPopover(id, { trigger: t });
+      else openPopover(id, { trigger: t, keyboard: event.detail === 0 });
     } else if (t.matches("[data-dk-theme-toggle]")) {
       toggleTheme();
     } else if (t.matches("[data-dk-copy]")) {
