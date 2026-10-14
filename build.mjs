@@ -17,7 +17,10 @@ const root = dirname(fileURLToPath(import.meta.url));
 const read = (p) => JSON.parse(readFileSync(join(root, p), "utf8"));
 
 const { version } = read("package.json");
-const commit = execFileSync("git", ["rev-parse", "--short", "HEAD"], {
+// Ignore commits containing only docs or generated output, so rebuilding is stable.
+const commit = execFileSync("git", [
+  "log", "-1", "--format=%h", "--", "tokens", "css", "js", "fonts", "build.mjs", "package.json",
+], {
   cwd: root, encoding: "utf8",
 }).trim();
 const stamp = `/* dakit ${version} ${commit} */\n`;
