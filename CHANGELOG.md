@@ -8,6 +8,24 @@ in a minor version with migration notes.
 
 ### Added
 
+- Segmented control standard (`docs/segmented.md`, `dist/tabs.js`):
+  `.dk-tabs` is the one look for every view switcher and list filter — a
+  rounded track, the selected segment in the kit selection (accent-soft fill,
+  neutral border, accent semibold text), idle segments plain text, a
+  trailing `.dk-count` rendered pill-less in mono. Semantics by job:
+  `<nav>`+`aria-current` for routes, `role="tablist"` for in-page views,
+  `role="radiogroup"` + `aria-checked` for a single-choice filter,
+  `aria-pressed` for combinable toggles (all four render the selected
+  state). `dist/tabs.js` (`globalThis.dakitTabs`) adds roving tabindex,
+  ←/→/↑/↓/Home/End with automatic activation via `.click()`, disabled-skip,
+  RTL, focus that follows a re-rendered track, and keeps the choice
+  scrolled into view. Default (28px) and `--sm` (24px) sizes, 44px on
+  touch; overflow scrolls inside the track with neutral edge shadows and
+  never wraps. New tokens `tabs.{track,text,hover,hover-text,selected,
+  selected-text,count,disabled-text,focus,radius,radius-item,pad,gap,height,
+  height-sm,pad-x,pad-x-sm}` (both themes, contrast-checked). Showcase
+  section `#segmented`.
+
 - Load before open (`docs/dialog-loading.md`): a dialog that needs data
   never opens half-loaded. `dakitDialogs.openWhenReady(trigger, load, render,
   options)` in `dist/dialogs.js` keeps the trigger busy (`aria-busy`, same
@@ -70,6 +88,12 @@ in a minor version with migration notes.
   icon rail instead of a blank strip. Operator page titles are 22px.
 
 ### Removed
+
+- `.dk-filter-chip` and `.dk-filter-chip__count`: separate pill buttons were
+  a second look for the job the segmented control does. Replace a chip row
+  with `<div class="dk-tabs" role="radiogroup" aria-label="…">` of
+  `<button class="dk-tab" role="radio" aria-checked>` (or keep
+  `aria-pressed` for true multi-select), and the count with `.dk-count`.
 
 - `accent.border` and `success.border`, `warning.border`, `danger.border`,
   `info.border` roles. Replace border references with `border.default`,

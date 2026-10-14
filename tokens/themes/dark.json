@@ -84,5 +84,17 @@
     "$type": "color",
     "color": { "$value": "{accent.default}" },
     "track": { "$value": "{border.default}" }
+  },
+  "tabs": {
+    "$type": "color",
+    "track": { "$value": "{bg.muted}" },
+    "text": { "$value": "{text.muted}" },
+    "hover": { "$value": "{bg.hover}" },
+    "hover-text": { "$value": "{text.primary}" },
+    "selected": { "$value": "{accent.soft}" },
+    "selected-text": { "$value": "{accent.default}" },
+    "count": { "$value": "{text.muted}" },
+    "disabled-text": { "$value": "{text.faint}" },
+    "focus": { "$value": "{focus.ring}" }
   }
 }

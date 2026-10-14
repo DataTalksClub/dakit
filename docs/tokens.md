@@ -28,7 +28,8 @@ Token name = JSON key path with `-` separators, `dk-` prefixed:
 Semantic prefixes: `bg-`, `text-`, `border-`, `accent-`, `focus-`,
 `success-`, `warning-`, `danger-`, `info-`, `shadow-`, `spinner-` and
 `loading-` (the loading indicator and load-before-open timing, see
-`docs/dialog-loading.md`), the spacing roles
+`docs/dialog-loading.md`), `tabs-` (the segmented control, see
+`docs/segmented.md`), the spacing roles
 `gap-` and `pad-` (aliases onto `space-`, see guidelines "Spacing by role"),
 plus the scale groups `text-` (type sizes), `space-`, `radius-`, `size-`. If a name needs a second
 dash-level to be understood (`bg-inset`, `text-on-accent`), that's fine; if it

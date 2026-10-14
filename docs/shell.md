@@ -436,20 +436,12 @@ using the `.dk-menu` surface with `padding: 0` and a flex column.
     mono `Updated 12s ago` in `--dk-text-sm` faint.
 - `.dk-section-header` is a section-level copy of the page header (`h2`,
   `--dk-text-lg`).
-- `.dk-tabs` (segmented, because underline stripes are banned):
-  `display: inline-flex; gap: var(--dk-space-1); padding: var(--dk-space-1); background: var(--dk-bg-muted); border: 1px solid var(--dk-border-default); border-radius: var(--dk-radius-md);`.
-  - `.dk-tab` is 28px (`--dk-size-control-sm`), `padding: 0 var(--dk-space-3)`,
-    `--dk-radius-sm`, `--dk-text-md` medium muted, with hover
-    `--dk-bg-hover`.
-  - Selected: `[aria-current="page"]` (route tabs: a `<nav>` of links) or
-    `[aria-selected="true"]` (`role="tablist"`, in-page panels). It follows the
-    kit's single selection treatment: `--dk-accent-soft` fill, 1px
-    `--dk-border-default`, `--dk-accent-default` semibold text. There's no
-    underline.
-  - An optional trailing `.dk-count` is allowed. `.dk-tabs--sm` is 24px.
-  - Overflow: `overflow-x: auto` with no wrap. At ≤820px the bar spans the
-    full width (`display: flex; width: 100%`) and tabs share it
-    (`flex: 1 0 auto`, centred labels), still scrolling when they don't fit.
+- `.dk-tabs` is the segmented control, the one look for view switchers
+  and list filters (underline stripes are banned). Its markup, ARIA by job
+  (`<nav>`+`aria-current` for route tabs, `tablist` for in-page panels,
+  `radiogroup` for a filter), sizes (`.dk-tabs--sm`), counts, keyboard
+  (`dist/tabs.js`), mobile scrolling and `--dk-tabs-*` tokens are in
+  `docs/segmented.md`.
 
 ## 9. Shared components
 
@@ -526,7 +518,8 @@ navigation.**
   `<nav aria-label="Primary">`, and `<main id="main-content">`. The page has
   one `h1`, inside main.
 - **Current location:** use `aria-current="page"` on nav items and route
-  tabs, and `aria-selected` only inside `role="tablist"`.
+  tabs, `aria-selected` only inside `role="tablist"`, and `aria-checked`
+  inside a filter's `role="radiogroup"` (`docs/segmented.md`).
 - **Popovers** (account, notifications, brand switcher):
   - Triggers carry `aria-expanded` and `aria-controls`. Only one popover is
     open at a time. When one opens, focus moves inside. The notification

@@ -16,6 +16,7 @@
 <link rel="stylesheet" href="dist/dakit.css">
 <script src="dist/dialogs.js"></script>
 <script src="dist/shell.js" defer></script>
+<script src="dist/tabs.js" defer></script>
 <style>
   /* Showcase chrome only — everything below demonstrates the system itself. */
   .page { max-width: var(--dk-size-content-max); margin: 0 auto; padding: var(--dk-space-7) var(--dk-space-6) var(--dk-space-8); display: grid; gap: var(--dk-space-7); }
@@ -210,6 +211,84 @@
     <script>document.getElementById("demo-dialog-open").addEventListener("click", () => document.getElementById("demo-dialog").showModal());</script>
   </section>
 
+  <section id="segmented">
+    <h2>Segmented control</h2>
+    <p class="caption">The one look for view switchers and list filters (docs/segmented.md): a track of segments, the selected one in the kit selection. Pick the semantics by what it does: route links use <code>aria-current</code>, in-page views a <code>tablist</code>, a single-choice filter a <code>radiogroup</code>. Arrow keys move the choice in the last two. Too many segments scroll inside the track; they never wrap.</p>
+    <div class="row">
+      <span class="caption" style="margin: 0">Route views (links):</span>
+      <nav class="dk-tabs" aria-label="Task views"><a class="dk-tab" href="#segmented" aria-current="page">Open <span class="dk-count">12</span></a><a class="dk-tab" href="#segmented">Waiting <span class="dk-count">4</span></a><a class="dk-tab" href="#segmented">Done</a></nav>
+    </div>
+    <div class="row">
+      <span class="caption" style="margin: 0">In-page views (tablist):</span>
+      <div class="dk-tabs" role="tablist" aria-label="Run views" id="demo-tablist">
+        <button class="dk-tab" type="button" role="tab" id="demo-tab-steps" aria-controls="demo-panel-steps" aria-selected="true" tabindex="0">Steps</button>
+        <button class="dk-tab" type="button" role="tab" id="demo-tab-log" aria-controls="demo-panel-log" aria-selected="false" tabindex="-1">Log</button>
+        <button class="dk-tab" type="button" role="tab" id="demo-tab-input" aria-controls="demo-panel-input" aria-selected="false" tabindex="-1">Input</button>
+        <button class="dk-tab" type="button" role="tab" aria-selected="false" aria-disabled="true" tabindex="-1">Output</button>
+      </div>
+    </div>
+    <div class="dk-card dk-card--muted" id="demo-panel-steps" role="tabpanel" aria-labelledby="demo-tab-steps">12 steps, all succeeded.</div>
+    <div class="dk-card dk-card--muted" id="demo-panel-log" role="tabpanel" aria-labelledby="demo-tab-log" hidden>Log: 1,024 lines.</div>
+    <div class="dk-card dk-card--muted" id="demo-panel-input" role="tabpanel" aria-labelledby="demo-tab-input" hidden>Input: <span class="dk-mono">{ "since": "2026-10-01" }</span></div>
+    <div class="row">
+      <span class="caption" style="margin: 0">List filter (radiogroup):</span>
+      <div class="dk-tabs" role="radiogroup" aria-label="Filter queue by assignee" id="demo-filter">
+        <button class="dk-tab" type="button" role="radio" aria-checked="true" tabindex="0">All <span class="dk-count">678</span></button>
+        <button class="dk-tab" type="button" role="radio" aria-checked="false" tabindex="-1">Grace <span class="dk-count">3</span></button>
+        <button class="dk-tab" type="button" role="radio" aria-checked="false" tabindex="-1">Valeriia <span class="dk-count">4</span></button>
+        <button class="dk-tab" type="button" role="radio" aria-checked="false" tabindex="-1">Alexey</button>
+      </div>
+      <span class="dk-muted dk-mono" id="demo-filter-out" style="font-size: var(--dk-text-sm)">Showing 678</span>
+    </div>
+    <div class="row">
+      <span class="caption" style="margin: 0">Compact (<code>--sm</code>):</span>
+      <div class="dk-tabs dk-tabs--sm" role="radiogroup" aria-label="Notifications">
+        <button class="dk-tab" type="button" role="radio" aria-checked="true" tabindex="0">Unread <span class="dk-count">3</span></button>
+        <button class="dk-tab" type="button" role="radio" aria-checked="false" tabindex="-1">All</button>
+      </div>
+      <span class="caption" style="margin: 0">Multi-select toggles (<code>aria-pressed</code>):</span>
+      <div class="dk-tabs dk-tabs--sm" role="group" aria-label="Show statuses">
+        <button class="dk-tab" type="button" aria-pressed="true">Failed</button>
+        <button class="dk-tab" type="button" aria-pressed="true">Running</button>
+        <button class="dk-tab" type="button" aria-pressed="false">Succeeded</button>
+      </div>
+    </div>
+    <div class="row">
+      <span class="caption" style="margin: 0">Overflow (scrolls inside the track):</span>
+      <div style="max-width: 320px; display: flex; min-width: 0">
+        <div class="dk-tabs" role="radiogroup" aria-label="Newsletter issues">
+          <button class="dk-tab" type="button" role="radio" aria-checked="true" tabindex="0">All issues</button>
+          <button class="dk-tab" type="button" role="radio" aria-checked="false" tabindex="-1">Upcoming <span class="dk-count">5</span></button>
+          <button class="dk-tab" type="button" role="radio" aria-checked="false" tabindex="-1">Drafting <span class="dk-count">2</span></button>
+          <button class="dk-tab" type="button" role="radio" aria-checked="false" tabindex="-1">Sent &amp; archive</button>
+        </div>
+      </div>
+    </div>
+    <script>
+      (() => {
+        // The app owns the choice: a click flips the ARIA state (and panels);
+        // dist/tabs.js only adds keyboard movement and the roving tabindex.
+        const choose = (group, attr, onPick) => group.addEventListener("click", (e) => {
+          const seg = e.target.closest(".dk-tab");
+          if (!seg || seg.getAttribute("aria-disabled") === "true") return;
+          group.querySelectorAll(".dk-tab").forEach((el) => el.setAttribute(attr, String(el === seg)));
+          if (onPick) onPick(seg);
+        });
+        document.querySelectorAll('#segmented .dk-tabs[role="radiogroup"]').forEach((g) => choose(g, "aria-checked", g.id === "demo-filter"
+          ? (seg) => { document.getElementById("demo-filter-out").textContent = `Showing ${seg.querySelector(".dk-count")?.textContent || 0}`; }
+          : null));
+        choose(document.getElementById("demo-tablist"), "aria-selected", (seg) => {
+          document.querySelectorAll('#segmented [role="tabpanel"]').forEach((p) => { p.hidden = p.id !== seg.getAttribute("aria-controls"); });
+        });
+        document.querySelectorAll('#segmented .dk-tabs[role="group"] .dk-tab').forEach((b) => b.addEventListener("click", () => b.setAttribute("aria-pressed", String(b.getAttribute("aria-pressed") !== "true"))));
+        document.querySelectorAll('#segmented nav.dk-tabs .dk-tab').forEach((a) => a.addEventListener("click", (e) => {
+          e.preventDefault();
+          a.parentElement.querySelectorAll(".dk-tab").forEach((el) => (el === a ? el.setAttribute("aria-current", "page") : el.removeAttribute("aria-current")));
+        }));
+      })();
+    </script>
+  </section>
+
   <section id="loading">
     <h2>Loading data for a dialog</h2>
     <p class="caption">A dialog that needs data opens only when the data is in (docs/dialog-loading.md). Until then the trigger is busy: same size, spinner after 150ms, a second click ignored. Past 500ms the dialog backdrop appears with a centred spinner; Escape or a backdrop click cancels. A failed load opens nothing and shows a toast with Retry. A row has no room for a spinner, so it gets the overlay at 150ms.</p>
@@ -292,10 +371,6 @@
       </div>
       <div class="dk-page-header__actions"><button class="dk-button dk-button--secondary" type="button">Snooze</button><button class="dk-button dk-button--primary" type="button">Mark done</button></div>
     </header>
-    <div class="row">
-      <nav class="dk-tabs" aria-label="Demo tabs"><a class="dk-tab" href="#" aria-current="page">Open <span class="dk-count">12</span></a><a class="dk-tab" href="#">Waiting <span class="dk-count">4</span></a><a class="dk-tab" href="#">Done</a></nav>
-      <div class="dk-tabs dk-tabs--sm" role="tablist" aria-label="Small tabs"><button class="dk-tab" role="tab" aria-selected="true" type="button">Unread</button><button class="dk-tab" role="tab" aria-selected="false" type="button">All</button></div>
-    </div>
     <div class="dk-stat-strip">
       <div class="dk-stat"><span class="dk-stat__label">Runs today</span><span class="dk-stat__value">1,024</span><span class="dk-stat__meta">+12% vs yesterday</span></div>
       <div class="dk-stat"><span class="dk-stat__label">Failed</span><span class="dk-stat__value">3</span><span class="dk-stat__meta"><span class="dk-badge dk-badge--danger">needs action</span></span></div>

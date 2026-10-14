@@ -47,12 +47,14 @@ padding instead of `gap-block`.
   counts, "Load more", pagination. It lives inside the bordered container,
   never flush under it.
 
-### Filter chips
+### Views and filters
 
-`.dk-filter-chip` (a `<button>` with `aria-pressed`) narrows a list: All /
-Handled / Failed. Chips sit in a `.dk-cluster` so they keep the control gap —
-never a fused segmented bar — and the pressed one carries the selection
-fill. Put a count in `.dk-filter-chip__count` when the list knows it.
+A view switcher or a single-choice list filter (All / Handled / Failed, an
+owner, Upcoming / Sent) is always the segmented control `.dk-tabs`
+(`docs/segmented.md`): one track, the selected segment in the selection
+fill, an optional `.dk-count` inside. Never a row of separate pill buttons
+or an underline. Use `role="radiogroup"` for a filter, `role="tablist"` for
+in-page views, a `<nav>` of links with `aria-current` for routes.
 
 ### Dialogs
 

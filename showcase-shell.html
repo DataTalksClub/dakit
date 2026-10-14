@@ -166,10 +166,10 @@
 
       <div>
         <div class="dk-toolbar">
-          <div class="dk-cluster">
-            <button class="dk-filter-chip" type="button" aria-pressed="true">Mine <span class="dk-filter-chip__count">8</span></button>
-            <button class="dk-filter-chip" type="button" aria-pressed="false">Team <span class="dk-filter-chip__count">4</span></button>
-            <button class="dk-filter-chip" type="button" aria-pressed="false">Unassigned</button>
+          <div class="dk-tabs" role="radiogroup" aria-label="Filter tasks by owner">
+            <button class="dk-tab" type="button" role="radio" aria-checked="true" tabindex="0">Mine <span class="dk-count">8</span></button>
+            <button class="dk-tab" type="button" role="radio" aria-checked="false" tabindex="-1">Team <span class="dk-count">4</span></button>
+            <button class="dk-tab" type="button" role="radio" aria-checked="false" tabindex="-1">Unassigned</button>
           </div>
           <div class="dk-toolbar__end"><span class="dk-muted dk-mono" style="font-size: var(--dk-text-sm)">12 tasks</span></div>
         </div>
@@ -304,6 +304,7 @@
   })();
 </script>
 <script src="dist/shell.js"></script>
+<script src="dist/tabs.js"></script>
 <script>
   (() => {
     const shell = dakitShell;

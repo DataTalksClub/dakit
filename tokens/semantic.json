@@ -99,6 +99,27 @@
       "delay-overlay": { "$value": "500ms" }
     },
 
+    "tabs": {
+      "$description": "The segmented control (.dk-tabs, docs/segmented.md): the one look for every view switcher and single-choice list filter. A rounded track (track fill, the neutral border.default, radius, pad) holds segments (height or height-sm, pad-x or pad-x-sm, gap apart, radius-item). An idle segment is text on the track, hover lifts it to hover/hover-text, the selected one is the kit selection: selected fill, selected-text, neutral border. count is an idle segment's number (a selected count takes the selected text); disabled-text is a segment that can't be chosen. focus is the keyboard ring.",
+      "track": { "$type": "color", "$value": "{bg.muted}" },
+      "text": { "$type": "color", "$value": "{text.muted}" },
+      "hover": { "$type": "color", "$value": "{bg.hover}" },
+      "hover-text": { "$type": "color", "$value": "{text.primary}" },
+      "selected": { "$type": "color", "$value": "{accent.soft}" },
+      "selected-text": { "$type": "color", "$value": "{accent.default}" },
+      "count": { "$type": "color", "$value": "{text.muted}" },
+      "disabled-text": { "$type": "color", "$value": "{text.faint}" },
+      "focus": { "$type": "color", "$value": "{focus.ring}" },
+      "radius": { "$type": "dimension", "$value": "{radius.md}" },
+      "radius-item": { "$type": "dimension", "$value": "{radius.sm}" },
+      "pad": { "$type": "dimension", "$value": "{space.1}" },
+      "gap": { "$type": "dimension", "$value": "{space.1}" },
+      "height": { "$type": "dimension", "$value": "{size.control-sm}" },
+      "height-sm": { "$type": "dimension", "$value": "{space.6}" },
+      "pad-x": { "$type": "dimension", "$value": "{space.3}" },
+      "pad-x-sm": { "$type": "dimension", "$value": "{space.2}" }
+    },
+
     "gap": {
       "$type": "dimension",
       "$description": "Layout rhythm by role, so apps stop inventing 6/10/14px gaps. control: between adjacent interactive controls (also the row gap when a group wraps). block: between a block (table, panel, empty state, form) and the controls before or after it. section: between page sections.",

@@ -39,6 +39,12 @@
     { "fg": "info.text", "bg": "bg.page", "min": 4.5 },
 
     { "fg": "spinner.color", "bg": "bg.raised", "min": 3.0 },
-    { "fg": "spinner.color", "bg": "bg.surface", "min": 3.0 }
+    { "fg": "spinner.color", "bg": "bg.surface", "min": 3.0 },
+
+    { "fg": "tabs.text", "bg": "tabs.track", "min": 4.5 },
+    { "fg": "tabs.count", "bg": "tabs.track", "min": 4.5 },
+    { "fg": "tabs.hover-text", "bg": "tabs.hover", "min": 4.5 },
+    { "fg": "tabs.selected-text", "bg": "tabs.selected", "min": 4.5 },
+    { "fg": "tabs.focus", "bg": "tabs.track", "min": 3.0 }
   ]
 }

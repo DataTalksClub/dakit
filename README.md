@@ -52,15 +52,17 @@ css/shell.css              app shell: sidebar, icon rail, topbar, drawer, accoun
 js/dialogs.js              <dialog> backdrop dismissal + openWhenReady (load before open; copied to dist/ verbatim)
 js/shell.js                shell behaviour: collapse, drawer, popovers, counts, theme, copy
 js/split.js                list–detail split: list keyboard, focus per pane, resize grip
+js/tabs.js                 segmented control keyboard: roving tabindex, arrow keys for tablist/radiogroup
 js/device-code.js          device-login code normalize/format (ES module, never truncates)
 build.mjs                  tokens → dist/; validates aliases, dark coverage, contrast
-dist/                      generated: dakit.css (bundle), tokens.css, tokens.js, dialogs.js, shell.js, split.js, device-code.js
+dist/                      generated: dakit.css (bundle), tokens.css, tokens.js, dialogs.js, shell.js, split.js, tabs.js, device-code.js
 fonts/                     self-hosted Inter + IBM Plex Mono (SIL OFL)
 showcase.html              living style guide — open after building
 showcase-shell.html        app shell in every state (?state=, ?variant=topbar)
 showcase-device.html       device-login page, live mock flow + every state
 showcase-split.html        list–detail split (?run=, ?state=scrolled, ?empty=1)
 docs/dialog-loading.md     a dialog never opens half-loaded: busy trigger, spinner, loading overlay, error toast
+docs/segmented.md          the one view-switcher/filter control (.dk-tabs): which ARIA when, sizes, mobile, tokens
 docs/                      principles, token model, usage guidelines, adoption maps
 ```
 
