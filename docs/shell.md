@@ -436,8 +436,9 @@ using the `.dk-menu` surface with `padding: 0` and a flex column.
     `--dk-border-default`, `--dk-accent-default` semibold text. There's no
     underline.
   - An optional trailing `.dk-count` is allowed. `.dk-tabs--sm` is 24px.
-  - Overflow: `overflow-x: auto` with no wrap. On mobile the bar spans the
-    full width.
+  - Overflow: `overflow-x: auto` with no wrap. At ≤820px the bar spans the
+    full width (`display: flex; width: 100%`) and tabs share it
+    (`flex: 1 0 auto`, centred labels), still scrolling when they don't fit.
 
 ## 9. Shared components
 
@@ -455,7 +456,8 @@ borders or fill only.
 | `.dk-menu` | The popover surface in §6: `__item` (32px), `__item--danger`, `__label` (xs faint uppercase 24px), `__sep` (1px hairline, `margin: var(--dk-space-1) 0`), `__identity`, `__meta`. |
 | `.dk-avatar` | 28px (`--xs` 20, `--sm` 24, `--lg` 36), `--dk-radius-full`, `--dk-accent-soft` fill, `--dk-accent-default` text, `--dk-text-xs` semibold sans initials (one or two), no border. `<img>` inside covers it. It's decorative (`aria-hidden`) when a name sits next to it. |
 | `.dk-count` | §7.2. |
-| `.dk-kbd` | Mono `--dk-text-xs`, `min-width: 20px; height: 20px; padding: 0 var(--dk-space-1)`, `--dk-bg-surface`, 1px `--dk-border-default`, `--dk-radius-sm`, `--dk-text-muted`. |
+| `.dk-kbd` | Mono `--dk-text-xs`, `min-width: 20px; height: 20px; padding: 0 var(--dk-space-1)`, `--dk-bg-surface`, 1px `--dk-border-default`, `--dk-radius-sm`, `--dk-text-muted`. Hidden under `(pointer: coarse)`: a shortcut hint means nothing without a keyboard. |
+| inline `code` | Mono chip (`--dk-bg-inset`). `:not(pre) > code` is `white-space: nowrap`, so an inline command such as `dataops login` never splits across lines. Long-form prose readers that may hold long code spans opt back into wrapping in their own reader styles. |
 | `.dk-code-block` + `.dk-copy-button` | Block: `display: flex; align-items: flex-start; gap: var(--dk-space-3); padding: var(--dk-space-2) var(--dk-space-3); background: var(--dk-bg-inset); border: 1px solid var(--dk-border-default); border-radius: var(--dk-radius-md)`. `<pre><code>` mono `--dk-text-sm`, `flex: 1; min-width: 0; overflow-x: auto; white-space: pre`. Never truncate or ellipsize code or secrets. Use exactly `<div class="dk-code-block"><pre><code>…</code></pre><button …>Copy</button></div>`, so the code takes the free width and Copy sits at the far edge. On touch, `pre` gets `padding-block: var(--dk-space-3)`, so the first line centres on the 44px button. Copy button: `.dk-button--sm` secondary with `data-dk-copy`, labelled "Copy". On success its label reads "Copied" for 1.5s (the button width doesn't change: CSS reserves the width of "Copied" before the first click with an invisible zero-height line) and `#dk-live` announces "Copied". On failure it reads "Press Ctrl+C" and selects the text. |
 | `.dk-tooltip` | §5.5: rail labels only. |
 

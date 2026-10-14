@@ -124,8 +124,11 @@ and `.dk-textarea` grow to `--dk-size-touch` (44). Checkboxes keep their
   `--secondary`; destructive actions are `--danger` and live away from the
   primary. Sizes: `--sm` in toolbars and tables, default in forms,
   `--lg` for page-level actions.
-- Disabled still communicates: opacity only, no color swap (a grayed danger
-  button must stay a danger button).
+- Disabled is one role-based treatment for every variant: `--dk-bg-muted`
+  fill, `--dk-text-muted` text, 1px `--dk-border-default`, no hover, no
+  opacity. Opacity over the accent read as an enabled variant in dark, and a
+  disabled primary (say, Authorize behind an acknowledgement) must be
+  unmistakable in both themes. The label still names the action.
 
 ## Forms
 
