@@ -142,7 +142,29 @@ It fails (exit 1, printing `file:line: reason`) on:
 - Site-local custom properties: definitions in scanned files are collected and resolved to judge the resolved values.
 - Single-side borders or border-widths (`border-left`, `border-top`, etc.) that are wider than 1px or colored (neutral 1px dividers pass).
 - Inset box shadows: any `box-shadow` with `inset` that has a colored value or is used as an edge stripe (e.g. `inset Npx 0 0`).
-- Colored outlines outside `:focus` / `:focus-visible` rules (keyboard focus indicators with `--dk-focus-ring` on `:focus-visible` pass).
+- Colored rings: a spread-only `box-shadow` (`0 0 0 Npx`, inset or not) with a colored value outside `:focus-visible`.
+- Colored outlines outside `:focus-visible` rules, including shorthands with a raw literal (`outline: 2px dashed #3b82f6`). Every selector in the rule's list must be a `:focus-visible` selector; plain `:focus` does not qualify. The keyboard focus indicator with `--dk-focus-ring` on `:focus-visible` passes.
+- Raw colored fallbacks inside a neutral role (`var(--dk-border-default, #3b82f6)`).
+
+## Colour enforcement (scripts/check-colors.mjs)
+
+Apps color things through semantic roles only. The color checker fails on any
+raw color literal in a declaration value: hex (`#3b82f6`), `rgb()`/`rgba()`,
+`hsl()`/`hsla()`, `hwb()`, `lab()`/`lch()`, `oklab()`/`oklch()` and `color()`.
+That includes fallbacks inside `var()` and values of site-local custom
+properties, because a raw value has no dark-theme remap. Selectors, comments
+and inline images (`url(data:…)`) are not scanned; keywords (`transparent`,
+`currentColor`, `black`) and `color-mix()` over roles pass. If a role is
+missing, add it to the dakit tokens in both themes (see AGENTS.md "Changing
+tokens") instead of hardcoding it.
+
+```bash
+node path/to/vendor/dakit/check-colors.mjs path/to/app/styles
+```
+
+It discovers files exactly like the border checker and is vendored next to it
+by `sync.mjs` (it imports the border checker's parser, so keep both files
+together). The dakit build runs it over `css/`.
 
 ## Cascade layers
 
@@ -181,6 +203,7 @@ node "$HOME/git/dakit/scripts/sync.mjs" --dest path/to/vendor/dakit
 
 The destination contains the dist files directly (`dakit.css`, `tokens.css`,
 `tokens.js`, etc.), a `fonts/` directory with the license, `check-borders.mjs`,
+`check-colors.mjs`,
 `sync.mjs`, and `dakit.lock.json`. CSS font URLs are rewritten from
 `../fonts/` to `./fonts/` for this flat layout. Update app imports to match.
 The bundle already includes tokens; apps loading it do not need `tokens.css`
@@ -194,7 +217,7 @@ node "$HOME/git/dakit/scripts/sync.mjs" --dest path/to/vendor/dakit --files daki
 ```
 
 `--fonts-dir` chooses a font directory inside the destination. Fonts, license,
-and both tools are always included. No app-specific source CSS copies or `sed`
+and all three tools are always included. No app-specific source CSS copies or `sed`
 steps are needed. The lock records the built version and source commit plus
 SHA-256 checksums of the delivered bytes, including rewritten CSS and tools.
 
@@ -203,6 +226,7 @@ Run the vendored tool in app CI without a sibling dakit checkout:
 ```bash
 node path/to/vendor/dakit/sync.mjs --check --dest path/to/vendor/dakit
 node path/to/vendor/dakit/check-borders.mjs path/to/app/styles
+node path/to/vendor/dakit/check-colors.mjs path/to/app/styles
 ```
 
 `--check` exits nonzero for changed or missing locked files. It verifies the

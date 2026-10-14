@@ -12,6 +12,7 @@ import { execFileSync } from "node:child_process";
 import { dirname, join } from "node:path";
 import { fileURLToPath } from "node:url";
 import { checkBorders } from "./scripts/check-borders.mjs";
+import { checkColors } from "./scripts/check-colors.mjs";
 
 const root = dirname(fileURLToPath(import.meta.url));
 const read = (p) => JSON.parse(readFileSync(join(root, p), "utf8"));
@@ -192,6 +193,9 @@ const borderViolations = checkBorders([
 ]);
 for (const v of borderViolations) {
   fail(`border rule violation at ${v.file}:${v.line}: ${v.reason}`);
+}
+for (const v of checkColors([join(root, "css")])) {
+  fail(`colour rule violation at ${v.file}:${v.line}: ${v.reason}`);
 }
 
 if (failed) {

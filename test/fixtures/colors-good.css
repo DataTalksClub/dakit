@@ -1,0 +1,12 @@
+/* Semantic roles, keywords and inline images pass; an id selector that
+   looks like hex (#add) and an issue reference in a comment (#204) are not
+   declaration values. */
+#add .row {
+  color: var(--dk-text-muted);
+  background: var(--dk-danger-bg);
+  border: 1px solid var(--dk-border-default);
+  box-shadow: var(--dk-shadow-overlay);
+}
+.media { background: black; }
+.mask { background-image: url("data:image/svg+xml,<svg fill='#fff'/>"); }
+.tint { background: color-mix(in srgb, var(--dk-accent-default) 10%, transparent); }

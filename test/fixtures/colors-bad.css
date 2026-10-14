@@ -1,0 +1,5 @@
+.a { color: #f85149; }
+.b { background: rgba(248, 81, 73, 0.12); }
+.c { color: var(--dk-accent-default, #2563eb); }
+:root { --app-chip: hsl(210 80% 50%); }
+.d { box-shadow: 0 1px 2px rgb(0 0 0 / 4%), 0 0 0 1px oklch(70% 0.1 250); }

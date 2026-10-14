@@ -24,6 +24,16 @@
   outline-offset: 2px;
 }
 
-.button:focus {
+.button:focus-visible {
   outline: 3px solid var(--dk-focus-ring);
+}
+
+.field:has(input:focus-visible) {
+  box-shadow: 0 0 0 3px var(--dk-focus-ring);
+}
+
+/* Neutral outline and neutral spread ring */
+.drop-zone {
+  outline: 2px dashed var(--dk-border-strong);
+  box-shadow: 0 0 0 1px var(--dk-border-default);
 }
