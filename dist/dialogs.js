@@ -1,4 +1,4 @@
-/* dakit 0.2.0 5bc3493 */
+/* dakit 0.2.0 3e236f4 */
 // Dakit dialog dismissal: clicking an open dialog's backdrop closes it.
 //
 // Load once per page — either form works:
