@@ -55,7 +55,9 @@
   width: 100%;
   border: 1px solid var(--dk-border-default);
   border-radius: var(--dk-radius-md);
-  background: var(--dk-bg-page);
+  /* background-color, not the shorthand: the base layer's select chevron is a
+     background-image and must survive. */
+  background-color: var(--dk-bg-page);
   color: var(--dk-text-primary);
   padding: 0 var(--dk-space-3);
   height: var(--dk-size-control-md);
@@ -238,7 +240,7 @@
 .dk-dialog__foot > .dk-dialog__start { margin-right: auto; }
 
 /* One flat sheet: controls share the panel surface instead of an inset fill. */
-.dk-dialog :is(input, select, textarea):not([type="checkbox"]):not([type="radio"]) { background: var(--dk-bg-surface); }
+.dk-dialog :is(input, select, textarea):not([type="checkbox"]):not([type="radio"]) { background-color: var(--dk-bg-surface); }
 
 @media (max-width: 820px) {
   .dk-dialog {
