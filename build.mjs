@@ -10,6 +10,7 @@
 import { readFileSync, writeFileSync, mkdirSync } from "node:fs";
 import { dirname, join } from "node:path";
 import { fileURLToPath } from "node:url";
+import { checkBorders } from "./scripts/check-borders.mjs";
 
 const root = dirname(fileURLToPath(import.meta.url));
 const read = (p) => JSON.parse(readFileSync(join(root, p), "utf8"));
@@ -160,6 +161,16 @@ for (const [themeName, map] of Object.entries(themes)) {
     );
     if (!ok) failed = true;
   }
+}
+
+// --- border rules check ------------------------------------------------------
+
+const borderViolations = checkBorders([
+  join(root, "css"),
+  join(root, "showcase.html"),
+]);
+for (const v of borderViolations) {
+  fail(`border rule violation at ${v.file}:${v.line}: ${v.reason}`);
 }
 
 if (failed) {

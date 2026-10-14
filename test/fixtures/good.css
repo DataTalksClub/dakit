@@ -1,0 +1,29 @@
+/* Neutral borders (1px, neutral token or transparent or 0) */
+.container {
+  border: 1px solid var(--dk-border-default);
+  border-bottom: 1px solid var(--dk-border-default);
+  border-top: 0;
+}
+
+.button-ghost {
+  border: 1px solid transparent;
+}
+
+.table-header {
+  border-bottom: 1px solid var(--dk-border-strong);
+}
+
+.divider {
+  border: 0;
+  border-top: 1px solid var(--dk-border-default);
+}
+
+/* Keyboard focus indicator outline exception */
+.input-field:focus-visible {
+  outline: 3px solid var(--dk-focus-ring);
+  outline-offset: 2px;
+}
+
+.button:focus {
+  outline: 3px solid var(--dk-focus-ring);
+}

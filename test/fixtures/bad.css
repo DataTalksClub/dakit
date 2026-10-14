@@ -1,0 +1,17 @@
+/* 1. colored outlined alert box */
+.alert-box {
+  border: 1px solid #f85149;
+}
+
+/* 2. border-left: 3px solid var(--x-accent) */
+:root {
+  --x-accent: #315f8f;
+}
+.sidebar-item {
+  border-left: 3px solid var(--x-accent);
+}
+
+/* 3. inset box-shadow stripe */
+.card-callout {
+  box-shadow: inset 3px 0 0 #315f8f;
+}

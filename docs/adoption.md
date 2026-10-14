@@ -42,7 +42,7 @@ palette or ink choices on top of the system.
 | `--text-primary/heading/muted/faint` | `--dk-text-*` | same values |
 | `--link-color`, `--link-hover` | `--dk-text-link`, `--dk-text-link-hover` | same values |
 | `--accent`, `--accent-hover`, `--accent-soft` | `--dk-accent-*` | same values |
-| `--success-*`, `--warning-*`, `--danger-*`, `--info-*` | `--dk-success-*` etc. | same triplets |
+| `--success-*`, `--warning-*`, `--danger-*`, `--info-*` | `--dk-success-*` etc. | text and bg pairs (badges are fill-only; accent borders forbidden) |
 | `--focus-ring` | `--dk-focus-ring` | same value |
 | `--font-sans`, `--font-mono` | `--dk-font-sans`, `--dk-font-mono` | same stacks |
 | `--radius` (6px) | `--dk-radius-md` | same value |
@@ -57,7 +57,7 @@ palette or ink choices on top of the system.
 `--dm-color-border(-strong)` → `--dk-border-*`, `--dm-color-background` →
 `--dk-bg-page`, `--dm-color-surface(-strong)` → `--dk-bg-muted`/`--dk-bg-hover`,
 `--dm-color-primary(-hover)` → `--dk-accent-*`, `--dm-color-link(-hover)` →
-`--dk-text-link(-hover)`, `--dm-color-{success,warning,danger}` triplets →
+`--dk-text-link(-hover)`, `--dm-color-{success,warning,danger}` pairs →
 `--dk-{status}-*`, `--dm-color-focus` → `--dk-focus-ring`,
 `--dm-color-danger-hover` → `--dk-danger-hover` (a role dakit gained for
 relay's solid danger buttons). Relay's CSS header
@@ -75,8 +75,8 @@ Structure maps cleanly; the visual changes are deliberate (see below).
 | `--muted` | `--dk-text-muted` | same role |
 | `--line`, `--line-strong` | `--dk-border-default`, `--dk-border-strong` | same roles |
 | `--accent` (green #0b6745) | `--dk-accent-default` (blue #315f8f) | **hue changes** — one accent across all tools |
-| `--accent-soft/line` | `--dk-accent-soft/border` | follows the hue |
-| `--red`, `--red-soft/line` | `--dk-danger-text/bg/border` | same role |
+| `--accent-soft/line` | `--dk-accent-soft` | follows the hue (border stays neutral) |
+| `--red`, `--red-soft/line` | `--dk-danger-text/bg` | text and bg (border stays neutral) |
 | `--run-text`, `--run-dot` (rust = running) | `--dk-info-*` | running is "in progress" = info, not danger-adjacent rust |
 | `--ok-dot` | `--dk-success-text` (as dot) | same idea |
 | `--wash`, `--wash-soft/faint` | `--dk-bg-muted`, `--dk-bg-hover`, `--dk-bg-inset` | same washes, neutral |
@@ -120,3 +120,26 @@ for these fills); it has no consumers left.
    themes.
 3. Delete the shim and the dead variables; drop any font files the app no
    longer needs (dakit self-hosts).
+
+## Border enforcement (scripts/check-borders.mjs)
+
+Accent borders are forbidden across all projects consuming dakit. A consuming site runs the border checker as part of its CI / test suite:
+
+```bash
+node node_modules/dakit/scripts/check-borders.mjs <paths...>
+```
+
+Or when running from the dakit checkout:
+
+```bash
+node scripts/check-borders.mjs <paths...>
+```
+
+The checker is a zero-dependency CLI that scans `.css` files, plus `<style>` blocks and `style=""` attributes in `.html`, `.vue`, `.svelte`, `.jsx`, `.tsx`, and `.js` template strings (best effort, skipping `node_modules`, `dist`, `.git`, and vendored dakit dirs).
+
+It fails (exit 1, printing `file:line: reason`) on:
+- Any border or outline property whose color is not neutral: any `var(--dk-*)` other than neutral border roles (`--dk-border-default`, `--dk-border-control-hover`, `--dk-border-strong`); any removed role (`--dk-accent-border`, `--dk-*-border`); or any literal color with noticeable chroma (HSL saturation > 18% and chroma delta > 25; grays, slates, transparent, and `currentColor` in neutral contexts pass).
+- Site-local custom properties: definitions in scanned files are collected and resolved to judge the resolved values.
+- Single-side borders or border-widths (`border-left`, `border-top`, etc.) that are wider than 1px or colored (neutral 1px dividers pass).
+- Inset box shadows: any `box-shadow` with `inset` that has a colored value or is used as an edge stripe (e.g. `inset Npx 0 0`).
+- Colored outlines outside `:focus` / `:focus-visible` rules (keyboard focus indicators with `--dk-focus-ring` on `:focus-visible` pass).
