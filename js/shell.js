@@ -43,6 +43,28 @@
   // --- mobile drawer --------------------------------------------------------------
 
   let drawerReturn = null;
+  const MODAL_ATTRS = ["role", "aria-modal", "aria-label"];
+
+  // While open on mobile the drawer is a modal dialog; the desktop sidebar is
+  // a plain landmark. Originals are saved once and restored exactly (a missing
+  // attribute is removed again).
+  function setDrawerSemantics(sidebar, open) {
+    if (!sidebar) return;
+    if (open) {
+      if (!sidebar.__dkDrawerAttrs) {
+        sidebar.__dkDrawerAttrs = Object.fromEntries(MODAL_ATTRS.map((name) => [name, sidebar.getAttribute(name)]));
+      }
+      const saved = sidebar.__dkDrawerAttrs;
+      sidebar.setAttribute("role", "dialog");
+      sidebar.setAttribute("aria-modal", "true");
+      if (!sidebar.hasAttribute("aria-labelledby")) sidebar.setAttribute("aria-label", saved["aria-label"] || "Navigation");
+    } else if (sidebar.__dkDrawerAttrs) {
+      for (const [name, value] of Object.entries(sidebar.__dkDrawerAttrs)) {
+        if (value === null) sidebar.removeAttribute(name); else sidebar.setAttribute(name, value);
+      }
+      sidebar.__dkDrawerAttrs = null;
+    }
+  }
 
   function toggleDrawer(shell, open = shell.dataset.drawer !== "open") {
     const sidebar = shell.querySelector(".dk-sidebar");
@@ -50,9 +72,12 @@
     const toggles = shell.querySelectorAll("[data-dk-drawer-toggle]");
     const outside = shell.querySelectorAll(".dk-main, .dk-topbar");
     if (open) {
+      // Already open: keep the saved return focus and attributes as they are.
+      if (shell.dataset.drawer === "open") return true;
       closePopovers({ restoreFocus: false });
       drawerReturn = document.activeElement;
       shell.dataset.drawer = "open";
+      setDrawerSemantics(sidebar, true);
       if (scrim) scrim.hidden = false;
       outside.forEach((el) => { el.inert = true; });
       toggles.forEach((t) => t.setAttribute("aria-expanded", "true"));
@@ -72,6 +97,7 @@
     } else {
       if (shell.dataset.drawer !== "open") return false;
       delete shell.dataset.drawer;
+      setDrawerSemantics(sidebar, false);
       if (scrim) scrim.hidden = true;
       outside.forEach((el) => { el.inert = false; });
       toggles.forEach((t) => t.setAttribute("aria-expanded", "false"));

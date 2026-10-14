@@ -484,6 +484,11 @@ navigation.**
     shows (`.dk-sidebar__foot` hides only when it's empty).
 - The drawer is `.dk-sidebar` at `position: fixed; inset: 0 auto 0 0; width: min(288px, 100vw - 48px); z-index: 50; box-shadow: var(--dk-shadow-overlay); transform: translateX(-100%); visibility: hidden;`.
   `[data-drawer="open"]` slides it in (180ms; instant under reduced motion).
+  While open it's a modal dialog: `shell.js` sets `role="dialog"`,
+  `aria-modal="true"` and an accessible name on the `<aside>` (its own
+  `aria-label`, else "Navigation"; an `aria-labelledby` is left alone). On
+  close, including a resize back to desktop, it restores the original
+  attributes, so the desktop sidebar is a plain `<aside>` landmark.
   It always shows labels (collapse state is ignored) and has no account row
   (it's in the bar). The brand row's bell is hidden. A 44×44 close button
   replaces the collapse toggle. `.dk-scrim` (`--dk-bg-backdrop`, z 45)
