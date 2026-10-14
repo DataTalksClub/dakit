@@ -1,70 +1,83 @@
 {
-  "$comment": "Dakit dark theme: overrides only. Every key here must exist in semantic.json's light theme (the build enforces this). Applied via :root[data-theme=\"dark\"] — see docs/tokens.md for the boot script that falls back to the OS preference.",
+  "$description": "Dakit dark theme: overrides only. Every key here must exist in semantic.json's light theme (the build enforces this). Applied via :root[data-theme=\"dark\"] — see docs/tokens.md for the boot script that falls back to the OS preference.",
 
   "bg": {
-    "page": "#0d1117",
-    "surface": "#161b22",
-    "muted": "#21262d",
-    "hover": "#293038",
-    "raised": "{gray.800}",
-    "inset": "rgba(230, 237, 243, 0.07)",
-    "backdrop": "rgba(1, 4, 9, 0.5)"
+    "$type": "color",
+    "page": { "$value": "#0d1117" },
+    "surface": { "$value": "#161b22" },
+    "muted": { "$value": "#21262d" },
+    "hover": { "$value": "#293038" },
+    "raised": { "$value": "{gray.800}" },
+    "inset": { "$value": "rgba(230, 237, 243, 0.07)" },
+    "backdrop": { "$value": "rgba(1, 4, 9, 0.5)" }
   },
 
   "text": {
-    "primary": "#e6edf3",
-    "heading": "#f0f6fc",
-    "muted": "#9198a1",
-    "faint": "#8b949e",
-    "link": "{blue.400}",
-    "link-hover": "{blue.300}",
-    "on-accent": "#0d1117",
-    "on-deep": "#ffffff"
+    "$type": "color",
+    "primary": { "$value": "#e6edf3" },
+    "heading": { "$value": "#f0f6fc" },
+    "muted": { "$value": "#9198a1" },
+    "faint": { "$value": "#8b949e" },
+    "link": { "$value": "{blue.400}" },
+    "link-hover": { "$value": "{blue.300}" },
+    "on-accent": { "$value": "#0d1117" },
+    "on-deep": { "$value": "#ffffff" }
   },
 
   "border": {
-    "default": "#30363d",
-    "control-hover": "#8b949e",
-    "strong": "#6e7681"
+    "$type": "color",
+    "default": { "$value": "#30363d" },
+    "control-hover": { "$value": "#8b949e" },
+    "strong": { "$value": "#6e7681" }
   },
 
   "accent": {
-    "default": "{blue.400}",
-    "hover": "{blue.300}",
-    "soft": "rgba(88, 166, 255, 0.14)",
-    "deep": "{blue.700}",
-    "deep-hover": "{blue.600}",
-    "deeper": "{blue.900}"
+    "$type": "color",
+    "default": { "$value": "{blue.400}" },
+    "hover": { "$value": "{blue.300}" },
+    "soft": { "$value": "rgba(88, 166, 255, 0.14)" },
+    "deep": { "$value": "{blue.700}" },
+    "deep-hover": { "$value": "{blue.600}" },
+    "deeper": { "$value": "{blue.900}" }
   },
 
   "focus": {
-    "ring": "rgba(88, 166, 255, 0.55)"
+    "$type": "color",
+    "ring": { "$value": "rgba(88, 166, 255, 0.55)" }
   },
 
-  "selection": "rgba(88, 166, 255, 0.35)",
+  "selection": {
+    "$type": "color",
+    "$value": "rgba(88, 166, 255, 0.35)"
+  },
 
   "success": {
-    "text": "#56d364",
-    "bg": "rgba(46, 160, 67, 0.15)"
+    "$type": "color",
+    "text": { "$value": "#56d364" },
+    "bg": { "$value": "rgba(46, 160, 67, 0.15)" }
   },
 
   "warning": {
-    "text": "#e3b341",
-    "bg": "rgba(187, 128, 9, 0.15)"
+    "$type": "color",
+    "text": { "$value": "#e3b341" },
+    "bg": { "$value": "rgba(187, 128, 9, 0.15)" }
   },
 
   "danger": {
-    "text": "#f85149",
-    "hover": "#ffa198",
-    "bg": "rgba(248, 81, 73, 0.12)"
+    "$type": "color",
+    "text": { "$value": "#f85149" },
+    "hover": { "$value": "#ffa198" },
+    "bg": { "$value": "rgba(248, 81, 73, 0.12)" }
   },
 
   "info": {
-    "text": "{blue.300}",
-    "bg": "rgba(88, 166, 255, 0.12)"
+    "$type": "color",
+    "text": { "$value": "{blue.300}" },
+    "bg": { "$value": "rgba(88, 166, 255, 0.12)" }
   },
 
   "shadow": {
-    "overlay": "0 8px 24px rgba(1, 4, 9, 0.6)"
+    "$type": "shadow",
+    "overlay": { "$value": "0 8px 24px rgba(1, 4, 9, 0.6)" }
   }
 }

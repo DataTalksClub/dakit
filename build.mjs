@@ -27,10 +27,17 @@ const dialogsJs = readFileSync(join(root, "js/dialogs.js"), "utf8");
 
 function flatten(obj, out = {}, path = []) {
   for (const [key, value] of Object.entries(obj)) {
-    if (key === "$comment") continue;
+    if (key.startsWith("$")) continue;
     const p = [...path, key];
-    if (value !== null && typeof value === "object") flatten(value, out, p);
-    else out["--dk-" + p.join("-")] = String(value);
+    if (value !== null && typeof value === "object") {
+      if ("$value" in value) {
+        out["--dk-" + p.join("-")] = String(value.$value);
+      } else {
+        flatten(value, out, p);
+      }
+    } else {
+      out["--dk-" + p.join("-")] = String(value);
+    }
   }
   return out;
 }

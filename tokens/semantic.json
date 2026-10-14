@@ -1,85 +1,100 @@
 {
-  "$comment": "Dakit semantic layer, light theme (the default). Roles only: components and apps may use these, never the primitive ramps. Values may alias primitives with '{ramp.step}' references. Every text/background pair used together is contrast-checked at build time (see tokens/contrast.json).",
+  "$description": "Dakit semantic layer, light theme (the default). Roles only: components and apps may use these, never the primitive ramps. Values may alias primitives with '{ramp.step}' references. Every text/background pair used together is contrast-checked at build time (see tokens/contrast.json).",
 
   "light": {
     "bg": {
-      "page": "{gray.0}",
-      "surface": "{gray.0}",
-      "muted": "{gray.50}",
-      "hover": "{gray.100}",
-      "raised": "{gray.0}",
-      "inset": "rgba(36, 41, 47, 0.06)",
-      "backdrop": "rgba(15, 23, 42, 0.4)"
+      "$type": "color",
+      "page": { "$value": "{gray.0}" },
+      "surface": { "$value": "{gray.0}" },
+      "muted": { "$value": "{gray.50}" },
+      "hover": { "$value": "{gray.100}" },
+      "raised": { "$value": "{gray.0}" },
+      "inset": { "$value": "rgba(36, 41, 47, 0.06)" },
+      "backdrop": { "$value": "rgba(15, 23, 42, 0.4)" }
     },
 
     "text": {
-      "primary": "{gray.900}",
-      "heading": "{gray.950}",
-      "muted": "{gray.600}",
-      "faint": "{gray.500}",
-      "link": "{blue.500}",
-      "link-hover": "{blue.600}",
-      "on-accent": "#ffffff",
-      "on-deep": "#ffffff"
+      "$type": "color",
+      "primary": { "$value": "{gray.900}" },
+      "heading": { "$value": "{gray.950}" },
+      "muted": { "$value": "{gray.600}" },
+      "faint": { "$value": "{gray.500}" },
+      "link": { "$value": "{blue.500}" },
+      "link-hover": { "$value": "{blue.600}" },
+      "on-accent": { "$value": "#ffffff" },
+      "on-deep": { "$value": "#ffffff" }
     },
 
     "border": {
-      "default": "{gray.200}",
-      "control-hover": "{gray.200}",
-      "strong": "{gray.300}"
+      "$type": "color",
+      "default": { "$value": "{gray.200}" },
+      "control-hover": { "$value": "{gray.200}" },
+      "strong": { "$value": "{gray.300}" }
     },
 
     "accent": {
-      "default": "{blue.500}",
-      "hover": "{blue.600}",
-      "soft": "{blue.50}",
-      "deep": "{blue.600}",
-      "deep-hover": "{blue.600}",
-      "deeper": "{blue.700}"
+      "$type": "color",
+      "default": { "$value": "{blue.500}" },
+      "hover": { "$value": "{blue.600}" },
+      "soft": { "$value": "{blue.50}" },
+      "deep": { "$value": "{blue.600}" },
+      "deep-hover": { "$value": "{blue.600}" },
+      "deeper": { "$value": "{blue.700}" }
     },
 
     "focus": {
-      "ring": "rgba(49, 95, 143, 0.6)"
+      "$type": "color",
+      "ring": { "$value": "rgba(49, 95, 143, 0.6)" }
     },
 
-    "selection": "#dde9f7",
+    "selection": {
+      "$type": "color",
+      "$value": "#dde9f7"
+    },
 
     "success": {
-      "text": "#116329",
-      "bg": "#e6f6ea"
+      "$type": "color",
+      "text": { "$value": "#116329" },
+      "bg": { "$value": "#e6f6ea" }
     },
 
     "warning": {
-      "text": "{amber.600}",
-      "bg": "{amber.100}"
+      "$type": "color",
+      "text": { "$value": "{amber.600}" },
+      "bg": { "$value": "{amber.100}" }
     },
 
     "danger": {
-      "text": "{red.500}",
-      "hover": "{red.700}",
-      "bg": "{red.50}"
+      "$type": "color",
+      "text": { "$value": "{red.500}" },
+      "hover": { "$value": "{red.700}" },
+      "bg": { "$value": "{red.50}" }
     },
 
     "info": {
-      "text": "{blue.500}",
-      "bg": "{blue.50}"
+      "$type": "color",
+      "text": { "$value": "{blue.500}" },
+      "bg": { "$value": "{blue.50}" }
     },
 
     "shadow": {
-      "overlay": "0 8px 24px rgba(15, 23, 42, 0.16)"
+      "$type": "shadow",
+      "overlay": { "$value": "0 8px 24px rgba(15, 23, 42, 0.16)" }
     },
 
     "gap": {
-      "$comment": "Layout rhythm by role, so apps stop inventing 6/10/14px gaps. control: between adjacent interactive controls (also the row gap when a group wraps). block: between a block (table, panel, empty state, form) and the controls before or after it. section: between page sections.",
-      "control": "{space.3}",
-      "block": "{space.4}",
-      "section": "{space.6}"
+      "$type": "dimension",
+      "$description": "Layout rhythm by role, so apps stop inventing 6/10/14px gaps. control: between adjacent interactive controls (also the row gap when a group wraps). block: between a block (table, panel, empty state, form) and the controls before or after it. section: between page sections.",
+      "control": { "$value": "{space.3}" },
+      "block": { "$value": "{space.4}" },
+      "section": { "$value": "{space.6}" }
     },
 
     "pad": {
-      "$comment": "Inner padding by role. cell: table cells and divided rows. panel: inside a bordered panel or card.",
-      "cell": "{space.2} {space.3}",
-      "panel": "{space.4}"
+      "$type": "dimension",
+      "$description": "Inner padding by role. cell: table cells and divided rows. panel: inside a bordered panel or card.",
+      "cell": { "$value": "{space.2} {space.3}" },
+      "panel": { "$value": "{space.4}" }
     }
   }
 }

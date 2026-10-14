@@ -47,10 +47,12 @@ rails, or inset shadows). Status is communicated via tinted background fills
 
 ## Aliases
 
-Semantic values reference primitives with `{ramp.step}`:
+Semantic values reference primitives with `{ramp.step}` using DTCG `$value`:
 
 ```json
-"border": { "default": "{gray.200}" }
+"border": {
+  "default": { "$value": "{gray.200}" }
+}
 ```
 
 A value may combine several references (`"{space.2} {space.3}"`, a padding

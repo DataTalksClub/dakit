@@ -1,107 +1,119 @@
 {
-  "$comment": "Dakit primitives: raw values, no opinions about usage. Names are ramps and scales only — nothing here may be referenced by application code; apps consume the semantic layer. Leaf values become --dk-<key.path> (e.g. gray.200 -> --dk-gray-200).",
+  "$description": "Dakit primitives: raw values, no opinions about usage. Names are ramps and scales only — nothing here may be referenced by application code; apps consume the semantic layer. Leaf values become --dk-<key.path> (e.g. gray.200 -> --dk-gray-200).",
 
   "gray": {
-    "0": "#ffffff",
-    "50": "#f6f8fa",
-    "100": "#eef1f4",
-    "200": "#d0d7de",
-    "300": "#afb8c1",
-    "400": "#8c959f",
-    "500": "#6e7681",
-    "600": "#57606a",
-    "700": "#424a53",
-    "800": "#32383f",
-    "900": "#24292f",
-    "950": "#0f172a"
+    "$type": "color",
+    "0": { "$value": "#ffffff" },
+    "50": { "$value": "#f6f8fa" },
+    "100": { "$value": "#eef1f4" },
+    "200": { "$value": "#d0d7de" },
+    "300": { "$value": "#afb8c1" },
+    "400": { "$value": "#8c959f" },
+    "500": { "$value": "#6e7681" },
+    "600": { "$value": "#57606a" },
+    "700": { "$value": "#424a53" },
+    "800": { "$value": "#32383f" },
+    "900": { "$value": "#24292f" },
+    "950": { "$value": "#0f172a" }
   },
 
   "blue": {
-    "50": "#edf5ff",
-    "300": "#79b8ff",
-    "400": "#58a6ff",
-    "500": "#315f8f",
-    "600": "#244d78",
-    "700": "#1c3d5e",
-    "900": "#10233c"
+    "$type": "color",
+    "50": { "$value": "#edf5ff" },
+    "300": { "$value": "#79b8ff" },
+    "400": { "$value": "#58a6ff" },
+    "500": { "$value": "#315f8f" },
+    "600": { "$value": "#244d78" },
+    "700": { "$value": "#1c3d5e" },
+    "900": { "$value": "#10233c" }
   },
 
   "green": {
-    "50": "#e1e9dd",
-    "300": "#aac3ae",
-    "400": "#49b981",
-    "500": "#60b98a",
-    "600": "#0b6745",
-    "700": "#074e33"
+    "$type": "color",
+    "50": { "$value": "#e1e9dd" },
+    "300": { "$value": "#aac3ae" },
+    "400": { "$value": "#49b981" },
+    "500": { "$value": "#60b98a" },
+    "600": { "$value": "#0b6745" },
+    "700": { "$value": "#074e33" }
   },
 
   "amber": {
-    "100": "#fff8c5",
-    "400": "#d4a72c",
-    "500": "#9a6700",
-    "600": "#7a5c00"
+    "$type": "color",
+    "100": { "$value": "#fff8c5" },
+    "400": { "$value": "#d4a72c" },
+    "500": { "$value": "#9a6700" },
+    "600": { "$value": "#7a5c00" }
   },
 
   "red": {
-    "50": "#fff0ee",
-    "300": "#cda37f",
-    "500": "#cf222e",
-    "600": "#9c4b20",
-    "700": "#a40e26"
+    "$type": "color",
+    "50": { "$value": "#fff0ee" },
+    "300": { "$value": "#cda37f" },
+    "500": { "$value": "#cf222e" },
+    "600": { "$value": "#9c4b20" },
+    "700": { "$value": "#a40e26" }
   },
 
   "font": {
-    "sans": "Inter, ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif",
-    "mono": "'IBM Plex Mono', ui-monospace, SFMono-Regular, Menlo, Consolas, monospace"
+    "$type": "fontFamily",
+    "sans": { "$value": "Inter, ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif" },
+    "mono": { "$value": "'IBM Plex Mono', ui-monospace, SFMono-Regular, Menlo, Consolas, monospace" }
   },
 
   "text": {
-    "xs": "11px",
-    "sm": "12px",
-    "md": "13px",
-    "body": "14px",
-    "lg": "16px",
-    "xl": "22px",
-    "page": "32px"
+    "$type": "dimension",
+    "xs": { "$value": "11px" },
+    "sm": { "$value": "12px" },
+    "md": { "$value": "13px" },
+    "body": { "$value": "14px" },
+    "lg": { "$value": "16px" },
+    "xl": { "$value": "22px" },
+    "page": { "$value": "32px" }
   },
 
   "leading": {
-    "tight": "1.2",
-    "normal": "1.5"
+    "$type": "number",
+    "tight": { "$value": "1.2" },
+    "normal": { "$value": "1.5" }
   },
 
   "weight": {
-    "regular": "400",
-    "medium": "500",
-    "semibold": "600",
-    "bold": "700"
+    "$type": "fontWeight",
+    "regular": { "$value": "400" },
+    "medium": { "$value": "500" },
+    "semibold": { "$value": "600" },
+    "bold": { "$value": "700" }
   },
 
   "space": {
-    "1": "4px",
-    "2": "8px",
-    "3": "12px",
-    "4": "16px",
-    "5": "20px",
-    "6": "24px",
-    "7": "32px",
-    "8": "40px"
+    "$type": "dimension",
+    "1": { "$value": "4px" },
+    "2": { "$value": "8px" },
+    "3": { "$value": "12px" },
+    "4": { "$value": "16px" },
+    "5": { "$value": "20px" },
+    "6": { "$value": "24px" },
+    "7": { "$value": "32px" },
+    "8": { "$value": "40px" }
   },
 
   "radius": {
-    "none": "0",
-    "sm": "4px",
-    "md": "6px",
-    "lg": "10px",
-    "full": "999px"
+    "$type": "dimension",
+    "none": { "$value": "0" },
+    "sm": { "$value": "4px" },
+    "md": { "$value": "6px" },
+    "lg": { "$value": "10px" },
+    "full": { "$value": "999px" }
   },
 
   "size": {
-    "control-sm": "28px",
-    "control-md": "34px",
-    "control-lg": "40px",
-    "touch": "44px",
-    "sidebar": "268px",
-    "content-max": "1120px"
+    "$type": "dimension",
+    "control-sm": { "$value": "28px" },
+    "control-md": { "$value": "34px" },
+    "control-lg": { "$value": "40px" },
+    "touch": { "$value": "44px" },
+    "sidebar": { "$value": "268px" },
+    "content-max": { "$value": "1120px" }
   }
 }

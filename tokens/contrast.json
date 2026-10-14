@@ -1,5 +1,5 @@
 {
-  "$comment": "WCAG pairs the build verifies in EVERY theme. fg/bg are semantic role paths (not CSS var names). min is the required contrast ratio: 4.5 for normal text (WCAG AA), 3.0 for large text (18.66px bold / 24px) and UI indicators. A failing pair fails the build.",
+  "$description": "WCAG pairs the build verifies in EVERY theme. fg/bg are semantic role paths (not CSS var names). min is the required contrast ratio: 4.5 for normal text (WCAG AA), 3.0 for large text (18.66px bold / 24px) and UI indicators. A failing pair fails the build.",
 
   "pairs": [
     { "fg": "text.heading", "bg": "bg.page", "min": 4.5 },
