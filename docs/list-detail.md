@@ -23,7 +23,9 @@ This file replaces those versions. Working demo: `showcase-split.html`
 2. **Pane headers stay.** Each pane's header band (title, count, Back, actions)
    and the list's tool row and footer sit outside the scroller, so they never
    scroll away. A sub-header inside the detail that must stay too (a section
-   nav) is `.dk-split__sticky`.
+   nav) is `.dk-split__sticky`. Put it in a `.dk-split__scroll--flush`
+   scroller: a sticky element sticks to the scroller's content edge, so the
+   default 16px padding would leave a band where content shows above it.
 3. **Selection is fill, not a stripe.** A selected row gets the
    `--dk-accent-soft` fill and its name turns `--dk-accent-default`. The row
    keeps its neutral 1px divider. Hover never replaces the selected fill. No
