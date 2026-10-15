@@ -1,4 +1,4 @@
-/* dakit 0.2.0 ef1a634 */
+/* dakit 0.2.0 e58478f */
 // Dakit avatar: a person's initials, with their photo on top when there is one.
 //
 // ES module, no globals:
