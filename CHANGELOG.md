@@ -19,7 +19,8 @@ in a minor version with migration notes.
   (`globalThis.dakitCollection`: `header`, `createButton`, the string twins
   `headerMarkup` / `createButtonMarkup`, `installShortcut`) with a `c`
   shortcut that presses the page's one visible `[data-dk-create]` button
-  (ignored while typing, with a modifier, on repeat or under a dialog).
+  (ignored while typing, with a modifier, on repeat, or under an open
+  dialog or a visible `aria-modal` panel).
   Showcase section `#collection`; the shell showcase's Tasks page moves New
   task and Refresh from the page header onto its toolbar. `family.md`,
   `shell.md` and `list-detail.md` no longer call the page header the home

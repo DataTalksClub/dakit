@@ -115,6 +115,14 @@ test('c presses the one visible create button, except while typing, with a modif
   await page.keyboard.press('c');
   assert.equal(await status(page), '', 'an open dialog blocks it');
   await page.evaluate(() => document.getElementById('demo-dialog').close());
+  // A hidden aria-modal panel (an app's closed popover) does not block it.
+  await page.evaluate(() => { const p = document.createElement('section'); p.setAttribute('aria-modal', 'true'); p.hidden = true; p.id = 'hidden-modal'; document.body.append(p); document.activeElement.blur(); });
+  await page.keyboard.press('c');
+  assert.equal(await status(page), 'New schedule clicked', 'a hidden aria-modal panel does not block it');
+  await page.evaluate(() => { document.getElementById('hidden-modal').hidden = false; document.getElementById('hidden-modal').textContent = 'open'; document.querySelector('[data-demo-collection-status]').textContent = ''; });
+  await page.keyboard.press('c');
+  assert.equal(await status(page), '', 'a showing aria-modal panel blocks it');
+  await page.evaluate(() => document.getElementById('hidden-modal').remove());
   // A hidden create is skipped: nothing visible means nothing happens.
   await page.evaluate(() => { document.querySelector('[data-demo-collection-head]').hidden = true; document.activeElement.blur(); });
   await page.keyboard.press('c');

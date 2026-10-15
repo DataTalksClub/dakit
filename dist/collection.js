@@ -11,7 +11,7 @@
    The page's one create button carries data-dk-create, aria-keyshortcuts="c"
    and a "(C)" title; pressing c clicks the first visible, enabled one. The
    shortcut is ignored while the user types in a field, with a modifier held,
-   on key repeat, or while a dialog is open. Building a shortcut button arms
+   on key repeat, or while a dialog or a visible aria-modal panel is open. Building a shortcut button arms
    the listener once per document, so pages rendered later need no init.
 
    Classic script with an idempotent global guard, like shell.js. Pass
@@ -44,7 +44,12 @@
       if (event.defaultPrevented || event.repeat) return;
       if (event.metaKey || event.ctrlKey || event.altKey || event.shiftKey) return;
       if (event.key !== "c" || typing(event.target)) return;
-      if (doc.querySelector('dialog[open], [aria-modal="true"]')) return;
+      // Apps keep popover panels in the page with aria-modal, hidden; only a
+      // modal that is showing blocks the shortcut.
+      var modal = Array.prototype.some.call(doc.querySelectorAll('dialog[open], [aria-modal="true"]'), function (el) {
+        return el.getClientRects().length > 0;
+      });
+      if (modal) return;
       var button = Array.prototype.filter.call(doc.querySelectorAll("[data-dk-create]"), function (el) {
         return !el.disabled && el.getClientRects().length > 0;
       })[0];
