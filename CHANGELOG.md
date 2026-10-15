@@ -8,6 +8,22 @@ in a minor version with migration notes.
 
 ### Added
 
+- Action placement (`docs/guidelines.md` "Action placement"): the page
+  header is for orientation; a create action sits right after the title of
+  the collection it creates into (or after the filter/tabs on a board or
+  table toolbar), with a leading plus, one filled primary per page, meta and
+  secondary actions trailing, the empty state repeating it as a secondary
+  button, and no floating action button on phones. New
+  `.dk-collection-header` (`__lead`, `__title`, `__trail`, `__meta`) and
+  `.dk-collection-create` (`__icon`); `dist/collection.js`
+  (`globalThis.dakitCollection`: `header`, `createButton`, the string twins
+  `headerMarkup` / `createButtonMarkup`, `installShortcut`) with a `c`
+  shortcut that presses the page's one visible `[data-dk-create]` button
+  (ignored while typing, with a modifier, on repeat or under a dialog).
+  Showcase section `#collection`; the shell showcase's Tasks page moves New
+  task and Refresh from the page header onto its toolbar. `family.md`,
+  `shell.md` and `list-detail.md` no longer call the page header the home
+  for create/refresh/export.
 - Principle 4, "No vanity metrics" (`docs/principles.md`, guidelines
   "Counts and metrics"): working screens show the actionable list, not stat
   strips/KPI tiles/count bars restating it; at most one inline actionable

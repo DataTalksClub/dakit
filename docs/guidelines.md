@@ -40,7 +40,8 @@ padding instead of `gap-block`.
 - `.dk-cluster` is a wrapping row at `gap-control`: button groups, filter
   rows, chip lists.
 - `.dk-toolbar` is the one bar above a register: search and filters first,
-  then actions in `.dk-toolbar__end` (pushed right). No "N shown" count when
+  then the create action right after them (see "Action placement"), then
+  the count and secondary actions in `.dk-toolbar__end` (pushed right). No "N shown" count when
   the heading already states it — a count is said once. It wraps
   as a unit and keeps `gap-block` below. Never stack a separate action row
   above a filter row.
@@ -156,6 +157,75 @@ leads with its actionable list, not a stat strip or KPI tiles restating it.
   opacity. Opacity over the accent read as an enabled variant in dark, and a
   disabled primary (say, Authorize behind an acknowledgement) must be
   unmistakable in both themes. The label still names the action.
+
+## Action placement
+
+Where a "New", "Add", "Refresh" or "Export" goes. A big "+ New schedule" in
+the page header's top-right corner sits across the screen from the list it
+creates into: the eye that reads "Schedules" has to travel up to 1,500px
+to find it, users look at the left of the screen far more than the right,
+and a web page's corner is no Fitts's-law edge. Design systems that put
+the primary action in the page header (Polaris, Primer, Atlassian) assume
+the header sits right on the list. Once a description, tabs or a card
+border sits between them, the action belongs on the collection, the way
+Carbon's table toolbar and Linear's column "+" do it.
+
+1. **The page header is for orientation, not actions.** `.dk-page-header`
+   holds the title, the description and, at most, page-scoped view
+   switches. Create, refresh and export never sit in its top-right corner.
+   A record's detail page may keep actions on that record (Mark done, Edit)
+   there.
+2. **A create action belongs to the collection it creates into.** Put it in
+   that collection's header, right after the title (`Schedules [+ New
+   schedule] ... 7 schedules`). For a board or table, put it in the toolbar
+   directly above the rows, after any filter or view tabs that scope it. A
+   filtered collection creates into the filter's scope.
+3. **Label it with a verb, a noun and a leading plus** ("+ New schedule",
+   "+ Add entry"), on the small button. A page has one filled primary; any
+   other create on the same page is `--secondary`.
+4. **Secondary collection actions trail the same header**: meta (a count)
+   first, then secondary actions (refresh, export, an Archive view switch).
+   More than three go into a "..." menu. An icon-only one carries an
+   `aria-label`.
+5. **Empty collections repeat the create action** as a secondary button in
+   the empty state (`.dk-empty__actions`: "Create the first schedule"). The
+   header button stays where it is, so the location never moves.
+6. **Recovery actions live where the failure is shown.** An unavailable
+   state carries its own "Try again"; it is not a page-level Refresh.
+7. **Destructive actions never share the create slot.** They go on rows, in
+   a selection bar or on the detail page, with confirmation.
+8. **Keyboard: `c` presses the page's one create button.** That button
+   carries `data-dk-create`, `aria-keyshortcuts="c"` and a title ending in
+   "(C)". The shortcut is ignored while the user is typing, with a modifier
+   held, on key repeat or while a dialog is open. With tabs, give each tab's
+   create the shortcut: only the visible one is pressed.
+9. **Mobile has no floating action button.** The collection header wraps
+   with the title and create staying together; the create keeps its label
+   at the 44px touch target, and secondary actions may collapse to icons.
+10. **Use the component, never a hand-rolled placement.**
+    `.dk-collection-header` with `__lead` (`__title` + the create) and
+    `__trail` (`__meta` + secondary actions). `dist/collection.js` builds
+    it: `dakitCollection.header({ title, meta, create, actions })`,
+    `dakitCollection.createButton({ label, onClick })`, and the string
+    twins `headerMarkup()` / `createButtonMarkup()` for surfaces rendered
+    from markup. Inside a `.dk-split__head` or `.dk-toolbar`, use `__lead`
+    and `__trail` directly.
+
+```html
+<header class="dk-collection-header">
+  <div class="dk-collection-header__lead">
+    <h2 class="dk-collection-header__title">Schedules</h2>
+    <button type="button" class="dk-button dk-button--primary dk-button--sm dk-collection-create"
+      data-dk-create aria-keyshortcuts="c" title="New schedule (C)">
+      <span class="dk-collection-create__icon" aria-hidden="true"><svg viewBox="0 0 24 24"><path d="M12 5v14M5 12h14"/></svg></span>
+      <span>New schedule</span>
+    </button>
+  </div>
+  <div class="dk-collection-header__trail">
+    <span class="dk-collection-header__meta">7 schedules</span>
+  </div>
+</header>
+```
 
 ## Forms
 

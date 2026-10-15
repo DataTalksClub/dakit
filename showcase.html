@@ -17,6 +17,7 @@
 <script src="dist/dialogs.js"></script>
 <script src="dist/shell.js" defer></script>
 <script src="dist/tabs.js" defer></script>
+<script src="dist/collection.js"></script>
 <style>
   /* Showcase chrome only — everything below demonstrates the system itself. */
   .page { max-width: var(--dk-size-content-max); margin: 0 auto; padding: var(--dk-space-7) var(--dk-space-6) var(--dk-space-8); display: grid; gap: var(--dk-space-7); }
@@ -209,6 +210,59 @@
       </form>
     </dialog>
     <script>document.getElementById("demo-dialog-open").addEventListener("click", () => document.getElementById("demo-dialog").showModal());</script>
+  </section>
+
+  <section id="collection">
+    <h2>Action placement: collection header</h2>
+    <p class="caption">The create action sits right after the title of the collection it creates into, never in the page header's corner; the count and secondary actions trail. On a board or table it follows the filter that scopes it. The page's one create button answers <kbd class="dk-kbd">c</kbd>; an empty collection repeats it as a secondary button. Built by dist/collection.js (dakitCollection.header / createButton and the markup twins). See docs/guidelines.md "Action placement".</p>
+    <div class="dk-card" style="padding: 0; overflow: hidden" id="demo-collection">
+      <div style="padding: var(--dk-space-3) var(--dk-space-4); border-bottom: 1px solid var(--dk-border-default); background: var(--dk-bg-muted)" data-demo-collection-head></div>
+      <table class="dk-table">
+        <thead><tr><th>Schedule</th><th>Repeats</th><th>Next run</th></tr></thead>
+        <tbody>
+          <tr><td>Newsletter draft</td><td>Weekly · Mon</td><td class="dk-mono">2026-10-19</td></tr>
+          <tr><td>Sponsor invoice chase</td><td>Monthly · 1st</td><td class="dk-mono">2026-11-01</td></tr>
+        </tbody>
+      </table>
+    </div>
+    <p class="dk-muted" role="status" data-demo-collection-status style="font-size: var(--dk-text-sm)"></p>
+    <div class="dk-toolbar" style="margin-bottom: 0">
+      <div class="dk-collection-header__lead">
+        <div class="dk-tabs" role="radiogroup" aria-label="Filter runs by status">
+          <button class="dk-tab" type="button" role="radio" aria-checked="true" tabindex="0">All <span class="dk-count">25</span></button>
+          <button class="dk-tab" type="button" role="radio" aria-checked="false" tabindex="-1">Failed</button>
+        </div>
+        <button type="button" class="dk-button dk-button--secondary dk-button--sm dk-collection-create"><span class="dk-collection-create__icon" aria-hidden="true"><svg viewBox="0 0 24 24"><path d="M12 5v14M5 12h14"/></svg></span><span>New run</span></button>
+      </div>
+      <div class="dk-toolbar__end"><span class="dk-muted dk-mono" style="font-size: var(--dk-text-sm)">25 runs</span><button class="dk-icon-button" type="button" aria-label="Refresh runs" title="Refresh runs"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M20 12a8 8 0 1 1-2.34-5.66M20 4v4h-4"/></svg></button></div>
+    </div>
+    <div class="dk-card" style="padding: 0">
+      <div style="padding: var(--dk-space-3) var(--dk-space-4); border-bottom: 1px solid var(--dk-border-default); background: var(--dk-bg-muted)" data-demo-collection-empty-head></div>
+      <div class="dk-empty dk-empty--compact">
+        <p class="dk-empty__title">No webhooks yet</p>
+        <p class="dk-empty__desc">A webhook posts each run's result to another service.</p>
+        <div class="dk-empty__actions" data-demo-collection-empty-action></div>
+      </div>
+    </div>
+    <script>
+      (() => {
+        const status = document.querySelector("[data-demo-collection-status]");
+        const say = (text) => () => { status.textContent = text; };
+        // The page's one create: primary, with the c shortcut.
+        document.querySelector("[data-demo-collection-head]").append(dakitCollection.header({
+          title: "Schedules", level: "h3", meta: "2 schedules",
+          create: dakitCollection.createButton({ label: "New schedule", onClick: say("New schedule clicked") }),
+        }));
+        // A second collection on the same page: secondary, no shortcut.
+        document.querySelector("[data-demo-collection-empty-head]").innerHTML = dakitCollection.headerMarkup({
+          title: "Webhooks", level: "h3",
+          createHtml: dakitCollection.createButtonMarkup({ label: "Add webhook", variant: "secondary", shortcut: false }),
+        });
+        document.querySelector("[data-demo-collection-empty-action]").append(dakitCollection.createButton({
+          label: "Add the first webhook", variant: "secondary", shortcut: false, onClick: say("Add the first webhook clicked"),
+        }));
+      })();
+    </script>
   </section>
 
   <section id="segmented">

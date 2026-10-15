@@ -37,8 +37,8 @@ account-chrome rules that used to live here. In short:
 
 1. Page header (`.dk-page-header`): one `h1` at 22px semibold in operator
    apps (32px only in single-purpose views) + an optional one-line muted
-   description. Utility actions share the row only if short; primary action
-   first, content-width.
+   description. No create, refresh or export in its corner: those sit on the
+   collection they act on (guidelines "Action placement").
 2. One dominant question per page. No summary stat strips or count tiles on
    working screens (principle 4, no vanity metrics): show the "needs
    attention" list itself, with at most one count in its heading or button.

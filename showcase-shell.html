@@ -136,10 +136,6 @@
           <h1 class="dk-page-header__title">Tasks</h1>
           <p class="dk-page-header__meta">Updated 12s ago</p>
         </div>
-        <div class="dk-page-header__actions">
-          <button class="dk-button dk-button--secondary" type="button"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><use href="#i-refresh"/></svg>Refresh</button>
-          <button class="dk-button dk-button--primary" type="button">New task</button>
-        </div>
       </header>
 
       <div class="dk-stack">
@@ -159,12 +155,15 @@
 
       <div>
         <div class="dk-toolbar">
-          <div class="dk-tabs" role="radiogroup" aria-label="Filter tasks by owner">
-            <button class="dk-tab" type="button" role="radio" aria-checked="true" tabindex="0">Mine <span class="dk-count">8</span></button>
-            <button class="dk-tab" type="button" role="radio" aria-checked="false" tabindex="-1">Team <span class="dk-count">4</span></button>
-            <button class="dk-tab" type="button" role="radio" aria-checked="false" tabindex="-1">Unassigned</button>
+          <div class="dk-collection-header__lead">
+            <div class="dk-tabs" role="radiogroup" aria-label="Filter tasks by owner">
+              <button class="dk-tab" type="button" role="radio" aria-checked="true" tabindex="0">Mine <span class="dk-count">8</span></button>
+              <button class="dk-tab" type="button" role="radio" aria-checked="false" tabindex="-1">Team <span class="dk-count">4</span></button>
+              <button class="dk-tab" type="button" role="radio" aria-checked="false" tabindex="-1">Unassigned</button>
+            </div>
+            <button type="button" class="dk-button dk-button--primary dk-button--sm dk-collection-create" data-dk-create aria-keyshortcuts="c" title="New task (C)"><span class="dk-collection-create__icon" aria-hidden="true"><svg viewBox="0 0 24 24"><path d="M12 5v14M5 12h14"/></svg></span><span>New task</span></button>
           </div>
-          <div class="dk-toolbar__end"><span class="dk-muted dk-mono" style="font-size: var(--dk-text-sm)">12 tasks</span></div>
+          <div class="dk-toolbar__end"><span class="dk-muted dk-mono" style="font-size: var(--dk-text-sm)">12 tasks</span><button class="dk-icon-button" type="button" aria-label="Refresh tasks" title="Refresh tasks"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><use href="#i-refresh"/></svg></button></div>
         </div>
         <div class="demo-register">
           <div class="demo-row"><div><div class="demo-row__title">Confirm guest for episode 42</div><div class="demo-row__meta">Podcast · waiting on reply</div></div><span class="dk-badge dk-badge--warning">Due today</span><span class="demo-row__when">14:00</span></div>
@@ -293,6 +292,7 @@
 </script>
 <script src="dist/shell.js"></script>
 <script src="dist/tabs.js"></script>
+<script src="dist/collection.js"></script>
 <script>
   (() => {
     const shell = dakitShell;

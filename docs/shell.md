@@ -130,10 +130,10 @@ Z-order: popovers 40, scrim 45, drawer 50, mobile sheets 60.
 ```
 ┌─ .dk-sidebar 240 ───────┬─ .dk-main ──────────────────────────────────┐
 │ DataOps            [🔔3] │  .dk-page-header                            │
-│ [⌕ Search…         /]   │  Title                    [Secondary][Primary]│
+│ [⌕ Search…         /]   │  Title                                        │
 │ ─────────────────────── │  .dk-tabs  (optional)                         │
 │ WORKSPACE               │  (no stat strip: principle 4)                 │
-│ [▣] Home                │  .dk-toolbar                                  │
+│ [▣] Home                │  .dk-toolbar  filters [+ New] ... 12 [↻]      │
 │ [▣] Tasks            12 │  one bordered work container                  │
 │ [▣] Inbox               │                                               │
 │ ADMIN                   │                                               │
@@ -434,10 +434,11 @@ using the `.dk-menu` surface with `padding: 0` and a flex column.
     links. It's for detail pages: "Tasks / T-1042".
   - `__subtitle` is optional, one line, `--dk-text-md` muted. Use it only
     when the title doesn't say it already.
-  - `__actions` has `margin-left: auto`, primary last (rightmost), and at
-    most one primary. **The page header is the home for page actions**
-    such as Refresh, Export and New. That includes dapier's Refresh, with a
-    mono `Updated 12s ago` in `--dk-text-sm` faint.
+  - `__actions` has `margin-left: auto`. It holds page-scoped view
+    switches, or a record's own actions on a detail page. **Create,
+    refresh and export are not page actions**: they sit on the collection
+    they act on (`guidelines.md` "Action placement", `.dk-collection-header`).
+    A mono `Updated 12s ago` in `--dk-text-sm` faint may stay in `__meta`.
 - `.dk-section-header` is a section-level copy of the page header (`h2`,
   `--dk-text-lg`).
 - `.dk-tabs` is the segmented control, the one look for view switchers

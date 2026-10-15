@@ -46,11 +46,11 @@ This file replaces those versions. Working demo: `showcase-split.html`
 ```
 .dk-main  (flex column while it holds a split; never scrolls)
 └ .dk-main__inner
-  ├ .dk-page-header            title, page actions
+  ├ .dk-page-header            title, description (no create/refresh: guidelines "Action placement")
   ├ (.dk-tabs, .dk-toolbar…)   optional, full width above both panes
   └ .dk-split[data-view]                      fills the rest; 1px neutral border, radius-md
     ├ section.dk-split__list                  width var(--dk-split-list), 1px divider right
-    │ ├ header.dk-split__head                 48px band, muted: __title, __count, actions
+    │ ├ header.dk-split__head                 48px band, muted: __title + create, __count, actions
     │ ├ div.dk-split__tools                   optional: search input, filter chips
     │ ├ div.dk-split__scroll                  ← scrolls
     │ │ └ ul.dk-split__items > li > a.dk-split__item[aria-current="true"]
