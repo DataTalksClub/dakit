@@ -116,6 +116,59 @@ test('popovers: single open, outside click, theme switch persists', async (t) =>
   await page.close();
 });
 
+test('account menu: Tab past the last row out of the page closes it, and Tab back in keeps it closed', async (t) => {
+  const page = await open(t, '/showcase-shell.html?theme=light');
+  if (!page) return;
+  await page.focus('.dk-account-trigger');
+  await page.keyboard.press('Enter');
+  await page.keyboard.press('End');
+  assert.match((await focused(page)).text, /Sign out/);
+  // Sign out is the last focusable element in the document, so Tab leaves the
+  // page (relatedTarget null) instead of moving to another element.
+  await page.keyboard.press('Tab');
+  await settles(page, () => document.getElementById('dk-account-menu').hidden, 'menu closes when focus leaves the document');
+  assert.equal(await page.getAttribute('.dk-account-trigger', 'aria-expanded'), 'false');
+  await page.keyboard.press('Tab');
+  assert.ok(!(await page.isVisible('#dk-account-menu')), 'Tab back in does not reopen it');
+  assert.equal(await page.getAttribute('.dk-account-trigger', 'aria-expanded'), 'false');
+  await page.close();
+});
+
+test('account menu: focus arriving outside it closes it, a window blur does not', async (t) => {
+  const page = await open(t, '/showcase-shell.html?theme=light');
+  if (!page) return;
+  await page.focus('.dk-account-trigger');
+  await page.keyboard.press('Enter');
+  await page.evaluate(() => window.dispatchEvent(new FocusEvent('blur')));
+  await page.evaluate(() => document.activeElement.dispatchEvent(new FocusEvent('focusout', { bubbles: true, relatedTarget: null })));
+  await page.waitForTimeout(50);
+  assert.ok(await page.isVisible('#dk-account-menu'), 'focus still inside: stays open');
+  await page.evaluate(() => document.querySelector('.dk-skip-link').focus());
+  assert.ok(!(await page.isVisible('#dk-account-menu')), 'focus moved outside: closed');
+  assert.equal(await page.getAttribute('.dk-account-trigger', 'aria-expanded'), 'false');
+  await page.close();
+});
+
+test('account menu: an outside click on background returns focus to the trigger, on a control keeps it there', async (t) => {
+  const page = await open(t, '/showcase-shell.html?theme=light');
+  if (!page) return;
+  await page.click('.dk-account-trigger');
+  await page.keyboard.press('ArrowDown');
+  const main = await page.locator('#main-content').boundingBox();
+  await page.mouse.click(main.x + main.width - 24, main.y + main.height - 24);
+  assert.ok(!(await page.isVisible('#dk-account-menu')));
+  await settles(page, () => document.activeElement.matches('.dk-account-trigger'), 'background click: focus back on the trigger');
+
+  await page.click('.dk-account-trigger');
+  await page.keyboard.press('ArrowDown');
+  const control = page.locator('#main-content').locator('button, a[href], input').first();
+  await control.click();
+  assert.ok(!(await page.isVisible('#dk-account-menu')));
+  await page.waitForTimeout(50);
+  assert.equal(await page.evaluate(() => document.activeElement === document.querySelector('#main-content').querySelector('button, a[href], input')), true, 'control click: focus stays on the control');
+  await page.close();
+});
+
 test('counts: hidden at 0, exact to 99, then 99+', async (t) => {
   const page = await open(t, '/showcase-shell.html?theme=light');
   if (!page) return;

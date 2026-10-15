@@ -129,6 +129,16 @@ in a minor version with migration notes.
 
 ### Fixed
 
+- Shell popovers (account menu, notifications, brand switcher) stayed open
+  when Tab left the last row for browser chrome: `focusout` only closed on a
+  non-null `relatedTarget`. A null departure is now settled a task later from
+  where focus actually is, and focus arriving anywhere outside the popover
+  and its trigger closes it; a window blur still leaves it open. An outside
+  click on background (a `tabindex="-1"` main) used to leave focus on that
+  background, because the browser's default focus ran after the attempted
+  return to the trigger; the return now waits for it and keeps focus on a
+  clicked control. Found in the dataqna rollout review; behaviour tests cover
+  Tab-out, focus-outside, window blur, and background vs control clicks.
 - A busy `.dk-button` / `.dk-icon-button` whose label sits in a child
   element (`<span>`, icon + text) kept its accessible name only until the
   spinner showed: children were hidden with `visibility: hidden`, which

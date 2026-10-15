@@ -538,8 +538,11 @@ navigation.**
     last.
   - `Esc`, an outside pointer-down, or clicking the trigger again closes
     it. **Focus returns to the trigger** for Esc and trigger clicks, and
-    for outside clicks when focus was inside. Tab past the end closes it
-    without trapping, because these are non-modal.
+    for outside clicks when focus was inside, unless the click lands on a
+    control, which keeps the focus it was given. Tab past the end closes it
+    without trapping, because these are non-modal — including Tab out of the
+    page into browser chrome, and focus arriving anywhere outside the
+    popover and its trigger. A window blur leaves it open.
   - Inside `.dk-menu`, `↑`/`↓` move between rows, `Home`/`End` jump, and
     `Space` toggles the switch row. The brand switcher is a real
     `role="menu"` with full menu keys and typeahead.
