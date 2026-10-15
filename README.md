@@ -54,8 +54,9 @@ js/shell.js                shell behaviour: collapse, drawer, popovers, counts, 
 js/split.js                list–detail split: list keyboard, focus per pane, resize grip
 js/tabs.js                 segmented control keyboard: roving tabindex, arrow keys for tablist/radiogroup
 js/device-code.js          device-login code normalize/format (ES module, never truncates)
+js/avatar.js               avatar: initials with an optional photo laid over them (ES module)
 build.mjs                  tokens → dist/; validates aliases, dark coverage, contrast
-dist/                      generated: dakit.css (bundle), tokens.css, tokens.js, dialogs.js, shell.js, split.js, tabs.js, device-code.js
+dist/                      generated: dakit.css (bundle), tokens.css, tokens.js, dialogs.js, shell.js, split.js, tabs.js, device-code.js, avatar.js
 fonts/                     self-hosted Inter + IBM Plex Mono (SIL OFL)
 showcase.html              living style guide — open after building
 showcase-shell.html        app shell in every state (?state=, ?variant=topbar)

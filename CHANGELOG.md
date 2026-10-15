@@ -8,6 +8,11 @@ in a minor version with migration notes.
 
 ### Added
 
+- `dist/avatar.js` (ES module: `createAvatar`, `updateAvatar`,
+  `avatarInitials`): a `.dk-avatar` with the person's initials and an optional
+  photo laid over them. Only https photos load, with no referrer; a photo that
+  fails to load is removed so the initials remain. `.dk-avatar` is now
+  `position: relative` and its `<img>` covers it absolutely.
 - Action placement (`docs/guidelines.md` "Action placement"): the page
   header is for orientation; a create action sits right after the title of
   the collection it creates into (or after the filter/tabs on a board or

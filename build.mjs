@@ -40,6 +40,7 @@ const splitJs = readFileSync(join(root, "js/split.js"), "utf8");
 const tabsJs = readFileSync(join(root, "js/tabs.js"), "utf8");
 const collectionJs = readFileSync(join(root, "js/collection.js"), "utf8");
 const deviceCodeJs = readFileSync(join(root, "js/device-code.js"), "utf8");
+const avatarJs = readFileSync(join(root, "js/avatar.js"), "utf8");
 
 // --- flatten ----------------------------------------------------------------
 
@@ -251,7 +252,8 @@ emit("split.js", splitJs);
 emit("tabs.js", tabsJs);
 emit("collection.js", collectionJs);
 emit("device-code.js", deviceCodeJs);
+emit("avatar.js", avatarJs);
 
 console.log(
-  `\nbuilt dist/tokens.css, dist/dakit.css, dist/tokens.js, dist/{dialogs,shell,split,tabs,collection,device-code}.js — ${Object.keys(prim).length} primitives, ${Object.keys(lightResolved).length} semantic roles, ${Object.keys(darkResolved).length} dark overrides`,
+  `\nbuilt dist/tokens.css, dist/dakit.css, dist/tokens.js, dist/{dialogs,shell,split,tabs,collection,device-code,avatar}.js — ${Object.keys(prim).length} primitives, ${Object.keys(lightResolved).length} semantic roles, ${Object.keys(darkResolved).length} dark overrides`,
 );
