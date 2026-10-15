@@ -551,6 +551,14 @@ navigation.**
     without trapping, because these are non-modal — including Tab out of the
     page into browser chrome, and focus arriving anywhere outside the
     popover and its trigger. A window blur leaves it open.
+  - **Focus dropped inside is not leaving.** When the focused control inside
+    an open popover goes busy (`disabled`), is hidden, or is re-rendered
+    away, or a press lands on the popover's own non-focusable parts, the
+    browser drops focus to `<body>`. The popover stays open and the kit
+    catches focus on its container (`tabindex="-1"`, no ring), so the
+    keyboard keeps working and the app can hand focus on, for example to
+    the re-rendered control or its error. Apps can disable a control inside
+    a popover while it works without closing the popover.
   - Inside `.dk-menu`, `↑`/`↓` move between rows, `Home`/`End` jump, and
     `Space` toggles the switch row. The brand switcher is a real
     `role="menu"` with full menu keys and typeahead.

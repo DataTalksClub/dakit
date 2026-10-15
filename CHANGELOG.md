@@ -129,6 +129,18 @@ in a minor version with migration notes.
 
 ### Fixed
 
+- Shell popovers closed when the app itself dropped focus inside them: a
+  busy (`disabled`) Mark read button, or a notification list re-rendered
+  around the focused row, sends `focusout` with a null `relatedTarget` and
+  leaves focus on `<body>`, which the Tab-out rule below read as leaving.
+  DataOps' notification panel closed mid-Mark read, hiding its retry error.
+  Focus dropped by a disabled, hidden or removed control, or by a press on
+  the popover's own background, now keeps the popover open and catches
+  focus on its container; Tab into browser chrome (the departed control is
+  intact) and focus landing outside still close it. Found in the DataOps
+  resync's browser e2e; behaviour tests cover a busy button, a re-rendered
+  row, a background press and a disabled menu row, and fail on the previous
+  `shell.js`.
 - Shell popovers (account menu, notifications, brand switcher) stayed open
   when Tab left the last row for browser chrome: `focusout` only closed on a
   non-null `relatedTarget`. A null departure is now settled a task later from

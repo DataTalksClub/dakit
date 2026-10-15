@@ -169,6 +169,66 @@ test('account menu: an outside click on background returns focus to the trigger,
   await page.close();
 });
 
+// The app's own work inside an open popover drops focus to <body> without the
+// person leaving: Mark read goes busy (disabled), or the list re-renders the
+// focused row away. The panel stays open with focus caught on it, and the
+// app's later focus hand-off lands inside.
+test('notifications: a control disabled or re-rendered away inside the panel keeps it open with focus inside', async (t) => {
+  const page = await open(t, '/showcase-shell.html?theme=light');
+  if (!page) return;
+  await page.click('.dk-notif-trigger');
+  const read = page.locator('#dk-notif-panel .dk-notif-item__read').first();
+  await read.focus();
+  await page.evaluate(() => {
+    const button = document.querySelector('#dk-notif-panel .dk-notif-item__read');
+    button.disabled = true;
+    button.setAttribute('aria-busy', 'true');
+  });
+  await page.waitForTimeout(50);
+  assert.ok(await page.isVisible('#dk-notif-panel'), 'busy button: panel stays open');
+  assert.equal(await page.getAttribute('.dk-notif-trigger', 'aria-expanded'), 'true');
+  assert.ok(await page.evaluate(() => document.getElementById('dk-notif-panel').contains(document.activeElement)), 'busy button: focus caught inside');
+  await page.keyboard.press('Escape');
+  assert.ok(!(await page.isVisible('#dk-notif-panel')), 'Escape still closes from the caught focus');
+  assert.match((await focused(page)).cls, /dk-notif-trigger/);
+
+  await page.click('.dk-notif-trigger');
+  await page.locator('#dk-notif-panel .dk-notif-item__read').last().focus();
+  await page.evaluate(() => {
+    const item = document.querySelector('#dk-notif-panel .dk-notif-item__read:not([disabled])').closest('.dk-notif-item');
+    item.replaceWith(item.cloneNode(true));
+  });
+  await page.waitForTimeout(50);
+  assert.ok(await page.isVisible('#dk-notif-panel'), 're-render: panel stays open');
+  assert.ok(await page.evaluate(() => document.getElementById('dk-notif-panel').contains(document.activeElement)), 're-render: focus caught inside');
+  await page.evaluate(() => document.querySelector('#dk-notif-panel .dk-notif-item__read:not([disabled])').focus());
+  assert.ok(await page.isVisible('#dk-notif-panel'), 'the app hands focus on inside');
+
+  await page.locator('#dk-notif-panel .dk-notif-item__read:not([disabled])').first().focus();
+  await page.click('#dk-notif-panel .dk-notif-panel__day');
+  await page.waitForTimeout(50);
+  assert.ok(await page.isVisible('#dk-notif-panel'), 'a press on the panel\'s own text keeps it open');
+  await page.evaluate(() => document.querySelector('.dk-skip-link').focus());
+  assert.ok(!(await page.isVisible('#dk-notif-panel')), 'focus moved outside: closed');
+  await page.close();
+});
+
+test('account menu: a row disabled while focused keeps the menu open; Tab out of the page still closes it', async (t) => {
+  const page = await open(t, '/showcase-shell.html?theme=light');
+  if (!page) return;
+  await page.focus('.dk-account-trigger');
+  await page.keyboard.press('Enter');
+  await page.evaluate(() => { document.activeElement.disabled = true; });
+  await page.waitForTimeout(50);
+  assert.ok(await page.isVisible('#dk-account-menu'), 'disabled row: menu stays open');
+  assert.equal((await focused(page)).id, 'dk-account-menu', 'focus caught on the menu');
+  await page.keyboard.press('End');
+  assert.match((await focused(page)).text, /Sign out/, 'keyboard still moves through the rows');
+  await page.keyboard.press('Tab');
+  await settles(page, () => document.getElementById('dk-account-menu').hidden, 'Tab out of the page still closes it');
+  await page.close();
+});
+
 test('counts: hidden at 0, exact to 99, then 99+', async (t) => {
   const page = await open(t, '/showcase-shell.html?theme=light');
   if (!page) return;
