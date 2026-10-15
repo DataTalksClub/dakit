@@ -1,4 +1,4 @@
-/* dakit 0.2.0 f339454 */
+/* dakit 0.2.0 e286d7c */
 // Dakit dialogs: backdrop dismissal, and load-before-open (openWhenReady).
 //
 // Load once per page — either form works:
