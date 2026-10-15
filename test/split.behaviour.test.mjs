@@ -243,3 +243,23 @@ test('no page errors', (t) => {
   if (skip) { t.skip(skip); return; }
   assert.deepEqual(errors, []);
 });
+
+test('sticky section anchors clear the band after it resizes', async (t) => {
+  const page = await open(t, '/showcase-split.html?run=r1039', desktop);
+  if (!page) return;
+  await page.evaluate(() => {
+    const scroller = document.querySelector('.dk-split__detail .dk-split__scroll');
+    scroller.classList.add('dk-split__scroll--flush');
+    scroller.innerHTML = '<nav class="dk-split__sticky" style="height:48px">Sections</nav><div style="height:600px"></div><h3 id="anchor">Section</h3><div style="height:900px"></div>';
+  });
+  for (const height of [48, 88]) {
+    await page.locator('.dk-split__sticky').evaluate((node, px) => { node.style.height = px + 'px'; }, height);
+    await page.waitForFunction(px => parseFloat(getComputedStyle(document.querySelector('.dk-split__scroll--flush')).scrollPaddingTop) >= px, height);
+    const offset = await page.locator('#anchor').evaluate(node => {
+      node.scrollIntoView({ block: 'start' });
+      return node.getBoundingClientRect().top - document.querySelector('.dk-split__sticky').getBoundingClientRect().bottom;
+    });
+    assert.ok(offset >= 0, `anchor clears the ${height}px sticky band`);
+  }
+  await page.close();
+});
