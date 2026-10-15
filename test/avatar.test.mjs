@@ -30,7 +30,10 @@ function fakeDocument() {
         },
         setAttribute(name, value) { this.attributes[name] = String(value); },
         getAttribute(name) { return name in this.attributes ? this.attributes[name] : null; },
-        querySelector(selector) { return this.childNodes.find((node) => node.tagName === selector.toUpperCase()) || null; },
+        querySelector(selector) {
+          if (selector.startsWith(".")) return this.childNodes.find((node) => node.className === selector.slice(1)) || null;
+          return this.childNodes.find((node) => node.tagName === selector.toUpperCase()) || null;
+        },
         replaceChildren(...children) {
           for (const node of this.childNodes) node.parent = null;
           this.childNodes = children;
@@ -87,6 +90,21 @@ test("a photo that fails to load is removed and the initials remain", () => {
   assert.equal(img(el), undefined);
   assert.equal(letters(el), "OV");
   assert.ok(!el.classList.contains("dk-avatar--photo"));
+  assert.equal(el.dataset.avatarPhoto, "failed");
+});
+
+test("re-rendering an unchanged avatar keeps its nodes and does not refetch a failed photo", () => {
+  const doc = fakeDocument();
+  const el = createAvatar({ document: doc, name: "Orin Vale", src: "https://photos.example/ok" });
+  const [label, photo] = el.childNodes;
+  updateAvatar(el, { name: "Orin Vale", src: "https://photos.example/ok" });
+  assert.equal(el.childNodes[0], label);
+  assert.equal(el.childNodes[1], photo);
+  updateAvatar(el, { name: "Orin Vale", src: "https://photos.example/broken" });
+  img(el).dispatch("error");
+  updateAvatar(el, { name: "Orin Vale", src: "https://photos.example/broken" });
+  assert.equal(img(el), undefined);
+  assert.equal(el.childNodes[0], label);
   assert.equal(el.dataset.avatarPhoto, "failed");
 });
 
