@@ -227,6 +227,78 @@ test('mobile: triggers move to the bar, drawer traps focus and returns it', asyn
   await page.close();
 });
 
+// The drawer's open focus lands a frame or two after it becomes visible; wait
+// for it, then move focus to the brand and confirm it is there.
+async function focusBrand(page) {
+  await settles(page, () => document.activeElement && document.activeElement.matches('.dk-sidebar [aria-current="page"], .dk-sidebar a, .dk-sidebar button'), 'drawer focus settled');
+  await page.waitForTimeout(50);
+  await page.locator('button.dk-brand').focus();
+  await settles(page, () => document.activeElement.matches('button.dk-brand'), 'brand focused');
+}
+
+test('mobile: a brand switcher in the drawer takes over from it as the sheet under the bar', async (t) => {
+  const page = await open(t, '/showcase-shell.html?theme=dark', { width: 390, height: 844 }, { hasTouch: true, isMobile: true });
+  if (!page) return;
+  // The showcase brand is a link; give it the switcher form (shell.md §5.1).
+  await page.evaluate(() => {
+    const shell = document.querySelector('.dk-shell');
+    const brand = shell.querySelector('.dk-brand');
+    const button = document.createElement('button');
+    button.className = 'dk-brand';
+    button.type = 'button';
+    button.dataset.dkPopoverTrigger = 'dk-brand-menu';
+    button.setAttribute('aria-haspopup', 'menu');
+    button.setAttribute('aria-expanded', 'false');
+    button.setAttribute('aria-controls', 'dk-brand-menu');
+    button.innerHTML = '<span class="dk-brand__name">DataOps</span><span class="dk-brand__scope">Acme</span>';
+    brand.replaceWith(button);
+    const menu = document.createElement('div');
+    menu.className = 'dk-menu dk-brand-menu';
+    menu.id = 'dk-brand-menu';
+    menu.setAttribute('role', 'menu');
+    menu.dataset.dkPopover = '';
+    menu.hidden = true;
+    menu.innerHTML = ['Acme', 'Globex', 'Initech'].map((n, i) => `<button class="dk-menu__item" type="button" role="menuitemradio" aria-checked="${i === 0}" tabindex="-1">${n}</button>`).join('');
+    shell.append(menu);
+  });
+  await page.click('[data-dk-drawer-toggle]');
+  await settles(page, () => document.querySelector('.dk-sidebar').contains(document.activeElement), 'focus enters the drawer');
+  await page.click('button.dk-brand');
+  assert.equal(await page.getAttribute('.dk-shell', 'data-drawer'), null, 'drawer closed');
+  assert.ok(await page.isVisible('#dk-brand-menu'), 'switcher open');
+  assert.equal(await page.evaluate(() => document.querySelector('.dk-main').inert), false, 'page no longer inert');
+  assert.equal(await page.getAttribute('.dk-sidebar', 'role'), null, 'sidebar is a landmark again');
+  assert.equal((await focused(page)).id, 'dk-brand-menu', 'focus in the switcher');
+  const box = await page.locator('#dk-brand-menu').boundingBox();
+  assert.ok(box.y >= 48, 'sheet sits under the 48px bar');
+  await page.keyboard.press('ArrowDown');
+  assert.equal((await focused(page)).text, 'Acme');
+  await page.keyboard.press('ArrowDown');
+  assert.equal((await focused(page)).text, 'Globex');
+  await page.keyboard.press('Escape');
+  assert.ok(await page.isHidden('#dk-brand-menu'), 'Escape closes it');
+  assert.ok(await page.evaluate(() => document.activeElement.matches('[data-dk-drawer-toggle]')), 'focus returns to the menu button');
+  // Reopen from the drawer and Tab out: it closes, and focus never lands in the hidden drawer.
+  await page.click('[data-dk-drawer-toggle]');
+  await settles(page, () => document.querySelector('.dk-sidebar').contains(document.activeElement), 'drawer reopens');
+  await focusBrand(page);
+  await page.keyboard.press('Enter');
+  assert.equal((await focused(page)).text, 'Acme', 'keyboard opening focuses the first row');
+  for (const key of ['Tab', 'Shift+Tab']) {
+    await page.keyboard.press(key);
+    await settles(page, () => document.getElementById('dk-brand-menu').hidden, `${key} out closes the switcher`);
+    assert.equal(await page.evaluate(() => document.querySelector('.dk-sidebar').contains(document.activeElement)), false, `${key} does not land in the closed drawer`);
+    assert.equal(await page.evaluate(() => document.querySelector('.dk-main').inert), false, 'nothing left inert');
+    // Tab may land on the skip link, which covers the bar; reopen by keyboard.
+    await page.locator('[data-dk-drawer-toggle]').focus();
+    await page.keyboard.press('Enter');
+    await focusBrand(page);
+    await page.keyboard.press('Enter');
+    assert.equal((await focused(page)).text, 'Acme');
+  }
+  await page.close();
+});
+
 test('device login: formats, never truncates, focus never on Authorize, prefill never advances', async (t) => {
   const page = await open(t, '/showcase-device.html?theme=light');
   if (!page) return;

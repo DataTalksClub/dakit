@@ -510,6 +510,11 @@ navigation.**
   replaces the collapse toggle. `.dk-scrim` (`--dk-bg-backdrop`, z 45)
   closes it.
 - Choosing a destination closes the drawer.
+- A popover whose trigger sits in the drawer (the brand switcher) takes over
+  from it: `shell.js` closes the drawer without moving focus, opens the
+  popover as the sheet under the bar, and returns focus to the menu button
+  when the popover closes. The popover never shows beside a still-open
+  modal drawer, outside the dialog that owns focus.
 - Popovers become sheets under the bar: `position: fixed; top: calc(var(--dk-size-topbar) + var(--dk-space-2)); left: var(--dk-space-2); right: var(--dk-space-2); width: auto; max-height: calc(100dvh - var(--dk-size-topbar) - var(--dk-space-4));`.
 - Touch: inside `@media (max-width: 820px), (pointer: coarse)`, nav items,
   menu rows, tabs, the brand link, search and the account trigger are
