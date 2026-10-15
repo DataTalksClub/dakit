@@ -500,6 +500,9 @@ navigation.**
     shows (`.dk-sidebar__foot` hides only when it's empty).
 - The drawer is `.dk-sidebar` at `position: fixed; inset: 0 auto 0 0; width: min(288px, 100vw - 48px); z-index: 50; box-shadow: var(--dk-shadow-overlay); transform: translateX(-100%); visibility: hidden;`.
   `[data-drawer="open"]` slides it in (180ms; instant under reduced motion).
+  Opening shows the drawer and every control in it at once (only the
+  transform slides), so focus moves in within the same task, also on a busy
+  page; closing keeps it visible while it slides out.
   While open it's a modal dialog: `shell.js` sets `role="dialog"`,
   `aria-modal="true"` and an accessible name on the `<aside>` (its own
   `aria-label`, else "Navigation"; an `aria-labelledby` is left alone). On

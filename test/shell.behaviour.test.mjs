@@ -227,13 +227,45 @@ test('mobile: triggers move to the bar, drawer traps focus and returns it', asyn
   await page.close();
 });
 
-// The drawer's open focus lands a frame or two after it becomes visible; wait
-// for it, then move focus to the brand and confirm it is there.
+// The drawer is settled once it is open, focus is inside it and the brand is
+// visible (focusable). Wait for exactly that, then focus the brand and wait
+// for focus to be on it: no fixed delays.
 async function focusBrand(page) {
-  await settles(page, () => document.activeElement && document.activeElement.matches('.dk-sidebar [aria-current="page"], .dk-sidebar a, .dk-sidebar button'), 'drawer focus settled');
-  await page.waitForTimeout(50);
+  await settles(page, () => {
+    const sidebar = document.querySelector('.dk-sidebar');
+    const brand = document.querySelector('button.dk-brand');
+    return document.querySelector('.dk-shell').dataset.drawer === 'open'
+      && sidebar.contains(document.activeElement)
+      && getComputedStyle(brand).visibility === 'visible';
+  }, 'drawer settled with focus inside');
   await page.locator('button.dk-brand').focus();
   await settles(page, () => document.activeElement.matches('button.dk-brand'), 'brand focused');
+}
+
+for (const motion of ['reduce', 'no-preference']) {
+  test(`mobile (${motion} motion): opening the drawer moves focus in at once and every control in it is focusable`, async (t) => {
+    const page = await open(t, '/showcase-shell.html?theme=dark', { width: 390, height: 844 }, { hasTouch: true, isMobile: true, reducedMotion: motion });
+    if (!page) return;
+    for (let i = 0; i < 5; i++) {
+      // Open and inspect in one task: no frame may tick between the click and the checks.
+      const now = await page.evaluate(() => {
+        const toggle = document.querySelector('[data-dk-drawer-toggle]');
+        toggle.focus();
+        toggle.click();
+        const sidebar = document.querySelector('.dk-sidebar');
+        const controls = [...sidebar.querySelectorAll('a[href], button')].filter((el) => el.getClientRects().length);
+        return {
+          focusInside: sidebar.contains(document.activeElement),
+          hidden: controls.filter((el) => getComputedStyle(el).visibility !== 'visible').map((el) => el.className),
+        };
+      });
+      assert.ok(now.focusInside, 'focus is in the drawer in the same task');
+      assert.deepEqual(now.hidden, [], 'no drawer control is still hidden');
+      await page.keyboard.press('Escape');
+      await settles(page, () => !document.querySelector('.dk-shell').dataset.drawer && document.activeElement.matches('[data-dk-drawer-toggle]'), 'closed, focus on the menu button');
+    }
+    await page.close();
+  });
 }
 
 test('mobile: a brand switcher in the drawer takes over from it as the sheet under the bar', async (t) => {
