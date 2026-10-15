@@ -25,12 +25,18 @@ function fakeDocument() {
             contains: (name) => list().includes(name),
             add: (name) => { if (!list().includes(name)) self.className = [...list(), name].join(" "); },
             remove: (name) => { self.className = list().filter((item) => item !== name).join(" "); },
+            toggle: (name, on) => { self.className = [...list().filter((item) => item !== name), ...(on ? [name] : [])].join(" "); },
           };
         },
         setAttribute(name, value) { this.attributes[name] = String(value); },
         getAttribute(name) { return name in this.attributes ? this.attributes[name] : null; },
+        querySelector(selector) { return this.childNodes.find((node) => node.tagName === selector.toUpperCase()) || null; },
+        replaceChildren(...children) {
+          for (const node of this.childNodes) node.parent = null;
+          this.childNodes = children;
+          for (const node of children) node.parent = this;
+        },
         append(child) { child.parent = this; this.childNodes.push(child); },
-        prepend(child) { child.parent = this; this.childNodes.unshift(child); },
         remove() {
           if (!this.parent) return;
           this.parent.childNodes = this.parent.childNodes.filter((node) => node !== this);
@@ -91,11 +97,11 @@ test("only absolute https URLs become photos", () => {
   }
 });
 
-test("update re-points an existing avatar and drops stray text", () => {
+test("update re-points an existing avatar and replaces static text", () => {
   const doc = fakeDocument();
   const el = doc.createElement("span");
   el.className = "dk-avatar dk-avatar--sm";
-  el.append({ nodeType: 3, remove() { el.childNodes = el.childNodes.filter((node) => node !== this); } });
+  el.append({ nodeType: 3, textContent: "?" });
   updateAvatar(el, { name: "Grace", src: "https://photos.example/g" });
   assert.equal(el.childNodes.length, 2);
   assert.equal(letters(el), "G");

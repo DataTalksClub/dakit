@@ -4,7 +4,7 @@
 //   import { createAvatar, updateAvatar, avatarInitials } from "dakit/dist/avatar.js";
 //
 //   createAvatar({ name: "Orin Vale", src, size: "xs" })   → <span class="dk-avatar dk-avatar--xs">
-//   updateAvatar(element, { name, src })                   re-point an existing .dk-avatar
+//   updateAvatar(element, { name, src }, document?)        re-point an existing .dk-avatar
 //
 // The initials are always rendered. The photo is an <img> laid over them, so
 // while it loads, when there is none, and after it fails to load, the avatar
@@ -38,33 +38,25 @@ function photoUrl(src) {
   }
 }
 
-export function updateAvatar(element, { name = "", initials, src = "" } = {}) {
-  const doc = element.ownerDocument;
-  const letters = initials || avatarInitials(name);
+// The document defaults to the element's own; pass it for detached or test
+// documents. Re-pointing to the same photo keeps the loaded <img>.
+export function updateAvatar(element, { name = "", initials, src = "" } = {}, doc = element.ownerDocument) {
   const href = photoUrl(src);
-  let label = null;
-  let img = null;
-  for (const child of [...element.childNodes]) {
-    if (child.nodeType === 1 && child.tagName === "IMG") img = child;
-    else if (child.nodeType === 1 && child.classList?.contains("dk-avatar__initials")) label = child;
-    else child.remove();
-  }
-  if (!label) {
-    label = doc.createElement("span");
-    label.className = "dk-avatar__initials";
-    element.prepend(label);
-  }
-  label.textContent = letters;
+  const label = doc.createElement("span");
+  label.className = "dk-avatar__initials";
+  label.textContent = initials || avatarInitials(name);
+  const current = element.querySelector("img");
+  const img = href && current?.getAttribute("src") === href ? current : href ? photo(doc, element, href) : null;
+  element.replaceChildren(...(img ? [label, img] : [label]));
   element.setAttribute("aria-hidden", "true");
-  if (!href) {
-    img?.remove();
-    element.classList.remove("dk-avatar--photo");
-    delete element.dataset.avatarPhoto;
-    return element;
-  }
-  if (img && img.getAttribute("src") === href) return element;
-  img?.remove();
-  img = doc.createElement("img");
+  element.classList.toggle("dk-avatar--photo", Boolean(img));
+  if (img) element.dataset.avatarPhoto = "shown";
+  else delete element.dataset.avatarPhoto;
+  return element;
+}
+
+function photo(doc, element, href) {
+  const img = doc.createElement("img");
   img.alt = "";
   img.decoding = "async";
   img.setAttribute("referrerpolicy", "no-referrer");
@@ -74,14 +66,11 @@ export function updateAvatar(element, { name = "", initials, src = "" } = {}) {
     element.dataset.avatarPhoto = "failed";
   }, { once: true });
   img.setAttribute("src", href);
-  element.append(img);
-  element.classList.add("dk-avatar--photo");
-  element.dataset.avatarPhoto = "shown";
-  return element;
+  return img;
 }
 
 export function createAvatar({ document: doc = globalThis.document, name = "", initials, src = "", size = "", className = "" } = {}) {
   const element = doc.createElement("span");
   element.className = ["dk-avatar", SIZES.has(size) ? `dk-avatar--${size}` : "", className].filter(Boolean).join(" ");
-  return updateAvatar(element, { name, initials, src });
+  return updateAvatar(element, { name, initials, src }, doc);
 }
