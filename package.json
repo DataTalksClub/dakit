@@ -8,7 +8,7 @@
     "build": "node build.mjs",
     "check-borders": "node scripts/check-borders.mjs css showcase.html",
     "check-colors": "node scripts/check-colors.mjs css showcase.html",
-    "test": "node test/check-borders.test.mjs && node test/check-colors.test.mjs && node test/check-scale.test.mjs && node --test test/select-chevron.test.mjs test/sync.test.mjs test/device-code.test.mjs test/avatar.test.mjs test/shell.behaviour.test.mjs test/split.behaviour.test.mjs test/tabs.behaviour.test.mjs test/collection.behaviour.test.mjs test/dialog-load.behaviour.test.mjs",
+    "test": "node test/check-borders.test.mjs && node test/check-colors.test.mjs && node test/check-scale.test.mjs && node --test test/select-chevron.test.mjs test/sync.test.mjs test/device-code.test.mjs test/avatar.test.mjs test/shell.behaviour.test.mjs test/split.behaviour.test.mjs test/tabs.behaviour.test.mjs test/tag-input.behaviour.test.mjs test/collection.behaviour.test.mjs test/dialog-load.behaviour.test.mjs",
     "watch": "node --watch-path=tokens --watch-path=css --watch-path=js build.mjs"
   },
   "exports": {
@@ -18,6 +18,7 @@
     "./shell.js": "./dist/shell.js",
     "./split.js": "./dist/split.js",
     "./tabs.js": "./dist/tabs.js",
+    "./tag-input.js": "./dist/tag-input.js",
     "./collection.js": "./dist/collection.js",
     "./device-code.js": "./dist/device-code.js",
     "./dialogs.js": "./dist/dialogs.js",

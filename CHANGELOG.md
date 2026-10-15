@@ -13,6 +13,19 @@ in a minor version with migration notes.
   photo laid over them. Only https photos load, with no referrer; a photo that
   fails to load is removed so the initials remain. `.dk-avatar` is now
   `position: relative` and its `<img>` covers it absolutely.
+- Tag input (`docs/tag-input.md`, `dist/tag-input.js`): `.dk-tag-input`,
+  a multi-select combobox for picking several values from a known
+  vocabulary, replacing checkbox grids. Chosen values are neutral chips with
+  a "Remove <label>" button; typing filters a listbox (case-insensitive
+  substring on label and aliases, label prefixes first) with optional
+  per-option icons and groups and a "No matches" state, capped at
+  `min(288px, 50vh)` and scrolling. ↑/↓ move, Enter adds, Backspace on an
+  empty field removes the last chip, Esc closes then clears; mouse and touch
+  keep focus in the field. ARIA 1.2 combobox (combobox/listbox/option,
+  aria-activedescendant, labelled chip list, polite add/remove
+  announcements). 44px field and options on phones. Built with
+  `dakitTagInput.create({ options, value, label, onChange })`; showcase
+  section `#tag-input`.
 - Action placement (`docs/guidelines.md` "Action placement"): the page
   header is for orientation; a create action sits right after the title of
   the collection it creates into (or after the filter/tabs on a board or
