@@ -7,6 +7,8 @@
 
 .dk-shell {
   --dk-shell-col: var(--dk-size-sidebar);
+  position: fixed;
+  inset: 0;
   display: grid;
   grid-template-columns: var(--dk-shell-col) minmax(0, 1fr);
   grid-template-areas: "side main";

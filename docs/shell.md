@@ -144,7 +144,7 @@ Z-order: popovers 40, scrim 45, drawer 50, mobile sheets 60.
 └─────────────────────────┴───────────────────────────────────────────────┘
 ```
 
-- `.dk-shell` sets `display: grid; grid-template-columns: var(--dk-size-sidebar) minmax(0, 1fr); height: 100dvh; background: var(--dk-bg-page);`.
+- `.dk-shell` is pinned to the viewport (`position: fixed; inset: 0`) so focus and section jumps cannot scroll the document beneath it. It sets `display: grid; grid-template-columns: var(--dk-size-sidebar) minmax(0, 1fr); height: 100dvh; background: var(--dk-bg-page);`.
   `[data-sidebar="collapsed"]` swaps the first column to `var(--dk-size-rail)`.
   The column change isn't animated: a width animation reflows the whole canvas.
 - `.dk-main` is `#main-content`, with `min-width: 0; overflow-y: auto; padding: var(--dk-space-6) var(--dk-space-7);`.
@@ -424,7 +424,9 @@ using the `.dk-menu` surface with `padding: 0` and a flex column.
 ## 8. Page header and tabs
 
 - `.dk-page-header` uses `display: flex; flex-wrap: wrap; align-items: flex-end; gap: var(--dk-gap-block);`
-  and has no bottom border. Space and the next block separate it from the
+  and has no bottom border. Its main slot uses `flex: 1 1 auto`; actions use
+  `flex: 0 0 auto; max-width: 100%`. They share a row whenever their content
+  fits, and wrap only when it does not. Apps do not override this layout. Space and the next block separate it from the
   content.
   - `__title` is `h1`: `--dk-text-xl` (22px), semibold, `--dk-leading-tight`,
     `letter-spacing: -0.01em`. `--dk-text-page` (32px) is only for
